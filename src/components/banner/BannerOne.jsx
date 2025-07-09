@@ -66,7 +66,7 @@ export const BannerOne = () => {
                 </div>
                 <div className="content">
                   <h6 className="circle rotateme">
-                    WOW TRAVEL - VIAJE GARANTIZADO
+                    WOW TRAVEL - VIAJE SEGURO
                   </h6>
                 </div>
               </div>
