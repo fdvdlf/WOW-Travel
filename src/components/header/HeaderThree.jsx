@@ -6,7 +6,7 @@ import { useMobileMenu, useSearch } from "../../lib/hooks/useHeader";
 import { HeaderSearch } from "./HeaderSearch";
 import { HeaderMobileMenu } from "./HeaderMobileMenu";
 
-const wLogo = "/logo/logo.png";
+const wLogo = "/logo/w_logo.png";
 
 export const HeaderThree = () => {
   const { showSearch, toggleSearch } = useSearch();
@@ -27,9 +27,7 @@ export const HeaderThree = () => {
               <div className="col-lg-12">
                 <div className="tgmenu__wrap">
                   <div className="row align-items-center">
-                    <div className="col-xl-5">
-                      {/* Menú eliminado */}
-                    </div>
+                    <div className="col-xl-5">{/* Menú eliminado */}</div>
 
                     <div className="col-xl-2 col-md-4">
                       <div className="logo text-center">
@@ -40,33 +38,27 @@ export const HeaderThree = () => {
                     </div>
 
                     <div className="col-xl-5 col-md-8">
-                      <div className="tgmenu__action tgmenu__action-two d-none d-md-block">
-                        <ul className="list-wrap d-flex justify-content-end align-items-center gap-3">
-                          <li className="header-search">
-                            <a
-                              href="#"
-                              className="search-open-btn"
-                              onClick={(e) => {
-                                e.preventDefault();
-                                toggleSearch();
-                              }}
-                            >
-                              <i className="flaticon-loupe"></i>
-                            </a>
-                          </li>
-                          <li className="header-cart">
-                            <a href="#">
-                              <i className="flaticon-shopping-bag"></i>
-                              <span>0</span>
-                            </a>
-                          </li>
-                          <li className="header-btn login-btn">
-                            <Link href="/reservar" className="btn" style={{ backgroundColor: "#1d3c80", color: "#fff", borderRadius: "999px", padding: "10px 20px" }}>
-                              <i className="flaticon-plane" style={{ marginRight: "8px" }}></i>
-                              Reservar vuelo
-                            </Link>
-                          </li>
-                        </ul>
+                      <div className="tgmenu__action tgmenu__action-two d-none d-md-flex justify-content-end">
+                        <Link
+                          href="/reservar"
+                          className="btn"
+                          style={{
+                            display: "flex",
+                            alignItems: "center",
+                            gap: "10px",
+                            padding: "12px 28px",
+                            fontSize: "16px",
+                            fontWeight: "600",
+                            color: "#fff",
+                            background: "linear-gradient(90deg, #1d3c80 0%, #9e7efb 100%)",
+                            borderRadius: "999px",
+                            boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
+                            transition: "all 0.3s ease",
+                          }}
+                        >
+                          <i className="flaticon-plane" style={{ fontSize: "18px" }}></i>
+                          Reservar vuelo
+                        </Link>
                       </div>
                     </div>
                   </div>
@@ -83,8 +75,8 @@ export const HeaderThree = () => {
           </div>
         </div>
 
-        {/* Buscador */}
-        <HeaderSearch active={showSearch} toggleSearch={toggleSearch} />
+        {/* Buscador eliminado */}
+        {/* <HeaderSearch active={showSearch} toggleSearch={toggleSearch} /> */}
       </header>
     </>
   );
