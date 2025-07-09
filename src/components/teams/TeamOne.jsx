@@ -14,23 +14,23 @@ export const TeamOne = () => {
   const teamMembers = [
     {
       src: teamImg01,
-      name: "Daria Andaloro",
-      designation: "Veterinary Technician",
+      name: "Eduardo Ascuña",
+      designation: "Director Comercial",
     },
     {
       src: teamImg02,
-      name: "Michael Brian",
-      designation: "Medicine Specialist",
+      name: "Fernando Del Valle",
+      designation: "Director de Operaciones",
     },
     {
       src: teamImg03,
-      name: "Kenroly Gajon",
-      designation: "Food Technician",
+      name: "Valeria Mansilla",
+      designation: "Asesora de Viajes Internacionales",
     },
     {
       src: teamImg04,
-      name: "Lizay Arianya",
-      designation: "Veterinary Technician",
+      name: "Jorge Esteban",
+      designation: "Especialista en Logística Pet Travel",
     },
   ];
 
@@ -42,14 +42,14 @@ export const TeamOne = () => {
           <div className="col-lg-6">
             <div className="section__title text-center mb-40">
               <span className="sub-title">
-                WE CHANGE YOUR LIFE & WORLD
+                TRANSFORMAMOS CADA VIAJE EN UNA GRAN HISTORIA
                 <strong className="shake">
                   <img src={petIcon} alt="" className="injectable" />
                 </strong>
               </span>
               <h2 className="title">
-                Meet Our Expertise <br />
-                Pet Doctors
+                Conoce al equipo <br />
+                detrás de WOW Travel
               </h2>
             </div>
           </div>
@@ -68,9 +68,9 @@ export const TeamOne = () => {
         </div>
 
         <div className="team__bottom-content">
-          <p>Our Valuable Expert Doctors Team</p>
+          <p>Nuestro equipo de expertos en viajes para mascotas</p>
           <Link href="/team" className="btn">
-            See All Doctors
+            Ver todo el equipo
             <img src={rightArrow} alt="right arrow" className="injectable" />
           </Link>
         </div>
