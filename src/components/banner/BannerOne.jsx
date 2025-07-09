@@ -42,7 +42,7 @@ export const BannerOne = () => {
                 data-aos="fade-up"
                 data-aos-delay="600"
               >
-                Escríbenos
+                Conversemos
                 <img src={rightArrow} alt="" className="injectable" />
               </Link>
             </div>
@@ -65,7 +65,7 @@ export const BannerOne = () => {
                 </div>
                 <div className="content">
                   <h6 className="circle rotateme">
-                  VIAJE - SEGURO - CON - WOW - TRAVEL
+                  VIAJE - SEGURO - CON-  WOW TRAVEL -
                   </h6>
                 </div>
               </div>

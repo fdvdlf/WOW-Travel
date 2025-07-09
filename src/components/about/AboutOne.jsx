@@ -27,8 +27,8 @@ export const AboutOne = () => {
                   <img src={videoShape} alt="" className="injectable" />
                 </div>
                 <h5 className="title">
-                  Watch Our <br />
-                  Working Video
+                  Mira nuestro <br />
+                  video en acción
                 </h5>
 
                 <VideoPlayer
@@ -45,14 +45,14 @@ export const AboutOne = () => {
             <div className="about__content">
               <div className="section__title mb-20">
                 <span className="sub-title">
-                  Know More Us
+                  Conócenos
                   <strong className="shake">
                     <img src={petIcon} alt="" className="injectable" />
                   </strong>
                 </span>
                 <h2 className="title">
-                  Our Passion Is Providing <br />
-                  Superior Pet Care
+                  Nuestra pasión es que tu mascota <br />
+                  viaje segura y feliz
                 </h2>
               </div>
               <div className="about__content-inner">
@@ -62,22 +62,20 @@ export const AboutOne = () => {
                   </div>
                   <div className="experience__box-content">
                     <h4 className="title">
-                      15 <span>Yr</span>
+                      3 <span>Años</span>
                     </h4>
-                    <p>Experience</p>
+                    <p>de experiencia</p>
                   </div>
                 </div>
                 <p>
-                  Come see how I’m styling these final days of summer with
-                  bright palettes and pops of color that will dazzle your
-                  wardrobe year round!
+                  En WOW Travel nos encargamos de todo el proceso: trámites, certificados, logística y cuidados. 
+                  Acompañamos a cada mascota con amor y responsabilidad para que viaje tranquila y protegida.
                 </p>
               </div>
               <p>
-                We will work with you to develop individualised care plans,
-                including management of chronic diseases. We are committed to
-                being the region’s premier healthcare network providing patient
-                centered care that inspires.
+                Contamos con un equipo especializado que te guía en cada paso. 
+                Desde el microchip hasta el embarque, todo está pensado para garantizar una experiencia sin estrés 
+                para tu mascota y total tranquilidad para ti.
               </p>
               <div className="about__content-bottom">
                 <div className="about__content-sign">
@@ -108,7 +106,7 @@ export const AboutOne = () => {
                       <i className="fas fa-star"></i>
                       <i className="fas fa-star"></i>
                     </div>
-                    <span>4.7 (1,567 Reviews)</span>
+                    <span>4.9 (1,243 opiniones)</span>
                   </div>
                 </div>
               </div>
