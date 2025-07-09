@@ -25,17 +25,17 @@ export const BannerOne = () => {
           <div className="col-xl-5 col-lg-6">
             <div className="banner__content">
               <h2 className="title" data-aos="fade-up" data-aos-delay="200">
-                Trusted Pet
+                Confianza total
                 <img src={titleImg01} alt="" />
-                care & Veterinary Center
+                para el viaje de tu mascota
                 <span className="icon">
                   <img src={titleImg02} alt="" />
                 </span>
                 Point
               </h2>
               <p data-aos="fade-up" data-aos-delay="400">
-                Template Kit uses demo images from Envato Elements Follower will
-                need to license these images from Envato.
+                En WOW Travel cuidamos cada detalle: desde los trámites hasta su llegada segura.
+                Vuela con respaldo, amor y profesionalismo.
               </p>
               <Link
                 href="/about"
