@@ -2,6 +2,7 @@
 
 import React from "react";
 import Link from "next/link";
+import { HeaderTop } from "./HeaderTop";
 import { HeaderNav } from "./HeaderNav";
 import { HeaderSearch } from "./HeaderSearch";
 import { HeaderOffcanvas } from "./HeaderOffcanvas";
@@ -22,46 +23,12 @@ export const HeaderOne = () => {
   return (
     <>
       <header>
-        {/* Top bar */}
-        <div className="header__top">
-          <div className="container custom-container">
-            <div className="row align-items-center">
-              <div className="col-lg-6 col-md-8">
-                <div className="header__info">
-                  <ul className="list-wrap d-flex flex-wrap gap-3">
-                    <li>
-                      <i className="fas fa-map-marker-alt me-1"></i>
-                      Calle Las Palomas 580, Surquillo, Lima – Perú
-                    </li>
-                    <li>
-                      <i className="fas fa-envelope me-1"></i>
-                      contacto@wowtravelmascotas.com
-                    </li>
-                  </ul>
-                </div>
-              </div>
-              <div className="col-lg-6 col-md-4 text-md-end">
-                <div className="header__right d-flex justify-content-end align-items-center gap-3">
-                  <span>
-                    <i className="fas fa-clock me-1"></i>
-                    Atención: 8:00 a. m. – 9:00 p. m.
-                  </span>
-                  <div className="header__social">
-                    <a href="https://www.facebook.com/" target="_blank"><i className="fab fa-facebook-f"></i></a>
-                    <a href="https://twitter.com/" target="_blank"><i className="fab fa-twitter"></i></a>
-                    <a href="https://wa.me/" target="_blank"><i className="fab fa-whatsapp"></i></a>
-                    <a href="https://www.instagram.com/" target="_blank"><i className="fab fa-instagram"></i></a>
-                    <a href="https://www.youtube.com/" target="_blank"><i className="fab fa-youtube"></i></a>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
         <div id="header-fixed-height"></div>
 
-        {/* Main Header */}
+        {/* top */}
+        <HeaderTop />
+
+        {/* bottom */}
         <div id="sticky-header" className="tg-header__area">
           <div className="container custom-container">
             <div className="row">
@@ -74,6 +41,7 @@ export const HeaderOne = () => {
                       </Link>
                     </div>
 
+                    {/* nav */}
                     <div className="tgmenu__navbar-wrap tgmenu__main-menu d-none d-lg-flex">
                       <HeaderNav />
                     </div>
@@ -98,6 +66,7 @@ export const HeaderOne = () => {
                             <span>0</span>
                           </a>
                         </li>
+
                         <li className="offCanvas-menu">
                           <a
                             href="#"
@@ -114,14 +83,45 @@ export const HeaderOne = () => {
                               viewBox="0 0 26 16"
                               fill="none"
                             >
-                              <rect width="9" height="2" rx="1" fill="currentcolor" />
-                              <rect x="11" width="15" height="2" rx="1" fill="currentcolor" />
-                              <rect y="14" width="26" height="2" rx="1" fill="currentcolor" />
-                              <rect y="7" width="16" height="2" rx="1" fill="currentcolor" />
-                              <rect x="17" y="7" width="9" height="2" rx="1" fill="currentcolor" />
+                              <rect
+                                width="9"
+                                height="2"
+                                rx="1"
+                                fill="currentcolor"
+                              />
+                              <rect
+                                x="11"
+                                width="15"
+                                height="2"
+                                rx="1"
+                                fill="currentcolor"
+                              />
+                              <rect
+                                y="14"
+                                width="26"
+                                height="2"
+                                rx="1"
+                                fill="currentcolor"
+                              />
+                              <rect
+                                y="7"
+                                width="16"
+                                height="2"
+                                rx="1"
+                                fill="currentcolor"
+                              />
+                              <rect
+                                x="17"
+                                y="7"
+                                width="9"
+                                height="2"
+                                rx="1"
+                                fill="currentcolor"
+                              />
                             </svg>
                           </a>
                         </li>
+
                         <li className="header-btn">
                           <Link href="/contact" className="btn">
                             <i className="flaticon-calendar-1"></i>Appointment
@@ -136,17 +136,17 @@ export const HeaderOne = () => {
                   </nav>
                 </div>
 
-                {/* Mobile Menu */}
+                {/*  Mobile Menu   */}
                 <HeaderMobileMenu />
               </div>
             </div>
           </div>
         </div>
 
-        {/* Header Search */}
+        {/*  header-search */}
         <HeaderSearch active={showSearch} toggleSearch={toggleSearch} />
 
-        {/* Off Canvas */}
+        {/* off canvas */}
         <HeaderOffcanvas active={showCanvas} toggleCanvas={toggleCanvas} />
       </header>
     </>
