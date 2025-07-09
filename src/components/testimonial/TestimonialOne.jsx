@@ -19,21 +19,11 @@ export const TestimonialOne = () => {
     spaceBetween: 30,
     loop: true,
     breakpoints: {
-      1200: {
-        slidesPerView: 1,
-      },
-      992: {
-        slidesPerView: 1,
-      },
-      768: {
-        slidesPerView: 1,
-      },
-      576: {
-        slidesPerView: 1,
-      },
-      0: {
-        slidesPerView: 1,
-      },
+      1200: { slidesPerView: 1 },
+      992:  { slidesPerView: 1 },
+      768:  { slidesPerView: 1 },
+      576:  { slidesPerView: 1 },
+      0:    { slidesPerView: 1 },
     },
   };
 
@@ -41,7 +31,7 @@ export const TestimonialOne = () => {
     <section className="testimonial__area">
       <div className="container">
         <div className="row align-items-center justify-content-center">
-          {/* img content */}
+          {/* imagen */}
           <div className="col-lg-6 col-md-8 order-0 order-lg-2">
             <div className="testimonial__img">
               <div className="mask-img testimonial__img-mask">
@@ -49,11 +39,7 @@ export const TestimonialOne = () => {
               </div>
               <div className="testimonial__img-shape">
                 <div className="shape-one">
-                  <img
-                    src={testimonialImgShape}
-                    alt=""
-                    className="injectable"
-                  />
+                  <img src={testimonialImgShape} alt="" className="injectable" />
                 </div>
                 <div className="shape-two">
                   <img
@@ -70,62 +56,64 @@ export const TestimonialOne = () => {
                 <div className="review__box-content">
                   <img src={starIcon} alt="" className="injectable" />
                   <h2 className="title">1500+</h2>
-                  <span>Reviews</span>
+                  <span>Opiniones</span>
                 </div>
               </div>
             </div>
           </div>
 
-          {/* testimonials */}
+          {/* testimonios */}
           <div className="col-lg-6">
             <div className="testimonial__item-wrap">
               <Swiper {...swiperSettings} className="testimonial-active">
+                {/* Slide 1 */}
                 <SwiperSlide>
                   <div className="testimonial__item">
                     <div className="testimonial__icon">
                       <img src={quoteIcon} alt="" className="injectable" />
                     </div>
                     <div className="testimonial__content">
-                      <h2 className="title">Pet Health Important</h2>
+                      <h2 className="title">Un viaje impecable a Madrid</h2>
                       <p>
-                        “ Duis aute irure dolor in repreerit in voluptate
-                        velitesse We understand that your furry aute irure dolor
-                        in repreerit in voluptate ute irure dolor in repreerit
-                        in voluptate understand that you ”
+                        “Cuando decidí mudarme a Madrid con mi gato, no sabía ni
+                        por dónde empezar. WOW Travel se encargó del microchip,
+                        certificados, trámites y reserva de vuelo. Me guiaron con
+                        cariño y profesionalismo: ¡mi gato llegó feliz y yo
+                        tranquila!”
                       </p>
                       <div className="testimonial__author">
                         <div className="testimonial__author-thumb">
                           <img src={testiAuthor} alt="" />
                         </div>
                         <div className="testimonial__author-content">
-                          <h4 className="title">Uraney Jacke</h4>
-                          <span>Business Study</span>
+                          <h4 className="title">Natalia de la Flor</h4>
+                          <span>Cliente – Viaje Lima → Madrid</span>
                         </div>
                       </div>
                     </div>
                   </div>
                 </SwiperSlide>
 
+                {/* Slide 2 */}
                 <SwiperSlide>
                   <div className="testimonial__item">
                     <div className="testimonial__icon">
                       <img src={quoteIcon} alt="" className="injectable" />
                     </div>
                     <div className="testimonial__content">
-                      <h2 className="title">Pet Health Important</h2>
+                      <h2 className="title">Servicio confiable y humano</h2>
                       <p>
-                        “ Duis aute irure dolor in repreerit in voluptate
-                        velitesse We understand that your furry aute irure dolor
-                        in repreerit in voluptate ute irure dolor in repreerit
-                        in voluptate understand that you ”
+                        “WOW Travel hizo que viajar con mi perro fuera sencillo.
+                        Gestionaron cada documento y estuvieron disponibles para
+                        todas mis dudas. Recomiendo su servicio al 100 %.”
                       </p>
                       <div className="testimonial__author">
                         <div className="testimonial__author-thumb">
                           <img src={testiAuthor} alt="" />
                         </div>
                         <div className="testimonial__author-content">
-                          <h4 className="title">Uraney Jacke</h4>
-                          <span>Business Study</span>
+                          <h4 className="title">Roberto Montalvo</h4>
+                          <span>Cliente – Viaje a Ciudad de México</span>
                         </div>
                       </div>
                     </div>
@@ -137,7 +125,7 @@ export const TestimonialOne = () => {
         </div>
       </div>
 
-      {/* shapes */}
+      {/* formas decorativas */}
       <div className="testimonial__shape-wrap">
         <img
           src={testimonialShape01}

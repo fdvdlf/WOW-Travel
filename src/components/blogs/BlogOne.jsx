@@ -25,7 +25,7 @@ const blogData = [
     tags: ["Pasaporte", "Requisitos"],
     author: "WOW Travel",
     date: "10th Jul, 2025",
-    title: "Guía definitiva: Cómo sacar el pasaporte europeo para tu mascota",
+    title: "Cómo sacar el pasaporte europeo para tu mascota",
   },
   {
     id: 3,
@@ -46,18 +46,18 @@ export const BlogOne = () => {
           <div className="col-md-8">
             <div className="section__title mb-40">
               <span className="sub-title">
-                News & Blogs
+                Noticias y artículos
                 <strong className="shake">
                   <img src={petIcon} alt="" className="injectable" />
                 </strong>
               </span>
-              <h2 className="title">Our Recent Articles</h2>
+              <h2 className="title">Nuestros artículos recientes</h2>
             </div>
           </div>
           <div className="col-md-4">
             <div className="view__all-btn text-end mb-40">
               <Link href="/blog" className="btn btn-two">
-                See All Posts
+                Ver todos los artículos
                 <img src={rightArrow} alt="" className="injectable" />
               </Link>
             </div>
