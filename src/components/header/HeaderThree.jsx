@@ -20,7 +20,7 @@ export const HeaderThree = () => {
         <div
           id="sticky-header"
           className="tg-header__area tg-header__area-three"
-          style={{ backgroundColor: "#ffffff" }} // Fondo blanco
+          style={{ backgroundColor: "#ffffff", paddingTop: "20px", paddingBottom: "20px" }}
         >
           <div className="container">
             <div className="row">
@@ -28,7 +28,7 @@ export const HeaderThree = () => {
                 <div className="tgmenu__wrap">
                   <div className="row align-items-center">
                     <div className="col-xl-5">
-                      {/* Menú de navegación eliminado */}
+                      {/* Menú eliminado */}
                     </div>
 
                     <div className="col-xl-2 col-md-4">
@@ -41,7 +41,7 @@ export const HeaderThree = () => {
 
                     <div className="col-xl-5 col-md-8">
                       <div className="tgmenu__action tgmenu__action-two d-none d-md-block">
-                        <ul className="list-wrap">
+                        <ul className="list-wrap d-flex justify-content-end align-items-center gap-3">
                           <li className="header-search">
                             <a
                               href="#"
@@ -61,27 +61,29 @@ export const HeaderThree = () => {
                             </a>
                           </li>
                           <li className="header-btn login-btn">
-                            <Link href="/reservar" className="btn">
-                              <i className="flaticon-plane"></i>Reservar vuelo
+                            <Link href="/reservar" className="btn" style={{ backgroundColor: "#1d3c80", color: "#fff", borderRadius: "999px", padding: "10px 20px" }}>
+                              <i className="flaticon-plane" style={{ marginRight: "8px" }}></i>
+                              Reservar vuelo
                             </Link>
                           </li>
                         </ul>
                       </div>
                     </div>
                   </div>
+
                   <div className="mobile-nav-toggler">
                     <i className="flaticon-layout"></i>
                   </div>
                 </div>
 
-                {/* Mobile Menu */}
+                {/* Menú móvil */}
                 <HeaderMobileMenu />
               </div>
             </div>
           </div>
         </div>
 
-        {/* Header search */}
+        {/* Buscador */}
         <HeaderSearch active={showSearch} toggleSearch={toggleSearch} />
       </header>
     </>
