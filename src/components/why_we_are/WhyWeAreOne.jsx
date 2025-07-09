@@ -48,21 +48,20 @@ export const WhyWeAreOne = () => {
             <div className="why__we-are-content">
               <div className="section__title mb-10">
                 <span className="sub-title">
-                  Why We are The Best
+                  Por qué somos los mejores
                   <strong className="shake">
                     <img src={petIcon} alt="" className="injectable" />
                   </strong>
                 </span>
                 <h2 className="title">
-                  Pet emergencies <br />
-                  what you need to know.
+                  Viajes para mascotas: <br />
+                  lo que debes saber
                 </h2>
               </div>
               <p>
-                Duis aute irure dolor in reprehenderit in voluptate velit esse
-                We understand that your furry friend is a treasured member of
-                your family and deserves pets are the best care and attention
-                possible.
+                En WOW Travel nos encargamos de que cada detalle esté cubierto: trámites, vacunas,
+                certificados, reserva de vuelo y acompañamiento. Tu mascota merece viajar segura
+                y tú tener la tranquilidad de que todo está bajo control.
               </p>
 
               <div className="why__list-box">
@@ -73,11 +72,10 @@ export const WhyWeAreOne = () => {
                         <div className="icon">
                           <img src={checkIcon} alt="" className="injectable" />
                         </div>
-                        <h4 className="title">More Experience</h4>
+                        <h4 className="title">Experiencia comprobada</h4>
                       </div>
                       <p>
-                        Be confident in the treatment plan and your doctor’s
-                        abilities.
+                        Decenas de mascotas han viajado con nosotros a múltiples destinos del mundo.
                       </p>
                     </div>
                   </li>
@@ -87,11 +85,10 @@ export const WhyWeAreOne = () => {
                         <div className="icon">
                           <img src={checkIcon} alt="" className="injectable" />
                         </div>
-                        <h4 className="title">Affordable Pricing</h4>
+                        <h4 className="title">Precios transparentes</h4>
                       </div>
                       <p>
-                        Be confident in the treatment plan and your doctor’s
-                        abilities.
+                        Sin sorpresas ni cobros ocultos. Todo lo que tu mascota necesita está incluido.
                       </p>
                     </div>
                   </li>
@@ -101,11 +98,10 @@ export const WhyWeAreOne = () => {
                         <div className="icon">
                           <img src={checkIcon} alt="" className="injectable" />
                         </div>
-                        <h4 className="title">Modern Pet Training</h4>
+                        <h4 className="title">Asesoría personalizada</h4>
                       </div>
                       <p>
-                        Be confident in the treatment plan and your doctor’s
-                        abilities.
+                        Te guiamos según el destino, aerolínea, raza, edad y normativa del país.
                       </p>
                     </div>
                   </li>
@@ -115,11 +111,10 @@ export const WhyWeAreOne = () => {
                         <div className="icon">
                           <img src={checkIcon} alt="" className="injectable" />
                         </div>
-                        <h4 className="title">Maintain a daily routine</h4>
+                        <h4 className="title">Proceso sin estrés</h4>
                       </div>
                       <p>
-                        Be confident in the treatment plan and your doctor’s
-                        abilities.
+                        Nos encargamos de todo para que tú y tu mascota disfruten el viaje sin preocupaciones.
                       </p>
                     </div>
                   </li>
