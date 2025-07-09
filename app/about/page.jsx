@@ -1,8 +1,8 @@
-import { AboutFour } from "@/components/about/AboutFour";
-import { CounterTwo } from "@/components/counter/CounterTwo";
-import { TeamTwo } from "@/components/teams/TeamTwo";
-import { WhyWeAreTwo } from "@/components/why_we_are/WhyWeAreTwo";
-import { Layout } from "@/layouts/Layout";
+import { AboutFour } from "../../components/about/AboutFour";
+import { CounterTwo } from "../../components/counter/CounterTwo";
+import { TeamTwo } from "../../components/teams/TeamTwo";
+import { WhyWeAreTwo } from "../../components/why_we_are/WhyWeAreTwo";
+import { Layout } from "../../layouts/Layout";
 import React from "react";
 
 export default function About() {
