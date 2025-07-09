@@ -28,10 +28,10 @@ export const BannerOne = () => {
                 Confianza
                 <img src={titleImg01} alt="" />
                 total para el viaje de tu
-                <span className="icon">
+                mascota
+                 <span className="icon">
                   <img src={titleImg02} alt="" />
                 </span>
-                mascota
               </h2>
               <p data-aos="fade-up" data-aos-delay="400">
                 En WOW Travel cuidamos cada detalle: desde los trámites hasta su llegada segura.
