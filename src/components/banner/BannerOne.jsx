@@ -25,13 +25,13 @@ export const BannerOne = () => {
           <div className="col-xl-5 col-lg-6">
             <div className="banner__content">
               <h2 className="title" data-aos="fade-up" data-aos-delay="200">
-                Trusted Pet
+                Confianza total
                 <img src={titleImg01} alt="" />
-                care & Veterinary Center
+                para el viaje de tu
                 <span className="icon">
                   <img src={titleImg02} alt="" />
                 </span>
-                Point
+                mascota
               </h2>
               <p data-aos="fade-up" data-aos-delay="400">
                 En WOW Travel cuidamos cada detalle: desde los trámites hasta su llegada segura.
