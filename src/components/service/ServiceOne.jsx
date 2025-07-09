@@ -10,10 +10,10 @@ const servicesShapeImg03 = "/images/services_shape03.png";
 
 export const ServiceOne = () => {
   const list = [
-    { icon: "flaticon-vaccine", title: "Pet Vaccination" },
-    { icon: "flaticon-beauty-saloon", title: "Pet Grooming" },
-    { icon: "flaticon-vet", title: "Pet Veterinary" },
-    { icon: "flaticon-spay", title: "Pet Surgery" },
+    { icon: "flaticon-vaccine", title: "Trámite Sanitario" },
+    { icon: "flaticon-beauty-saloon", title: "Gestión Documental" },
+    { icon: "flaticon-vet", title: "Reserva de Vuelo" },
+    { icon: "flaticon-spay", title: "Asesoría Personal" },
   ];
 
   return (
@@ -24,20 +24,20 @@ export const ServiceOne = () => {
           <div className="col-xl-6 col-lg-7">
             <div className="section__title mb-40">
               <span className="sub-title">
-                Delivering world class home care
+                Expertos en viajes de mascotas
                 <strong className="shake">
                   <img src={petIcon} alt="" className="injectable" />
                 </strong>
               </span>
               <h2 className="title">
-                Providing Our Best Pet Care & Veterinary Services
+                Servicios integrales para viajes seguros y certificados
               </h2>
             </div>
           </div>
           <div className="col-xl-6 col-lg-5">
             <div className="view__all-btn text-end mb-40">
-              <Link href="/animal/a-123" className="btn border-btn">
-                See All Services
+              <Link href="/servicios" className="btn border-btn">
+                Ver todos los servicios
                 <img src={rightArrow} alt="" className="injectable" />
               </Link>
             </div>
