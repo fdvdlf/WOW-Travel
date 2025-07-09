@@ -6,7 +6,7 @@ import { useMobileMenu, useSearch } from "../../lib/hooks/useHeader";
 import { HeaderSearch } from "./HeaderSearch";
 import { HeaderMobileMenu } from "./HeaderMobileMenu";
 
-const wLogo = "/logo/w_logo.png";
+const wLogo = "/logo/logo.png";
 
 export const HeaderThree = () => {
   const { showSearch, toggleSearch } = useSearch();
