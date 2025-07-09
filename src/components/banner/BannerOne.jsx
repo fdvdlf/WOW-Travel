@@ -31,8 +31,7 @@ export const BannerOne = () => {
                 <span className="icon">
                   <img src={titleImg02} alt="" />
                 </span>
-                Point
-              </h2>
+                  </h2>
               <p data-aos="fade-up" data-aos-delay="400">
                 En WOW Travel cuidamos cada detalle: desde los trámites hasta su llegada segura.
                 Vuela con respaldo, amor y profesionalismo.
@@ -43,7 +42,7 @@ export const BannerOne = () => {
                 data-aos="fade-up"
                 data-aos-delay="600"
               >
-                Read More
+                Escríbenos
                 <img src={rightArrow} alt="" className="injectable" />
               </Link>
             </div>
@@ -66,7 +65,7 @@ export const BannerOne = () => {
                 </div>
                 <div className="content">
                   <h6 className="circle rotateme">
-                    PAZ - VIAJE - SEGURO - WOW
+                  VIAJE - SEGURO - CON - WOW - TRAVEL
                   </h6>
                 </div>
               </div>
