@@ -18,43 +18,43 @@ export const FooterOne = () => {
                   <div className="footer__widget">
                     <div className="footer__logo">
                       <Link href="/">
-                        <img src={wLogo} alt="logo" />
+                        <img src={wLogo} alt="WOW Travel" />
                       </Link>
                     </div>
                     <div className="footer__content">
                       <p>
-                        555 A, East Manster Street, Ready Halley Neon, Uk 4512
+                        Calle Las Palomas 580, Surquillo, Lima - Perú
                       </p>
-                      <a href="tel:0123456789">+00 123 45678 44</a>
-                      <a href="mailto:Supportinfo@gmail.com">
-                        Supportinfo@gmail.com
+                      <a href="tel:+51987966688">+51 1 987 966 688</a>
+                      <a href="mailto:contacto@wowtravelmascotas.com">
+                        contacto@wowtravelmascotas.com
                       </a>
                     </div>
                     <div className="footer__social">
-                      <h6 className="title">Follow Us On:</h6>
+                      <h6 className="title">Síguenos en:</h6>
                       <ul className="list-wrap">
                         <li>
-                          <a href="https://www.facebook.com/" target="_blank">
+                          <a href="https://www.facebook.com/" target="_blank" rel="noreferrer">
                             <i className="fab fa-facebook-f"></i>
                           </a>
                         </li>
                         <li>
-                          <a href="https://twitter.com" target="_blank">
+                          <a href="https://twitter.com" target="_blank" rel="noreferrer">
                             <i className="fab fa-twitter"></i>
                           </a>
                         </li>
                         <li>
-                          <a href="https://www.whatsapp.com/" target="_blank">
+                          <a href="https://www.whatsapp.com/" target="_blank" rel="noreferrer">
                             <i className="fab fa-whatsapp"></i>
                           </a>
                         </li>
                         <li>
-                          <a href="https://www.instagram.com/" target="_blank">
+                          <a href="https://www.instagram.com/" target="_blank" rel="noreferrer">
                             <i className="fab fa-instagram"></i>
                           </a>
                         </li>
                         <li>
-                          <a href="https://www.youtube.com/" target="_blank">
+                          <a href="https://www.youtube.com/" target="_blank" rel="noreferrer">
                             <i className="fab fa-youtube"></i>
                           </a>
                         </li>
@@ -62,64 +62,44 @@ export const FooterOne = () => {
                     </div>
                   </div>
                 </div>
+
                 <div className="col-xl-2 col-lg-4 col-md-6 col-sm-6">
                   <div className="footer__widget">
-                    <h4 className="footer__widget-title">Quick Links</h4>
+                    <h4 className="footer__widget-title">Enlaces útiles</h4>
                     <div className="footer__link">
                       <ul className="list-wrap">
-                        <li>
-                          <Link href="/animal">Animal Rescue</Link>
-                        </li>
-                        <li>
-                          <Link href="/contact">Humane Education</Link>
-                        </li>
-                        <li>
-                          <Link href="/animal/a-123">Animal Hospital</Link>
-                        </li>
-                        <li>
-                          <Link href="/animal">Street Animal Feeding</Link>
-                        </li>
-                        <li>
-                          <Link href="/">Homepage 01</Link>
-                        </li>
-                        <li>
-                          <Link href="/pricing">Pricing Table</Link>
-                        </li>
+                        <li><Link href="/">Inicio</Link></li>
+                        <li><Link href="/servicios">Servicios</Link></li>
+                        <li><Link href="/requisitos">Requisitos por país</Link></li>
+                        <li><Link href="/historias">Historias de viaje</Link></li>
+                        <li><Link href="/faq">Preguntas frecuentes</Link></li>
+                        <li><Link href="/contacto">Contáctanos</Link></li>
                       </ul>
                     </div>
                   </div>
                 </div>
+
                 <div className="col-xl-3 col-lg-4 col-md-6 col-sm-6">
                   <div className="footer__widget">
-                    <h4 className="footer__widget-title">Opening Hours</h4>
+                    <h4 className="footer__widget-title">Horario de atención</h4>
                     <div className="footer__link">
                       <ul className="list-wrap">
-                        <li>
-                          Monday <span>8.00 - 21.00</span>
-                        </li>
-                        <li>
-                          Tuesday <span>8.00 - 21.00</span>
-                        </li>
-                        <li>
-                          Thursday <span>8.00 - 21.00</span>
-                        </li>
-                        <li>
-                          Friday <span>8.00 - 21.00</span>
-                        </li>
-                        <li>
-                          Saturday <span>8.00 - 21.00</span>
-                        </li>
-                        <li>
-                          Sunday <span>8.00 - 21.00</span>
-                        </li>
+                        <li>Lunes <span>8.00 - 21.00</span></li>
+                        <li>Martes <span>8.00 - 21.00</span></li>
+                        <li>Miércoles <span>8.00 - 21.00</span></li>
+                        <li>Jueves <span>8.00 - 21.00</span></li>
+                        <li>Viernes <span>8.00 - 21.00</span></li>
+                        <li>Sábado <span>8.00 - 21.00</span></li>
+                        <li>Domingo <span>8.00 - 21.00</span></li>
                       </ul>
                     </div>
                   </div>
                 </div>
+
                 <div className="col-xl-4 col-lg-4 col-md-6">
                   <div className="footer__widget">
                     <div className="footer__newsletter">
-                      <h2 className="title">Subscribe to our newsletter</h2>
+                      <h2 className="title">Suscríbete a nuestro boletín</h2>
                       <div className="shape">
                         <img
                           src={newsletterShape}
@@ -131,56 +111,43 @@ export const FooterOne = () => {
                         <input
                           id="email"
                           type="email"
-                          placeholder="Type Your E-mail"
+                          placeholder="Ingresa tu correo electrónico"
                         />
                         <button className="btn" type="submit">
-                          Subscribe Now
+                          Suscribirme
                         </button>
                       </form>
+                      <p className="newsletter-description mt-10">
+                        Recibe consejos, promociones y alertas para viajar con tu mascota.
+                      </p>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
+
             <div className="footer__shape-wrap">
-              <img
-                src={footerShape01}
-                alt="footer shape"
-                data-aos="fade-up-right"
-                data-aos-delay="400"
-              />
-              <img
-                src={footerShape02}
-                alt="footer shape"
-                data-aos="fade-up-left"
-                data-aos-delay="400"
-              />
+              <img src={footerShape01} alt="footer shape" data-aos="fade-up-right" data-aos-delay="400" />
+              <img src={footerShape02} alt="footer shape" data-aos="fade-up-left" data-aos-delay="400" />
             </div>
           </div>
+
           <div className="footer__bottom">
             <div className="container">
               <div className="row align-items-center">
                 <div className="col-lg-7">
                   <div className="footer__bottom-menu">
                     <ul className="list-wrap">
-                      <li>
-                        <Link href="/contact">Support</Link>
-                      </li>
-                      <li>
-                        <Link href="/contact">Terms & Conditions</Link>
-                      </li>
-                      <li>
-                        <Link href="/contact">Privacy Policy</Link>
-                      </li>
-                      <li>
-                        <Link href="/contact">Career</Link>
-                      </li>
+                      <li><Link href="/contacto">Soporte</Link></li>
+                      <li><Link href="/terminos">Términos y condiciones</Link></li>
+                      <li><Link href="/privacidad">Política de privacidad</Link></li>
+                      <li><Link href="/equipo">Trabaja con nosotros</Link></li>
                     </ul>
                   </div>
                 </div>
                 <div className="col-lg-5">
                   <div className="copyright-text text-end">
-                    <p>Copyright © 2024. All Rights Reserved.</p>
+                    <p>© 2025 WOW Travel Mascotas. Todos los derechos reservados.</p>
                   </div>
                 </div>
               </div>
