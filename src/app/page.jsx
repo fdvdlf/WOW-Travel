@@ -14,7 +14,7 @@ import { Layout } from "@/layouts/Layout";
 
 export default function Home() {
   return (
-    <Layout header={1} footer={1}>
+    <Layout header={3} footer={1}>
       {/* banner one */}
       <BannerOne />
 
