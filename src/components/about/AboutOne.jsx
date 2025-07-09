@@ -51,8 +51,8 @@ export const AboutOne = () => {
                   </strong>
                 </span>
                 <h2 className="title">
-                  Nuestra pasión es que tu mascota <br />
-                  viaje segura y feliz
+                  Nuestra pasión es que tu <br />
+                  mascota viaje segura y feliz
                 </h2>
               </div>
               <div className="about__content-inner">
