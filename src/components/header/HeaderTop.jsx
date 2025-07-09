@@ -10,13 +10,13 @@ export const HeaderTop = () => {
           <div className="col-xl-6 col-lg-8">
             <ul className="tg-header__top-info left-side list-wrap">
               <li>
-                <i className="flaticon-placeholder"></i>59 Jakc Street Brooklyn,
-                New York
+                <i className="flaticon-placeholder"></i>
+                Calle Las Palomas 580, Surquillo, Lima – Perú
               </li>
               <li>
                 <i className="flaticon-mail"></i>
-                <a href="mailto:Petspostinfo@gmail.com">
-                  Petspostinfo@gmail.com
+                <a href="mailto:contacto@wowtravel.com">
+                  contacto@wowtravel.com
                 </a>
               </li>
             </ul>
@@ -24,8 +24,8 @@ export const HeaderTop = () => {
           <div className="col-xl-6 col-lg-4">
             <ul className="tg-header__top-right list-wrap">
               <li>
-                <i className="flaticon-three-o-clock-clock"></i>Opening Hour:
-                09.00 am- 11.00 pm
+                <i className="flaticon-three-o-clock-clock"></i>
+                Lunes a Domingo: 8:00 a.m. – 9:00 p.m.
               </li>
               <li className="tg-header__top-social">
                 <ul className="list-wrap">
@@ -40,7 +40,7 @@ export const HeaderTop = () => {
                     </a>
                   </li>
                   <li>
-                    <a href="https://www.whatsapp.com/" target="_blank">
+                    <a href="https://wa.me/51987966688" target="_blank">
                       <i className="fab fa-whatsapp"></i>
                     </a>
                   </li>

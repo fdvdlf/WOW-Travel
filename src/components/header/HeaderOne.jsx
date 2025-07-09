@@ -124,7 +124,7 @@ export const HeaderOne = () => {
 
                         <li className="header-btn">
                           <Link href="/contact" className="btn">
-                            <i className="flaticon-calendar-1"></i>Appointment
+                            <i className="flaticon-calendar-1"></i>Reservar viaje
                           </Link>
                         </li>
                       </ul>
