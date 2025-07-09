@@ -117,9 +117,6 @@ export const FooterOne = () => {
                           Suscribirme
                         </button>
                       </form>
-                      <p className="newsletter-description mt-10">
-                        Recibe consejos, promociones y alertas para viajar con tu mascota.
-                      </p>
                     </div>
                   </div>
                 </div>
