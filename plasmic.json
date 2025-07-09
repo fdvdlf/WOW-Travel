@@ -1,0 +1,84 @@
+{
+  "platform": "nextjs",
+  "code": {
+    "lang": "js",
+    "scheme": "blackbox",
+    "reactRuntime": "classic"
+  },
+  "style": {
+    "scheme": "css-modules",
+    "defaultStyleCssFilePath": "plasmic/plasmic__default_style.css"
+  },
+  "images": {
+    "scheme": "public-files",
+    "publicDir": "../public",
+    "publicUrlPrefix": "/"
+  },
+  "tokens": {
+    "scheme": "theo",
+    "tokensFilePath": "plasmic-tokens.theo.json"
+  },
+  "srcDir": "components",
+  "defaultPlasmicDir": "./plasmic",
+  "projects": [
+    {
+      "projectId": "69q1kpH3bCL8Ca5ae9SqcG",
+      "projectApiToken": "S6Arw93ELIgLZK2KTzha0mvB95cneydyoXEVD1jE3kWuitt7XVxFQRGhxaFQiEuTULWYPBK7Hjm6Rww2bpQ",
+      "projectName": "WOW Travel",
+      "version": "latest",
+      "cssFilePath": "plasmic/wow_travel/plasmic.module.css",
+      "components": [
+        {
+          "id": "gBP0_d3vKCEE",
+          "name": "Homepage",
+          "type": "managed",
+          "projectId": "69q1kpH3bCL8Ca5ae9SqcG",
+          "renderModuleFilePath": "plasmic/wow_travel/PlasmicHomepage.jsx",
+          "importSpec": {
+            "modulePath": "../pages/index.jsx"
+          },
+          "cssFilePath": "plasmic/wow_travel/PlasmicHomepage.module.css",
+          "scheme": "blackbox",
+          "componentType": "page",
+          "path": "/"
+        }
+      ],
+      "icons": [],
+      "images": [],
+      "indirect": false,
+      "globalContextsFilePath": "",
+      "splitsProviderFilePath": "",
+      "codeComponents": [
+        {
+          "id": "f_NDNBq6kIBj",
+          "name": "PlasmicHead",
+          "displayName": "hostless-plasmic-head",
+          "componentImportPath": "@plasmicapp/react-web"
+        },
+        {
+          "id": "tEXji-Ahvmyj",
+          "name": "Fetcher",
+          "displayName": "plasmic-data-source-fetcher",
+          "componentImportPath": "@plasmicapp/react-web/lib/data-sources"
+        }
+      ],
+      "customFunctions": []
+    }
+  ],
+  "globalVariants": {
+    "variantGroups": [
+      {
+        "id": "6Zb0yHT6R_3B",
+        "name": "Screen",
+        "projectId": "69q1kpH3bCL8Ca5ae9SqcG",
+        "contextFilePath": "plasmic/wow_travel/PlasmicGlobalVariant__Screen.jsx"
+      }
+    ]
+  },
+  "wrapPagesWithGlobalContexts": true,
+  "nextjsConfig": {
+    "pagesDir": "../pages"
+  },
+  "cliVersion": "0.1.340",
+  "$schema": "https://unpkg.com/@plasmicapp/cli@0.1.340/dist/plasmic.schema.json"
+}
