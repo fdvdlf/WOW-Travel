@@ -5,7 +5,6 @@ import Link from "next/link";
 import { useMobileMenu, useSearch } from "../../lib/hooks/useHeader";
 import { HeaderSearch } from "./HeaderSearch";
 import { HeaderMobileMenu } from "./HeaderMobileMenu";
-import { HeaderNav } from "./HeaderNav";
 
 const wLogo = "/logo/w_logo.png";
 
@@ -21,6 +20,7 @@ export const HeaderThree = () => {
         <div
           id="sticky-header"
           className="tg-header__area tg-header__area-three"
+          style={{ backgroundColor: "#ffffff" }} // Fondo blanco
         >
           <div className="container">
             <div className="row">
@@ -28,9 +28,7 @@ export const HeaderThree = () => {
                 <div className="tgmenu__wrap">
                   <div className="row align-items-center">
                     <div className="col-xl-5">
-                      <div className="tgmenu__navbar-wrap tgmenu__main-menu d-none d-xl-flex">
-                        <HeaderNav />
-                      </div>
+                      {/* Menú de navegación eliminado */}
                     </div>
 
                     <div className="col-xl-2 col-md-4">
@@ -40,6 +38,7 @@ export const HeaderThree = () => {
                         </Link>
                       </div>
                     </div>
+
                     <div className="col-xl-5 col-md-8">
                       <div className="tgmenu__action tgmenu__action-two d-none d-md-block">
                         <ul className="list-wrap">
@@ -62,8 +61,8 @@ export const HeaderThree = () => {
                             </a>
                           </li>
                           <li className="header-btn login-btn">
-                            <Link href="/contact" className="btn">
-                              <i className="flaticon-locked"></i>Login
+                            <Link href="/reservar" className="btn">
+                              <i className="flaticon-plane"></i>Reservar vuelo
                             </Link>
                           </li>
                         </ul>
@@ -75,14 +74,14 @@ export const HeaderThree = () => {
                   </div>
                 </div>
 
-                {/*  Mobile Menu   */}
+                {/* Mobile Menu */}
                 <HeaderMobileMenu />
               </div>
             </div>
           </div>
         </div>
 
-        {/*  header-search  */}
+        {/* Header search */}
         <HeaderSearch active={showSearch} toggleSearch={toggleSearch} />
       </header>
     </>
