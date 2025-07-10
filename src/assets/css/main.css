@@ -8589,22 +8589,15 @@ textarea {
 .counter__img .mask-img-wrap {
   -webkit-mask-image: url(/images/counter_img_shape.svg);
   mask-image: url(/images/counter_img_shape.svg);
-  -webkit-mask-size: cover;
-  mask-size: cover;
+  -webkit-mask-size: 100%;
+  mask-size: 100%;
   -webkit-mask-repeat: no-repeat;
   mask-repeat: no-repeat;
   -webkit-mask-position: center;
   mask-position: center;
-  width: 100%;
-  height: auto;
-  display: inline-block;
-  overflow: hidden;
-}
-
-.mask-img-wrap img {
-  width: 100%;
-  height: auto;
-  display: block;
+  height: 418px;
+  width: 422px;
+  margin: 0 auto;
 }
 @media (max-width: 1199.98px) {
   .counter__img .mask-img-wrap {
