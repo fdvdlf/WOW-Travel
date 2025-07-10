@@ -12881,12 +12881,15 @@ blockquote p {
   }
 }
 .mask-img-wrap {
-  -webkit-mask-image: url('/images/counter_img_shape.svg');
-  mask-image: url('/images/counter_img_shape.svg');
+  -webkit-mask-image: url('/images/testimonial_img_shape.svg');
+  mask-image: url('/images/testimonial_img_shape.svg');
   -webkit-mask-size: cover;
   mask-size: cover;
   -webkit-mask-repeat: no-repeat;
   mask-repeat: no-repeat;
   -webkit-mask-position: center;
   mask-position: center;
+  display: inline-block;
+  width: 100%;
+  height: auto;
 }
