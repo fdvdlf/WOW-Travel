@@ -12880,3 +12880,13 @@ blockquote p {
     stroke-dashoffset: 0;
   }
 }
+.mask-img-wrap {
+  -webkit-mask-image: url('/images/counter_img_shape.svg');
+  mask-image: url('/images/counter_img_shape.svg');
+  -webkit-mask-size: cover;
+  mask-size: cover;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  mask-position: center;
+}
