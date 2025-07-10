@@ -14,7 +14,6 @@ export const CounterOne = () => {
     <section className="counter__area">
       <div className="container">
         <div className="row align-items-center justify-content-center">
-          {/* Imagen con recorte funcional usando .mask-img-wrap */}
           <div className="col-lg-5 col-md-8 order-0 order-lg-2">
             <div className="counter__img">
               <div className="mask-img-wrap">
