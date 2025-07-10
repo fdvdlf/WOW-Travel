@@ -12880,3 +12880,7 @@ blockquote p {
     stroke-dashoffset: 0;
   }
 }
+.counter__img .mask-img-wrap {
+  -webkit-mask-image: none !important;
+  mask-image: none !important;
+}
