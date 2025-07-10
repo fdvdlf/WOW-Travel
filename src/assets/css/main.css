@@ -8587,8 +8587,8 @@ textarea {
   }
 }
 .counter__img .mask-img-wrap {
-  -webkit-mask-image: url(/images/counter_img_shape.svg);
-  mask-image: url(/images/counter_img_shape.svg);
+  -webkit-mask-image: url(/images/counter_mask_img.svg);
+  mask-image: url(/images/counter_mask_img.svg);
   -webkit-mask-size: 100%;
   mask-size: 100%;
   -webkit-mask-repeat: no-repeat;
@@ -12879,8 +12879,4 @@ blockquote p {
   100% {
     stroke-dashoffset: 0;
   }
-}
-.counter__img .mask-img-wrap {
-  -webkit-mask-image: none !important;
-  mask-image: none !important;
 }
