@@ -8587,8 +8587,8 @@ textarea {
   }
 }
 .counter__img .mask-img-wrap {
-  -webkit-mask-image: url(/images/mask-img.png);
-  mask-image: url(/images/mask-img.png);
+  -webkit-mask-image: url(/images/counter_img_shape.svg);
+  mask-image: url(/images/counter_img_shape.svg);
   -webkit-mask-size: 100%;
   mask-size: 100%;
   -webkit-mask-repeat: no-repeat;
