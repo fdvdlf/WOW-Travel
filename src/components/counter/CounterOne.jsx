@@ -32,22 +32,22 @@ export const CounterOne = () => {
             <div className="counter__content">
               <div className="section__title white-title mb-10">
                 <span className="sub-title">
-                  Tu confianza, nuestra prioridad
+                  Your Trust Our Prirority
                   <strong className="shake">
                     <img src={petIcon02} alt="" className="injectable" />
                   </strong>
                 </span>
                 <h2 className="title">
-                  Servicio profesional y viajes con calidad garantizada
+                  Professional vest care and guaranteed quality
                 </h2>
               </div>
               <p>
-                En WOW Travel organizamos el viaje de tu mascota de
-                forma completa, segura y sin errores. Nos ocupamos
-                de todo, desde los documentos hasta el vuelo.
+                Duis aute irure dolor in repreerit in voluptate velit esse We
+                understand that your furry friend treas ured member of your pets
+                are.
               </p>
               <Link href="/about" className="btn border-btn white-btn">
-                Saber más
+                Read More
                 <img src={rightArrow} alt="" className="injectable" />
               </Link>
             </div>
@@ -58,21 +58,21 @@ export const CounterOne = () => {
             <div className="counter__item-wrap">
               <div className="counter__item">
                 <h2 className="count">
-                  <Odometer end={3} suffix="+" />
+                  <Odometer end={15} suffix="+" />
                 </h2>
-                <p>Años de experiencia</p>
+                <p>27 years of experience</p>
               </div>
               <div className="counter__item">
                 <h2 className="count">
-                  <Odometer end={230} suffix="K" />
+                  <Odometer end={23} suffix="K" />
                 </h2>
-                <p>Mascotas trasladadas</p>
+                <p>Our Beloved Clients</p>
               </div>
               <div className="counter__item">
                 <h2 className="count">
-                  <Odometer end={100} suffix="%" />
+                  <Odometer end={15} suffix="K+" />
                 </h2>
-                <p>Clientes satisfechos</p>
+                <p>Real Customer Reviews</p>
               </div>
             </div>
           </div>
