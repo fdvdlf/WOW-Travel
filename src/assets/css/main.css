@@ -8630,9 +8630,13 @@ textarea {
   -o-object-fit: cover;
   object-fit: cover;
 }
-.counter__img-shape {
+.counter__img-shape img {
   position: absolute;
-  inset: 0px;
+  top: 0;
+  left: 0;
+  width: 422px;
+  height: 418px;
+  pointer-events: none;
 }
 @media (max-width: 767.98px) {
   .counter__img-shape {
