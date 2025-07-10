@@ -42,9 +42,11 @@ export const CounterOne = () => {
                 </h2>
               </div>
               <p>
-                En WOW Travel organizamos el viaje de tu mascota de forma completa, segura y sin errores. Nos ocupamos de todo: desde los documentos hasta el vuelo.
+                En WOW Travel organizamos el viaje de tu mascota de
+                forma completa, segura y sin errores. Nos ocupamos
+                de todo, desde los documentos hasta el vuelo.
               </p>
-              <Link href="/nosotros" className="btn border-btn white-btn">
+              <Link href="/about" className="btn border-btn white-btn">
                 Saber más
                 <img src={rightArrow} alt="" className="injectable" />
               </Link>
@@ -62,7 +64,7 @@ export const CounterOne = () => {
               </div>
               <div className="counter__item">
                 <h2 className="count">
-                  <Odometer end={230} suffix="+" />
+                  <Odometer end={230} suffix="K" />
                 </h2>
                 <p>Mascotas trasladadas</p>
               </div>
@@ -88,4 +90,3 @@ export const CounterOne = () => {
     </section>
   );
 };
-
