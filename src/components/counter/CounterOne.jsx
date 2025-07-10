@@ -14,6 +14,7 @@ export const CounterOne = () => {
     <section className="counter__area">
       <div className="container">
         <div className="row align-items-center justify-content-center">
+          {/* Imagen con recorte funcional usando .mask-img-wrap */}
           <div className="col-lg-5 col-md-8 order-0 order-lg-2">
             <div className="counter__img">
               <div className="mask-img-wrap">
@@ -28,51 +29,52 @@ export const CounterOne = () => {
             </div>
           </div>
 
+          {/* Texto principal */}
           <div className="col-lg-4 col-md-7">
             <div className="counter__content">
               <div className="section__title white-title mb-10">
                 <span className="sub-title">
-                  Your Trust Our Prirority
+                  Tu confianza, nuestra prioridad
                   <strong className="shake">
                     <img src={petIcon02} alt="" className="injectable" />
                   </strong>
                 </span>
                 <h2 className="title">
-                  Professional vest care and guaranteed quality
+                  Servicio profesional y viajes con calidad garantizada
                 </h2>
               </div>
               <p>
-                Duis aute irure dolor in repreerit in voluptate velit esse We
-                understand that your furry friend treas ured member of your pets
-                are.
+                En WOW Travel organizamos el viaje de tu mascota de
+                forma completa, segura y sin errores. Nos ocupamos
+                de todo, desde los documentos hasta el vuelo.
               </p>
               <Link href="/about" className="btn border-btn white-btn">
-                Read More
+                Saber más
                 <img src={rightArrow} alt="" className="injectable" />
               </Link>
             </div>
           </div>
 
-          {/* counters */}
+          {/* Contadores */}
           <div className="col-lg-3 col-md-5 order-3">
             <div className="counter__item-wrap">
               <div className="counter__item">
                 <h2 className="count">
-                  <Odometer end={15} suffix="+" />
+                  <Odometer end={3} suffix="+" />
                 </h2>
-                <p>27 years of experience</p>
+                <p>Años de experiencia</p>
               </div>
               <div className="counter__item">
                 <h2 className="count">
-                  <Odometer end={23} suffix="K" />
+                  <Odometer end={230} suffix="K" />
                 </h2>
-                <p>Our Beloved Clients</p>
+                <p>Mascotas trasladadas</p>
               </div>
               <div className="counter__item">
                 <h2 className="count">
-                  <Odometer end={15} suffix="K+" />
+                  <Odometer end={100} suffix="%" />
                 </h2>
-                <p>Real Customer Reviews</p>
+                <p>Clientes satisfechos</p>
               </div>
             </div>
           </div>
