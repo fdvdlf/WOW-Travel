@@ -1,7 +1,7 @@
-import { AboutOne, AboutTwo } from "@/components/about/AboutTwo";
-import { BannerOne, BannerTwo } from "@/components/banner/BannerTwo";
+import { AboutOne } from "@/components/about/AboutOne";
+import { BannerOne } from "@/components/banner/BannerOne";
 import { BlogOne } from "@/components/blogs/BlogOne";
-import { BrandTwo } from "@/components/brands/BrandTwo";
+import { BrandOne } from "@/components/brands/BrandOne";
 import { CounterOne } from "@/components/counter/CounterOne";
 import { InstagramOne } from "@/components/insta/InstagramOne";
 import { MarqueeOne } from "@/components/marquee/MarqueeOne";
@@ -15,11 +15,11 @@ import { Layout } from "@/layouts/Layout";
 export default function Home() {
   return (
     <Layout header={3} footer={1}>
-      {/* banner two */}
-      <BannerTwo />
+      {/* banner one */}
+      <BannerOne />
 
-      {/* about two */}
-      <AboutTwo />
+      {/* about one */}
+      <AboutOne />
 
       {/* marquee one */}
       <MarqueeOne />
@@ -34,7 +34,7 @@ export default function Home() {
       <CounterOne />
 
       {/* brand */}
-      <BrandTwo />
+      <BrandOne />
 
       {/* team */}
       <TeamOne />
