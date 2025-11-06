@@ -1,5 +1,5 @@
 import { AboutOne, AboutTwo } from "@/components/about/AboutTwo";
-import { BannerOne } from "@/components/banner/BannerOne";
+import { BannerOne, BannerTwo } from "@/components/banner/BannerTwo";
 import { BlogOne } from "@/components/blogs/BlogOne";
 import { BrandOne } from "@/components/brands/BrandOne";
 import { CounterOne } from "@/components/counter/CounterOne";
@@ -15,8 +15,8 @@ import { Layout } from "@/layouts/Layout";
 export default function Home() {
   return (
     <Layout header={3} footer={1}>
-      {/* banner one */}
-      <BannerOne />
+      {/* banner two */}
+      <BannerTwo />
 
       {/* about two */}
       <AboutTwo />
