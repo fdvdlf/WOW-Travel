@@ -1,4 +1,4 @@
-import { AboutOne } from "@/components/about/AboutOne";
+import { AboutOne, AboutTwo } from "@/components/about/AboutTwo";
 import { BannerOne } from "@/components/banner/BannerOne";
 import { BlogOne } from "@/components/blogs/BlogOne";
 import { BrandOne } from "@/components/brands/BrandOne";
@@ -18,8 +18,8 @@ export default function Home() {
       {/* banner one */}
       <BannerOne />
 
-      {/* about one */}
-      <AboutOne />
+      {/* about two */}
+      <AboutTwo />
 
       {/* marquee one */}
       <MarqueeOne />
