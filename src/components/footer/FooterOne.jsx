@@ -22,11 +22,9 @@ export const FooterOne = () => {
                       </Link>
                     </div>
                     <div className="footer__content">
-                      <p>
-                        Calle Las Palomas 580, Surquillo, Lima - Perú
-                      </p>
-                      <a href="tel:+51987966688">+51 1 987 966 688</a>
-                      <a href="mailto:contacto@wowtravelmascotas.com">
+                      <p>RUC: 20614994259</p>
+                      <a href="tel:+51941482291">+51 941 482 291</a>
+                      <a href="mailto:contacto@wowtravel.pe">
                         contacto@wowtravelmascotas.com
                       </a>
                     </div>
@@ -79,22 +77,23 @@ export const FooterOne = () => {
                   </div>
                 </div>
 
+                {/* ======= BLOQUE MODIFICADO ======= */}
                 <div className="col-xl-3 col-lg-4 col-md-6 col-sm-6">
                   <div className="footer__widget">
-                    <h4 className="footer__widget-title">Horario de atención</h4>
+                    <h4 className="footer__widget-title">Atención 24/7</h4>
                     <div className="footer__link">
-                      <ul className="list-wrap">
-                        <li>Lunes <span>8.00 - 21.00</span></li>
-                        <li>Martes <span>8.00 - 21.00</span></li>
-                        <li>Miércoles <span>8.00 - 21.00</span></li>
-                        <li>Jueves <span>8.00 - 21.00</span></li>
-                        <li>Viernes <span>8.00 - 21.00</span></li>
-                        <li>Sábado <span>8.00 - 21.00</span></li>
-                        <li>Domingo <span>8.00 - 21.00</span></li>
-                      </ul>
+                      <div className="list-wrap">
+                        <p className="mb-2">
+                          Estamos disponibles para ti <strong>las 24 horas, los 7 días</strong>.
+                        </p>
+                        <p className="mb-0">
+                          <strong>Horario de citas:</strong> 09:00 – 19:00 (hora de Lima).
+                        </p>
+                      </div>
                     </div>
                   </div>
                 </div>
+                {/* ====== FIN BLOQUE MODIFICADO ====== */}
 
                 <div className="col-xl-4 col-lg-4 col-md-6">
                   <div className="footer__widget">
