@@ -25,7 +25,7 @@ export const FooterOne = () => {
                       <p>RUC: 20614994259</p>
                       <a href="tel:+51941482291">+51 941 482 291</a>
                       <a href="mailto:contacto@wowtravel.pe">
-                        contacto@wowtravelmascotas.com
+                        contacto@wowtravel.pe
                       </a>
                     </div>
                     <div className="footer__social">
@@ -64,7 +64,8 @@ export const FooterOne = () => {
                     <div className="footer__link">
                       <ul className="list-wrap">
                         <li>Estamos disponibles para ti las 24 horas, los 7 días.</li>
-                        <li><strong>Horario de citas:</strong> 09:00 – 19:00 (hora de Lima).</li>
+                        <li><strong>Horario de citas:</strong> 
+                        09:00 – 19:00 (hora de Lima).</li>
                       </ul>
                     </div>
                   </div>
