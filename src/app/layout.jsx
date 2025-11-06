@@ -25,7 +25,7 @@ const plusJakartaSans = Plus_Jakarta_Sans({
 });
 
 export const metadata = {
-  title: "WOW Travel Perú – Transporte internacional de mascotas",
+  title: "WOW Travel Perú – Viajes y Traslado Internacional de Mascotas",
 };
 
 export default function RootLayout({ children }) {
