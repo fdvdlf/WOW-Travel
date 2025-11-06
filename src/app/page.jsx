@@ -1,7 +1,7 @@
 import { AboutOne, AboutTwo } from "@/components/about/AboutTwo";
 import { BannerOne, BannerTwo } from "@/components/banner/BannerTwo";
 import { BlogOne } from "@/components/blogs/BlogOne";
-import { BrandTwo } from "@/components/brands/brandTworandTwo";
+import { BrandTwo } from "@/components/brands/BrandTwo";
 import { CounterOne } from "@/components/counter/CounterOne";
 import { InstagramOne } from "@/components/insta/InstagramOne";
 import { MarqueeOne } from "@/components/marquee/MarqueeOne";
