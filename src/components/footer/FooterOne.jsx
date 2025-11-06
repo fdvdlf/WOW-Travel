@@ -31,31 +31,11 @@ export const FooterOne = () => {
                     <div className="footer__social">
                       <h6 className="title">Síguenos en:</h6>
                       <ul className="list-wrap">
-                        <li>
-                          <a href="https://www.facebook.com/" target="_blank" rel="noreferrer">
-                            <i className="fab fa-facebook-f"></i>
-                          </a>
-                        </li>
-                        <li>
-                          <a href="https://twitter.com" target="_blank" rel="noreferrer">
-                            <i className="fab fa-twitter"></i>
-                          </a>
-                        </li>
-                        <li>
-                          <a href="https://www.whatsapp.com/" target="_blank" rel="noreferrer">
-                            <i className="fab fa-whatsapp"></i>
-                          </a>
-                        </li>
-                        <li>
-                          <a href="https://www.instagram.com/" target="_blank" rel="noreferrer">
-                            <i className="fab fa-instagram"></i>
-                          </a>
-                        </li>
-                        <li>
-                          <a href="https://www.youtube.com/" target="_blank" rel="noreferrer">
-                            <i className="fab fa-youtube"></i>
-                          </a>
-                        </li>
+                        <li><a href="https://www.facebook.com/" target="_blank" rel="noreferrer"><i className="fab fa-facebook-f"></i></a></li>
+                        <li><a href="https://twitter.com" target="_blank" rel="noreferrer"><i className="fab fa-twitter"></i></a></li>
+                        <li><a href="https://www.whatsapp.com/" target="_blank" rel="noreferrer"><i className="fab fa-whatsapp"></i></a></li>
+                        <li><a href="https://www.instagram.com/" target="_blank" rel="noreferrer"><i className="fab fa-instagram"></i></a></li>
+                        <li><a href="https://www.youtube.com/" target="_blank" rel="noreferrer"><i className="fab fa-youtube"></i></a></li>
                       </ul>
                     </div>
                   </div>
@@ -82,14 +62,10 @@ export const FooterOne = () => {
                   <div className="footer__widget">
                     <h4 className="footer__widget-title">Atención 24/7</h4>
                     <div className="footer__link">
-                      <div className="list-wrap">
-                        <p className="mb-2">
-                          Estamos disponibles para ti <strong>las 24 horas, los 7 días</strong>.
-                        </p>
-                        <p className="mb-0">
-                          <strong>Horario de citas:</strong> 09:00 – 19:00 (hora de Lima).
-                        </p>
-                      </div>
+                      <ul className="list-wrap">
+                        <li>Estamos disponibles para ti las 24 horas, los 7 días.</li>
+                        <li><strong>Horario de citas:</strong> 09:00 – 19:00 (hora de Lima).</li>
+                      </ul>
                     </div>
                   </div>
                 </div>
@@ -100,21 +76,11 @@ export const FooterOne = () => {
                     <div className="footer__newsletter">
                       <h2 className="title">Suscríbete a nuestro boletín</h2>
                       <div className="shape">
-                        <img
-                          src={newsletterShape}
-                          alt="newsletter shape"
-                          className="injectable"
-                        />
+                        <img src={newsletterShape} alt="newsletter shape" className="injectable" />
                       </div>
                       <form action="#">
-                        <input
-                          id="email"
-                          type="email"
-                          placeholder="Ingresa tu correo electrónico"
-                        />
-                        <button className="btn" type="submit">
-                          Suscribirme
-                        </button>
+                        <input id="email" type="email" placeholder="Ingresa tu correo electrónico" />
+                        <button className="btn" type="submit">Suscribirme</button>
                       </form>
                     </div>
                   </div>
@@ -143,7 +109,7 @@ export const FooterOne = () => {
                 </div>
                 <div className="col-lg-5">
                   <div className="copyright-text text-end">
-                    <p>© 2025 WOW Travel Mascotas. Todos los derechos reservados.</p>
+                    <p>© 2025 WOW Travel - Todos los derechos reservados.</p>
                   </div>
                 </div>
               </div>
