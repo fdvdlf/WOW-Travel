@@ -62,13 +62,13 @@ export const AboutOne = () => {
                   </div>
                   <div className="experience__box-content">
                     <h4 className="title">
-                      3 <span>Años</span>
+                      8 <span>Años</span>
                     </h4>
                     <p>de experiencia</p>
                   </div>
                 </div>
                 <p>
-                  En WOW Travel nos encargamos de todo el proceso: trámites, certificados, logística y cuidados. 
+                  Nosotros nos encargamos de todo el proceso: trámites, certificados, logística y cuidados. 
                   Acompañamos a cada mascota con amor y responsabilidad para que viaje tranquila y protegida.
                 </p>
               </div>
@@ -106,7 +106,7 @@ export const AboutOne = () => {
                       <i className="fas fa-star"></i>
                       <i className="fas fa-star"></i>
                     </div>
-                    <span>4.9 (1,243 opiniones)</span>
+                    <span>4.9 (1,244 opiniones)</span>
                   </div>
                 </div>
               </div>
