@@ -12891,7 +12891,7 @@ blockquote p {
 .whatsapp-float {
   position: fixed;
   right: 24px;
-  bottom: 140px;
+  bottom: 110px;
   z-index: 999;
   display: inline-flex;
   align-items: center;
