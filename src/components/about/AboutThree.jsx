@@ -1,5 +1,4 @@
 import React from "react";
-import Link from "next/link";
 import { VideoPlayer } from "../video/VideoPlayer";
 
 const h3AboutImg01 = "/images/h3_about_img01.png";
@@ -10,7 +9,6 @@ const author03 = "/images/author_03.png";
 const author04 = "/images/author_04.png";
 const petIcon01 = "/icon/pet_icon01.svg";
 const petIcon02 = "/icon/pet_icon02.svg";
-const rightArrow = "/icon/right_arrow.svg";
 const h3AboutShape = "/images/h3_about_shape.png";
 
 export const AboutThree = () => {
@@ -92,15 +90,6 @@ export const AboutThree = () => {
                 </span>
                 <h2 className="title">Adopt Pets And Save Their Lives</h2>
               </div>
-              <p>
-                We will work with you to develop individualised care plans
-                including management chronic diseases. We areommit ted to being
-                the network providing healthcare centered care that inspires.
-              </p>
-              <Link href="/about" className="btn">
-                Contact With Us
-                <img src={rightArrow} alt="" className="injectable" />
-              </Link>
               <div className="shape">
                 <img src={h3AboutShape} alt="shape" className="ribbonRotate" />
               </div>

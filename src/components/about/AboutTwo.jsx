@@ -1,5 +1,4 @@
 import React from "react";
-import Link from "next/link";
 
 const h2AboutImg01 = "/images/h2_about_img01.jpg";
 const h2AboutImg02 = "/images/h2_about_img02.jpg";
@@ -10,7 +9,6 @@ const author03 = "/images/author_03.png";
 const author04 = "/images/author_04.png";
 const petIcon01 = "/icon/pet_icon01.svg";
 const petIcon02 = "/icon/pet_icon02.svg";
-const rightArrow = "/icon/right_arrow.svg";
 const h2AboutShape01 = "/images/h2_about_shape01.png";
 const h2AboutShape02 = "/images/h2_about_shape02.png";
 
@@ -110,16 +108,6 @@ export const AboutTwo = () => {
                   Really Happy
                 </h2>
               </div>
-              <p>
-                {`We will work with you to develop individualised care plans,
-                including management chronic diseases. We are committed to being
-                the region's premier healthcare network providing patient
-                centered care that inspires.`}
-              </p>
-              <Link href="/about" className="btn">
-                Read More
-                <img src={rightArrow} alt="" className="injectable" />
-              </Link>
               <div className="shape">
                 <img
                   src={h2AboutShape02}
