@@ -12891,26 +12891,36 @@ blockquote p {
 .whatsapp-float {
   position: fixed;
   right: 24px;
-  bottom: 88px;
+  bottom: 140px;
   z-index: 999;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 56px;
+  gap: 10px;
+  min-width: 56px;
   height: 56px;
+  padding: 0 18px;
   color: #fff;
   background: #25d366;
-  border-radius: 50%;
+  border-radius: 32px;
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.18);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  font-weight: 600;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
 }
 
 .whatsapp-float:hover {
   color: #fff;
+  background: #1ebe5b;
   transform: translateY(-2px);
   box-shadow: 0 12px 28px rgba(0, 0, 0, 0.22);
 }
 
 .whatsapp-float .fa-whatsapp {
   font-size: 26px;
+}
+
+.whatsapp-label {
+  font-size: 15px;
+  line-height: 1;
+  white-space: nowrap;
 }
