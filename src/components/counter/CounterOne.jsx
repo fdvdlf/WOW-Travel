@@ -56,7 +56,7 @@ export const CounterOne = () => {
             <div className="counter__item-wrap">
               <div className="counter__item">
                 <h2 className="count">
-                  <Odometer end={7} suffix="+" />
+                  <Odometer end={8} suffix="+" />
                 </h2>
                 <p>Años de experiencia</p>
               </div>

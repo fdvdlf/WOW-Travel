@@ -59,9 +59,8 @@ export const WhyWeAreOne = () => {
                 </h2>
               </div>
               <p>
-                En WOW Travel nos encargamos de que cada detalle esté cubierto: trámites, vacunas,
-                certificados, reserva de vuelo y acompañamiento. Tu mascota merece viajar segura
-                y tú tener la tranquilidad de que todo está bajo control.
+                Nosotros nos encargamos de que cada detalle esté cubierto, desde los trámites
+                hasta lo más narrativo.
               </p>
 
               <div className="why__list-box">
@@ -74,9 +73,6 @@ export const WhyWeAreOne = () => {
                         </div>
                         <h4 className="title">Experiencia comprobada</h4>
                       </div>
-                      <p>
-                        Decenas de mascotas han viajado con nosotros a múltiples destinos del mundo.
-                      </p>
                     </div>
                   </li>
                   <li>
@@ -87,9 +83,6 @@ export const WhyWeAreOne = () => {
                         </div>
                         <h4 className="title">Precios transparentes</h4>
                       </div>
-                      <p>
-                        Sin sorpresas ni cobros ocultos. Todo lo que tu mascota necesita está incluido.
-                      </p>
                     </div>
                   </li>
                   <li>
@@ -100,9 +93,6 @@ export const WhyWeAreOne = () => {
                         </div>
                         <h4 className="title">Asesoría personalizada</h4>
                       </div>
-                      <p>
-                        Te guiamos según el destino, aerolínea, raza, edad y normativa del país.
-                      </p>
                     </div>
                   </li>
                   <li>
@@ -113,9 +103,6 @@ export const WhyWeAreOne = () => {
                         </div>
                         <h4 className="title">Proceso sin estrés</h4>
                       </div>
-                      <p>
-                        Nos encargamos de todo para que tú y tu mascota disfruten el viaje sin preocupaciones.
-                      </p>
                     </div>
                   </li>
                 </ul>
