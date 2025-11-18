@@ -114,6 +114,42 @@ Incluye todos los datos requeridos antes de programar un viaje:
 - **Almacenamiento**: base relacional para entidades principales; almacenamiento de archivos en bucket con antivirus.
 - **Observabilidad**: logs centralizados, métricas (SLA), alertas y trazabilidad de eventos.
 
+## Plan de ejecución (qué hacer ahora)
+
+### Objetivo de las próximas 2–3 semanas (MVP interno)
+- **Captura y gestión de leads/expedientes** con los 21 campos obligatorios y subida de adjuntos.
+- **Checklists documentales** por destino, con bloqueos para pasar a Operación planificada.
+- **Control de pagos** con hitos (reserva, saldo) y desbloqueo de operaciones solo si corresponde.
+- **Tablero diario de operaciones** con vuelos del día, pickups y entregas, y estado de jaulas.
+
+### Fases y responsables
+1) **Semana 1 — Setup y modelos básicos** (Equipo Tech + Admin)
+   - Definir catálogo inicial: países, aerolíneas, tipos de documento, requisitos por país.
+   - Modelar entidades principales (Cliente, Mascota, Expediente, Documento, Pago, Operación) y permisos por rol.
+   - Habilitar autenticación y control de acceso; configurar storage seguro para archivos.
+
+2) **Semana 2 — Workflows críticos** (Tech + Documentación + Finanzas)
+   - Implementar formularios guiados para lead/expediente con validaciones de formato y vigencias.
+   - Configurar checklist documental por país/destino y bloqueos de avance si falta: microchip, vacunas vigentes, pagos mínimos.
+   - Registrar pagos y facturas; automatizar alertas de SLA (cotización próxima a vencer, vacunas próximas a vencer).
+
+3) **Semana 3 — Operación y comunicación** (Tech + Operaciones + Atención)
+   - Crear tablero operativo diario con vuelos, transportistas y jaulas asignadas.
+   - Registrar eventos en tránsito (check-in, salida, escala, llegada) y generar notificaciones al cliente.
+   - Habilitar encuesta post-viaje y reporte de incidencias.
+
+### Checklist de arranque (día 0)
+- Nombrar **product owner** y un **squad** con referentes de Ventas, Documentación, Operaciones y Finanzas.
+- Definir entorno de trabajo (repo, rama principal, ambientes dev/stage/prod) y credenciales iniciales.
+- Cargar 3–5 expedientes reales o simulados para probar el flujo end-to-end.
+- Acordar **SLA** internos por etapa (respuesta a leads, validación documental, confirmación de reservas).
+
+### Métricas de éxito del MVP
+- % de expedientes con checklist completo antes de T-3 días del vuelo.
+- Tiempo medio desde lead captado hasta cotización enviada y aceptada.
+- Cero vuelos bloqueados por falta de pago o documento al momento de emitir PNR.
+- NPS/CSAT post-viaje y número de incidencias críticas.
+
 ## Experiencia de usuario
 - Formularios guiados por país/destino con checklists dinámicos.
 - Línea de tiempo del expediente con responsables y tiempos estimados.
