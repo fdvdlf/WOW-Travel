@@ -6,10 +6,6 @@ const videoShape = "/images/about_video_shape.svg";
 const petIcon = "/icon/pet_icon02.svg";
 const experienceShape = "/images/experience_shape.svg";
 const authorSign = "/images/author_sign.png";
-const author1 = "/images/author_01.png";
-const author2 = "/images/author_02.png";
-const author3 = "/images/author_03.png";
-const author4 = "/images/author_04.png";
 const aboutShape1 = "/images/about_shape01.png";
 const aboutShape2 = "/images/about_shape02.png";
 const aboutShape3 = "/images/about_shape03.png";
@@ -81,34 +77,6 @@ export const AboutOne = () => {
               <div className="about__content-bottom">
                 <div className="about__content-sign">
                   <img src={authorSign} alt="" />
-                </div>
-                <div className="customer__review">
-                  <div className="customer__review-img">
-                    <ul className="list-wrap">
-                      <li>
-                        <img src={author1} alt="" />
-                      </li>
-                      <li>
-                        <img src={author2} alt="" />
-                      </li>
-                      <li>
-                        <img src={author3} alt="" />
-                      </li>
-                      <li>
-                        <img src={author4} alt="" />
-                      </li>
-                    </ul>
-                  </div>
-                  <div className="customer__review-content">
-                    <div className="rating">
-                      <i className="fas fa-star"></i>
-                      <i className="fas fa-star"></i>
-                      <i className="fas fa-star"></i>
-                      <i className="fas fa-star"></i>
-                      <i className="fas fa-star"></i>
-                    </div>
-                    <span>4.9 (1,244 opiniones)</span>
-                  </div>
                 </div>
               </div>
               <div className="shape">
