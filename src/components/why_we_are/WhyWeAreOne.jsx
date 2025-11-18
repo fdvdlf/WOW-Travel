@@ -59,8 +59,8 @@ export const WhyWeAreOne = () => {
                 </h2>
               </div>
               <p>
-                Nosotros nos encargamos de que cada detalle esté cubierto, desde los trámites
-                hasta lo más narrativo.
+                Viajar con una mascota implica trámites, tiempos y requisitos específicos. Nuestra misión es hacer
+                este proceso más claro, seguro y acompañado.
               </p>
 
               <div className="why__list-box">
@@ -81,7 +81,7 @@ export const WhyWeAreOne = () => {
                         <div className="icon">
                           <img src={checkIcon} alt="" className="injectable" />
                         </div>
-                        <h4 className="title">Precios transparentes</h4>
+                        <h4 className="title">Asesoría personalizada</h4>
                       </div>
                     </div>
                   </li>
@@ -91,7 +91,7 @@ export const WhyWeAreOne = () => {
                         <div className="icon">
                           <img src={checkIcon} alt="" className="injectable" />
                         </div>
-                        <h4 className="title">Asesoría personalizada</h4>
+                        <h4 className="title">Precios transparentes</h4>
                       </div>
                     </div>
                   </li>

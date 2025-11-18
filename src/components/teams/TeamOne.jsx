@@ -22,12 +22,12 @@ export const TeamOne = () => {
     },
     {
       src: teamImg03,
-      name: "Gabriel Arrea",
+      name: "Gabriel Larrea",
       designation: "Director de Operaciones",
     },
     {
       src: teamImg04,
-      name: "Víctor Quispe",
+      name: "Dr. Víctor Quispe",
       designation: "Médico Veterinario",
     },
   ];

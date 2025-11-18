@@ -68,14 +68,15 @@ export const AboutOne = () => {
                   </div>
                 </div>
                 <p>
-                  Nosotros nos encargamos de todo el proceso: trámites, certificados, logística y cuidados. 
-                  Acompañamos a cada mascota con amor y responsabilidad para que viaje tranquila y protegida.
+                  En WOW Travel asesoramos a las familias en cada parte del proceso: requisitos sanitarios,
+                  certificados, preparación del viaje y orientación personalizada. Acompañamos cada caso con
+                  responsabilidad, empatía y compromiso, asegurándonos de que tu mascota viaje protegida y sin
+                  estrés.
                 </p>
               </div>
               <p>
-                Contamos con un equipo especializado que te guía en cada paso. 
-                Desde el microchip hasta el embarque, todo está pensado para garantizar una experiencia sin estrés 
-                para tu mascota y total tranquilidad para ti.
+                Nuestro médico veterinario, Dr. Víctor Quispe, supervisa los protocolos de bienestar animal y brinda
+                orientación especializada en cada viaje.
               </p>
               <div className="about__content-bottom">
                 <div className="about__content-sign">
