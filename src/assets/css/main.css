@@ -13115,7 +13115,6 @@ blockquote p {
 }
 
 @media (max-width: 767px) {
-  /* Language cloud collage styles (conflict-free) */
   .lang-cloud__area {
     padding: 46px 0;
   }
