@@ -1487,6 +1487,7 @@ textarea {
 .tg-header__area-three {
   background: #ffffff;
   padding: 18px 0;
+  animation: headerSoftDrop 0.7s ease both;
 }
 .header-float {
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
@@ -1495,9 +1496,17 @@ textarea {
   overflow: hidden;
 }
 .tg-header__area-three .tgmenu__wrap-centered {
+  display: flex;
+  align-items: center;
   justify-content: center;
   gap: 24px;
   padding-inline: 6px;
+  position: relative;
+}
+.tg-header__area-three .tgmenu__wrap-centered .logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 .tg-header__area-three .tgmenu__wrap-centered .logo img {
   transition: transform 0.3s ease;
@@ -1510,8 +1519,9 @@ textarea {
     padding: 14px 0;
   }
   .tg-header__area-three .tgmenu__wrap-centered {
-    justify-content: space-between;
-    gap: 12px;
+    justify-content: center;
+    gap: 18px;
+    padding-right: 56px;
   }
 }
 @media (max-width: 767.98px) {
@@ -1531,9 +1541,6 @@ textarea {
   }
   .tg-header__area-three .tgmenu__wrap-centered {
     padding-inline: 12px;
-  }
-  .tg-header__area-three .tgmenu__wrap-centered .mobile-nav-toggler {
-    margin-left: auto;
   }
 }
 .tg-header__area-three .tgmenu__navbar-wrap > ul {
@@ -1558,6 +1565,10 @@ textarea {
   .tg-header__area-three .mobile-nav-toggler {
     display: block !important;
     color: #bfcdeb !important;
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
   }
 }
 .tg-header__area-three .tgmenu__action {
