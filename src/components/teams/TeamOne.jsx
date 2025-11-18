@@ -12,8 +12,8 @@ export const TeamOne = () => {
   const teamMembers = [
     {
       src: teamImg01,
-      name: "Felipe Pandolfi",
-      designation: "General",
+      name: "Felipe Padolfi",
+      designation: "Gerente General",
     },
     {
       src: teamImg02,
@@ -22,13 +22,13 @@ export const TeamOne = () => {
     },
     {
       src: teamImg03,
-      name: "Gabriela Rea",
+      name: "Gabriel Arrea",
       designation: "Director de Operaciones",
     },
     {
       src: teamImg04,
-      name: "Fernando del Valle",
-      designation: "Director de Marketing",
+      name: "Víctor Quispe",
+      designation: "Médico Veterinario",
     },
   ];
 
