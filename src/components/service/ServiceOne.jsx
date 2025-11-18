@@ -11,26 +11,18 @@ export const ServiceOne = () => {
     {
       icon: "flaticon-vaccine",
       title: "Trámite sanitario",
-      description:
-        "Te guiamos en todas las atenciones sanitarias que tu mascota necesita: microchip, certificados, vacunas y requisitos oficiales según el país destino.",
     },
     {
       icon: "flaticon-beauty-saloon",
       title: "Gestión documental",
-      description:
-        "Organizamos, revisamos y verificamos toda la documentación requerida, para que cumplas con cada normativa sin complicaciones.",
     },
     {
       icon: "flaticon-vet",
       title: "Preparación de viaje",
-      description:
-        "Te acompañamos en la preparación completa del viaje: requisitos previos, tiempos, recomendaciones, transporte al aeropuerto y checklist final para un proceso fluido.",
     },
     {
       icon: "flaticon-spay",
       title: "Asesoría personalizada",
-      description:
-        "Recibes guía personalizada durante todo el proceso. Estamos contigo en cada paso, resolviendo dudas y asegurando que todo salga bien.",
     },
   ];
 
@@ -64,7 +56,6 @@ export const ServiceOne = () => {
               key={el.icon}
               icon={el.icon}
               title={el.title}
-              description={el.description}
             />
           ))}
         </div>

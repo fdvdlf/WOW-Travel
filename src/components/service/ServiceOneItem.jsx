@@ -4,7 +4,7 @@ const servicesShape01 = "/images/services_shape01.svg";
 const servicesShape02 = "/images/services_shape02.svg";
 const servicesIconShape = "/images/services_icon_shape.svg";
 
-export const ServiceOneItem = ({ icon, title, description }) => {
+export const ServiceOneItem = ({ icon, title }) => {
   return (
     <div className="col-xl-3 col-lg-4 col-md-6 col-sm-8">
       <div className="services__item">
@@ -26,7 +26,6 @@ export const ServiceOneItem = ({ icon, title, description }) => {
           <h4 className="title">
             <Link href="/animal/a-123">{title}</Link>
           </h4>
-          <p>{description}</p>
         </div>
       </div>
     </div>
