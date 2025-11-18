@@ -3,7 +3,7 @@ import Link from "next/link";
 
 const blogImgShape = "/blog/blog_img_shape.svg";
 
-export const BlogOneItem = ({ image, tags, author, date, title }) => {
+export const BlogOneItem = ({ image, tags, title }) => {
   return (
     <div className="col-lg-4 col-md-6 col-sm-8">
       <div className="blog__post-item shine-animate-item">
@@ -25,18 +25,6 @@ export const BlogOneItem = ({ image, tags, author, date, title }) => {
           </div>
         </div>
         <div className="blog__post-content">
-          <div className="blog__post-meta">
-            <ul className="list-wrap">
-              <li>
-                <i className="flaticon-user"></i>by
-                <Link href="/blog/b-123">{author}</Link>
-              </li>
-              <li>
-                <i className="flaticon-calendar"></i>
-                {date}
-              </li>
-            </ul>
-          </div>
           <h2 className="title">
             <Link href="/blog/b-123">{title}</Link>
           </h2>

@@ -38,10 +38,12 @@ export const BannerOne = () => {
                 Vuela con respaldo, amor y profesionalismo.
               </p>
               <Link
-                href="/about"
+                href="https://wa.me/51941482291"
                 className="btn"
                 data-aos="fade-up"
                 data-aos-delay="600"
+                target="_blank"
+                rel="noreferrer"
               >
                 Conversemos
                 <img src={rightArrow} alt="" className="injectable" />

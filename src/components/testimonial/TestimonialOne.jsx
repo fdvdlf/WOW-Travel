@@ -75,11 +75,9 @@ export const TestimonialOne = () => {
                     <div className="testimonial__content">
                       <h2 className="title">Un viaje impecable a Madrid</h2>
                       <p>
-                        “Cuando decidí mudarme a Madrid con mi gato, no sabía ni
-                        por dónde empezar. WOW Travel se encargó del microchip,
-                        certificados, trámites y reserva de vuelo. Me guiaron con
-                        cariño y profesionalismo: ¡mi gato llegó feliz y yo
-                        tranquila!”
+                        “Cuando decidí mudarme a Madrid con mi gato, no sabía por dónde empezar. WOW Travel se encargó del
+                        microchip, certificados, trámites y asesoría completa. Me acompañaron con cariño y profesionalismo. ¡Mi
+                        gato llegó feliz y yo totalmente tranquila!”
                       </p>
                       <div className="testimonial__author">
                         <div className="testimonial__author-thumb">
