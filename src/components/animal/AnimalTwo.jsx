@@ -51,11 +51,6 @@ export const AnimalTwo = () => {
           <div className="col-xl-6 col-lg-8">
             <div className="section__title white-title text-center mb-40">
               <h2 className="title">Available Pets For Adoption</h2>
-              <p>
-                We will work with you to develop individualised care plans,
-                including <br />
-                management chronic diseases.
-              </p>
             </div>
           </div>
         </div>

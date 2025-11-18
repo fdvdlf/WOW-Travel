@@ -1,5 +1,4 @@
 import React from "react";
-import Link from "next/link";
 
 const innerAboutImg01 = "/images/inner_about_img01.jpg";
 const innerAboutImg02 = "/images/inner_about_img02.jpg";
@@ -7,7 +6,6 @@ const innerAboutShape = "/images/inner_about_shape.png";
 const petIcon02 = "/icon/pet_icon02.svg";
 const experienceShape = "/images/experience_shape.svg";
 const checkIcon02 = "/icon/check_icon02.svg";
-const rightArrow = "/icon/right_arrow.svg";
 
 export const AboutFour = () => {
   return (
@@ -52,11 +50,6 @@ export const AboutFour = () => {
                   Really Happy
                 </h2>
               </div>
-              <p>
-                {`We will work with you to develop individualised care plans,
-                including management chronic diseases. We are committed to bein
-                region's premier healthcare network providing patient.`}
-              </p>
               <div className="about__content-inner-two">
                 <div className="experience__box">
                   <div className="experience__box-shape">
@@ -92,15 +85,6 @@ export const AboutFour = () => {
                   </ul>
                 </div>
               </div>
-              <p>
-                {`We will work with you to develop individualised care plans,
-                including management chronic diseases. We are committed to bein
-                region's premier healthcare network providing patient.`}
-              </p>
-              <Link href="/contact" className="btn">
-                Read More
-                <img src={rightArrow} alt="" className="injectable" />
-              </Link>
             </div>
           </div>
         </div>
