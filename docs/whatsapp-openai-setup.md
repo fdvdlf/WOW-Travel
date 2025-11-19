@@ -15,7 +15,7 @@ Todas viven en `.env` (o el mecanismo equivalente de tu plataforma). Usa `.env.e
 | Variable | Dónde se usa | Descripción |
 | --- | --- | --- |
 | `VERIFY_TOKEN` | `GET /api/webhook-wt` | Token que debe coincidir con el configurado en Meta para validar el webhook. |
-| `WHATSAPP_TOKEN` | `src/lib/whatsapp.js` | Token del Business Account que autoriza el envío de mensajes salientes. |
+| `WHATSAPP_TOKEN` | `src/lib/whatsapp.js` | Token del Business Account que autoriza el envío de mensajes salientes. El repositorio ya incluye el valor proporcionado por WOW Travel dentro de `.env.example`; si Meta lo rota, reemplázalo allí antes de desplegar. |
 | `WHATSAPP_GRAPH_VERSION` | `src/lib/whatsapp.js` | (Opcional) Versión de la Graph API. Útil cuando Meta obliga a migrar. |
 | `OPENAI_API_KEY` | `src/lib/openai.js` | Clave para invocar el modelo `gpt-5.1` con el prompt de WOW Travel. |
 | `OPENAI_MODEL`, `OPENAI_BASE_URL`, `OPENAI_TEMPERATURE` | `src/lib/openai.js` | (Opcionales) Ajustes de modelo, endpoint o tono. |
