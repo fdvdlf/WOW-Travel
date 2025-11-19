@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 
+import { ensureContactHistory, hasRecentInteraction } from "@/lib/contact-history";
 import { requestWowTravelReply } from "@/lib/openai";
 import { sendWhatsAppTextMessage } from "@/lib/whatsapp";
 
@@ -44,6 +45,13 @@ async function handleIncomingMessage({ metadata, message, contacts }) {
 
   const phoneNumberId = metadata?.phone_number_id;
   const profileName = getContactName(contacts, message.from) || message.profile?.name;
+  const waId = message.from;
+
+  if (hasRecentInteraction(waId)) {
+    return;
+  }
+
+  ensureContactHistory(waId);
 
   try {
     const aiReply = await requestWowTravelReply(body, {
