@@ -2,6 +2,11 @@ import { NextResponse } from "next/server";
 
 import { ensureContactHistory, hasRecentInteraction } from "@/lib/contact-history";
 import { requestWowTravelReply } from "@/lib/openai";
+import {
+  ensureConversationForContact,
+  recordBotMessage,
+  recordInboundMessage,
+} from "@/lib/chat-service";
 import { sendWhatsAppTextMessage } from "@/lib/whatsapp";
 
 const VERIFY_TOKEN = process.env.VERIFY_TOKEN;
@@ -47,6 +52,26 @@ async function handleIncomingMessage({ metadata, message, contacts }) {
   const profileName = getContactName(contacts, message.from) || message.profile?.name;
   const waId = message.from;
 
+  let conversation;
+  try {
+    const conversationRecord = await ensureConversationForContact({
+      whatsappNumber: waId,
+      displayName: profileName,
+      phoneNumberId,
+    });
+    conversation = conversationRecord?.conversation;
+
+    if (conversation?.id) {
+      await recordInboundMessage({
+        conversationId: conversation.id,
+        content: body,
+        rawPayload: message,
+      });
+    }
+  } catch (error) {
+    console.error("No se pudo registrar el mensaje entrante en base de datos", error);
+  }
+
   if (hasRecentInteraction(waId)) {
     return;
   }
@@ -64,6 +89,17 @@ async function handleIncomingMessage({ metadata, message, contacts }) {
       to: message.from,
       body: aiReply,
     });
+
+    if (conversation) {
+      try {
+        await recordBotMessage({
+          conversationId: conversation.id,
+          content: aiReply,
+        });
+      } catch (dbError) {
+        console.error("No se pudo registrar la respuesta automática", dbError);
+      }
+    }
   } catch (error) {
     console.error("Error procesando el mensaje de WhatsApp", error);
 
@@ -73,6 +109,17 @@ async function handleIncomingMessage({ metadata, message, contacts }) {
         to: message.from,
         body: FALLBACK_MESSAGE,
       });
+
+      if (conversation) {
+        try {
+          await recordBotMessage({
+            conversationId: conversation.id,
+            content: FALLBACK_MESSAGE,
+          });
+        } catch (dbError) {
+          console.error("No se pudo registrar el mensaje de respaldo", dbError);
+        }
+      }
     } catch (sendError) {
       console.error("No se pudo enviar el mensaje de respaldo", sendError);
     }
