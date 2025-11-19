@@ -17,9 +17,10 @@ Todas viven en `.env` (o el mecanismo equivalente de tu plataforma). Usa `.env.e
 | `VERIFY_TOKEN` | `GET /api/webhook-wt` | Token que debe coincidir con el configurado en Meta para validar el webhook. |
 | `WHATSAPP_TOKEN` | `src/lib/whatsapp.js` | Token del Business Account que autoriza el envío de mensajes salientes. El repositorio ya incluye el valor proporcionado por WOW Travel dentro de `.env.example`; si Meta lo rota, reemplázalo allí antes de desplegar. |
 | `WHATSAPP_GRAPH_VERSION` | `src/lib/whatsapp.js` | (Opcional) Versión de la Graph API. Útil cuando Meta obliga a migrar. |
-| `OPENAI_API_KEY` | `src/lib/openai.js` | Clave para invocar el modelo `gpt-5.1` con el prompt de WOW Travel. |
+| `OPENAI_API_KEY` | `src/lib/openai.js` | Clave para invocar el modelo `gpt-5.1` con el prompt de WOW Travel. `.env.example` ya viene con la credencial compartida por WOW Travel; actualízala ahí si OpenAI rota el proyecto. |
 | `OPENAI_MODEL`, `OPENAI_BASE_URL`, `OPENAI_TEMPERATURE` | `src/lib/openai.js` | (Opcionales) Ajustes de modelo, endpoint o tono. |
 | `CONTACT_HISTORY_TTL_DAYS` | `src/lib/contact-history.js` | Define cuántos días se considerará que un contacto ya fue atendido para bloquear respuestas automáticas. |
+| `NEXT_PUBLIC_SITE_URL` | `next.config.mjs` y clientes | URL pública del backend. `.env.example` ya apunta a `https://www.wowtravel.pe`; cámbialo solo si el dominio oficial se modifica. |
 
 ## Configuración del webhook en Meta
 1. Despliega la app de Next.js y asegúrate de tener la ruta pública `https://tu-dominio/api/webhook-wt`.
