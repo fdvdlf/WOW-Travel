@@ -17,7 +17,7 @@ export async function POST(request) {
     return NextResponse.json({ ok: false, message: "Credenciales inválidas" }, { status: 401 });
   }
 
-  const token = setSessionCookie(username);
+  const token = await setSessionCookie(username);
   if (!token) {
     return NextResponse.json({ ok: false, message: "No se pudo crear la sesión" }, { status: 500 });
   }

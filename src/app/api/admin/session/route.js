@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 import { getSessionFromCookies } from "@/lib/admin-auth";
 
 export async function GET() {
-  const session = getSessionFromCookies();
+  const session = await getSessionFromCookies();
   if (!session) {
     return NextResponse.json({ authenticated: false }, { status: 401 });
   }
