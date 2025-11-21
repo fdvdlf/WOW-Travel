@@ -3,1082 +3,761 @@
 import { useMemo, useState } from "react";
 import { Layout } from "@/layouts/Layout";
 
-const expedienteBase = {
-  propietario: "Carolina Vega",
-  documento: "DNI 70521458",
-  direccion: "Calle Los Cipreses 234, Surco (al lado del parque)",
-  telefonos: "+51 999 888 777, +51 944 321 567",
-  correo: "carolina.vega@mail.com",
-  canal: "Whatsapp",
-  origen: { ciudad: "Lima", pais: "Perú" },
-  destino: { ciudad: "Toronto", pais: "Canadá" },
-  responsable: { comercial: "Fernando", operaciones: "Gabriel" },
-  servicio: "Puerta a puerta",
-  mascota: {
-    nombre: "Kira",
-    tipo: "Perro",
-    raza: "Border Collie",
-    sexo: "Hembra",
-    nacimiento: "2021-03-02",
-    vacunacion: "2024-05-20",
-    pelaje: "Blanco y negro",
-    alimento: "Royal Canin Medium Adult",
-    esterilizado: "Sí",
-    alergias: "Ninguna conocida",
-    foto: "https://images.unsplash.com/photo-1543852786-1cf6624b9987?auto=format&fit=crop&w=200&q=60",
-    peso: "16.3 kg",
-    chip: "985141003228990",
-    medidaJaula: "90x60x65 cm (plástico rígido)",
+const ROLES = ["COMERCIAL", "OPERACIONES", "GERENCIA"];
+
+const ESTADOS_EXPEDIENTE = [
+  "CREADO",
+  "EN_PROCESO",
+  "DOCUMENTACION_COMPLETA",
+  "CERRADO",
+];
+
+const ESTADOS_REQUISITO = ["PENDIENTE", "ENTREGADO", "OBSERVADO", "VALIDADO"];
+
+const REQUISITOS_BASE = [
+  "Microchip",
+  "Vacuna antirrábica",
+  "Certificado de salud veterinario",
+  "Certificado de SENASA",
+  "Tratamiento antiparasitario",
+  "Documento país destino",
+  "Permisos adicionales",
+  "Ticket de vuelo (opcional)",
+];
+
+const SAMPLE_LEADS = [
+  {
+    id: "lead-1",
+    name: "Carolina Vega",
+    phone: "+51 999 888 777",
+    source: "Whatsapp",
+    notes: "Viaje con mascota a Toronto",
+    created_at: "2024-06-01",
   },
-  viaje: {
-    fecha: "2024-09-15",
+  {
+    id: "lead-2",
+    name: "Marco Díaz",
+    phone: "+51 988 222 444",
+    source: "Web",
+    notes: "Consulta puerta a puerta Madrid",
+    created_at: "2024-06-03",
+  },
+];
+
+const SAMPLE_EXPEDIENTES = [
+  {
+    id: "exp-1",
+    codigo: "EXP-001",
+    lead_id: "lead-1",
+    owner_name: "Carolina Vega",
+    owner_doc: "DNI 70521458",
+    phone: "+51 999 888 777",
+    email: "carolina.vega@mail.com",
+    mascota_name: "Kira",
+    especie: "Perro",
+    raza: "Border Collie",
+    peso: "16.3 kg",
+    color: "Blanco y negro",
     destino: "Toronto, Canadá",
     origen: "Lima, Perú",
-    plan: "Docs + vuelo",
-    jaula: "90x60x65 cm (plástico rígido)",
-    necesitaCertificado: "Sí",
-    requiereTitulacion: "Depende del destino",
-  },
-  pagos: { montoTotal: 1800, montoPagado: 600, estado: "Parcial", moneda: "USD" },
-};
-
-const statusStyles = {
-  completo: "bg-success-subtle text-success",
-  "en-progreso": "bg-warning-subtle text-warning",
-  pendiente: "bg-light text-muted border",
-  observado: "bg-danger-subtle text-danger",
-};
-
-const statusLabel = {
-  completo: "Completo",
-  "en-progreso": "En progreso",
-  pendiente: "Pendiente",
-  observado: "Observado",
-};
-
-const initialDocs = [
-  {
-    titulo: "Documento de identidad del propietario",
-    descripcion: "DNI/CE legible y vigente",
-    status: "completo",
-    evidencia: "dni_carolina.pdf",
-    esCritico: true,
-  },
-  {
-    titulo: "Vacunación, desparasitación y antipulgas",
-    descripcion: "Foto de la tarjeta o certificado",
-    status: "en-progreso",
-    evidencia: "tarjeta_vacunacion.jpg",
-    esCritico: true,
-  },
-  {
-    titulo: "Certificado de salud y microchip",
-    descripcion: "Incluye código de chip y firma del veterinario",
-    status: "pendiente",
-    esCritico: true,
-  },
-  {
-    titulo: "Certificado de desinfección y desinsectación",
-    descripcion: "Adjuntar medidas y material de la jaula",
-    status: "pendiente",
-    esCritico: false,
-  },
-  {
-    titulo: "Titulación de anticuerpos rabia",
-    descripcion: "Solo si el país de destino lo exige",
-    status: "pendiente",
-    esCritico: true,
-  },
-  {
-    titulo: "Otros documentos del país de origen/destino",
-    descripcion: "Permisos especiales o cartas consulares",
-    status: "observado",
-    esCritico: false,
-  },
-];
-
-const etapas = [
-  {
-    titulo: "Lead",
-    descripcion: "Captura de contacto y mini calificación",
-    owner: "Comercial",
-    status: "completo",
-  },
-  {
-    titulo: "Creación del expediente",
-    descripcion: "Datos mínimos del propietario, mascota y viaje",
-    owner: "Comercial",
-    status: "completo",
-  },
-  {
-    titulo: "Validación documental",
-    descripcion: "Revisión de vacunas, microchip y certificados",
-    owner: "Operaciones",
-    status: "en-progreso",
-  },
-  {
-    titulo: "Reservas y pagos",
-    descripcion: "Vuelo, cotización y registro de pagos",
-    owner: "Finanzas",
-    status: "pendiente",
-  },
-  {
-    titulo: "Logística y entrega",
-    descripcion: "Coordinación de jaula, recojo y evidencias",
-    owner: "Operaciones",
-    status: "pendiente",
-  },
-  {
-    titulo: "Cierre",
-    descripcion: "Feedback, satisfacción y congelar histórico",
-    owner: "CX",
-    status: "pendiente",
-  },
-];
-
-const tareas = [
-  "Confirmar fecha probable de viaje con aerolínea",
-  "Registrar código de microchip y adjuntar evidencia",
-  "Solicitar certificado de desinfección y desinsectación",
-  "Subir fotos de jaula con medidas y material",
-  "Validar si el destino requiere titulación de anticuerpos rabia",
-  "Enviar recordatorio de pago parcial al cliente",
-];
-
-const modulosSistema = [
-  {
-    nombre: "Leads",
-    detalle: "Captura web, WhatsApp o referidos, calificación frío/tibio/caliente y conversión a expediente.",
-    badges: ["Canal", "Mini calificación", "Crear expediente"],
-  },
-  {
-    nombre: "Expedientes",
-    detalle: "Un caso por mascota + viaje con responsables, riesgo y etapa.",
-    badges: ["Etapa", "Riesgo", "Asignado"],
-  },
-  {
-    nombre: "Documentos",
-    detalle: "Checklist por país con semáforo Pendiente / En revisión / Completo / Observado.",
-    badges: ["Crítico", "Vencimiento", "Observación"],
-  },
-  {
-    nombre: "Tareas",
-    detalle: "Checklist dinámico por etapa con responsable y fecha límite.",
-    badges: ["Due date", "Asignado", "Prioridad"],
-  },
-  {
-    nombre: "Comunicaciones",
-    detalle: "Registro de WhatsApp, correo y llamadas con plantillas rápidas.",
-    badges: ["Plantillas", "Autor", "Canal"],
-  },
-  {
-    nombre: "Pagos",
-    detalle: "Monto del servicio, saldo, comprobantes y estado Pendiente/Parcial/Pagado.",
-    badges: ["Saldo", "Voucher", "Moneda"],
-  },
-  {
-    nombre: "Reportes",
-    detalle: "Pipeline por etapa, tiempos promedio y destinos frecuentes.",
-    badges: ["KPIs", "Tasa de cierre", "Riesgo"],
-  },
-];
-
-const pasosClave = [
-  {
-    titulo: "0. Lead → Expediente",
-    rol: "Comercial",
-    objetivo: "Calificar interés y crear expediente con datos mínimos del propietario, mascota y viaje.",
-  },
-  {
-    titulo: "1. Validación documental",
-    rol: "Operaciones",
-    objetivo: "Obtener certificados críticos (vacunas, microchip, salud, desinfección de jaula, anticuerpos si aplica).",
-  },
-  {
-    titulo: "2. Reservas y pagos",
-    rol: "Finanzas + Operaciones",
-    objetivo: "Armar cotización, registrar vouchers y confirmar estado Pagado antes de logística.",
-  },
-  {
-    titulo: "3. Logística y entrega",
-    rol: "Operaciones",
-    objetivo: "Validar jaula y checklist día de vuelo (ayuno, documentos físicos, foto de entrega).",
-  },
-  {
-    titulo: "4. Cierre y satisfacción",
-    rol: "CX",
-    objetivo: "Confirmar entrega en destino, solicitar feedback y congelar histórico de eventos.",
-  },
-];
-
-const requisitosCriticos = [
-  "Vacunas, desparasitación y antipulgas vigentes (foto de tarjeta).",
-  "Certificado de salud + microchip con número legible.",
-  "Certificado de desinfección y desinsectación con medidas y material de la jaula.",
-  "Titulación de anticuerpos de rabia si el país destino lo exige.",
-  "Permisos especiales o cartas consulares del país de origen/destino.",
-];
-
-const leadDemo = {
-  nombre: "Carolina Vega",
-  telefono: "+51 999 888 777",
-  correo: "carolina.vega@mail.com",
-  origen: "Lima",
-  destino: "Toronto",
-  canal: "Whatsapp",
-  estado: "Nuevo",
-};
-
-const pipelineTablero = [
-  { etapa: "Lead", items: ["Kira - Lima ➜ Toronto"] },
-  { etapa: "Creación del expediente", items: ["Kira - Datos mínimos completos"] },
-  { etapa: "Validación documental", items: ["Kira - 3/5 críticos"] },
-  { etapa: "Reservas y pagos", items: ["Cotización pendiente"] },
-  { etapa: "Logística y entrega", items: [] },
-  { etapa: "Cierre", items: [] },
-];
-
-const comunicaciones = [
-  {
-    canal: "WhatsApp",
-    resumen: "Cliente envía foto de jaula y confirma medidas",
-    fecha: "Hoy 09:20",
-    autor: "Fernando",
-  },
-  {
-    canal: "Email",
-    resumen: "Se envía checklist de documentos críticos",
-    fecha: "Ayer 18:30",
-    autor: "Gabriel",
-  },
-  {
-    canal: "Llamada",
-    resumen: "Se explica necesidad de titulación de anticuerpos",
-    fecha: "Ayer 16:10",
-    autor: "Gabriel",
-  },
-];
-
-const camposFormulario = [
-  {
-    grupo: "Propietario y contacto",
-    campos: [
-      { name: "propietario", label: "Nombre del propietario", placeholder: "Ej. Carolina Vega" },
-      { name: "documento", label: "DNI/CE", placeholder: "Ej. 70521458" },
-      { name: "direccion", label: "Dirección + referencias", placeholder: "Calle, número, referencia" },
-      { name: "telefonos", label: "Teléfonos (2 contactos de preferencia)", placeholder: "Números separados por coma" },
-      { name: "correo", label: "Correo electrónico", placeholder: "nombre@correo.com" },
-      { name: "canal", label: "Canal de origen del lead", placeholder: "Web / WhatsApp / Referido" },
-      { name: "responsable.comercial", label: "Responsable comercial", placeholder: "Ej. Fernando" },
-      { name: "responsable.operaciones", label: "Responsable operaciones", placeholder: "Ej. Gabriel" },
-    ],
-  },
-  {
-    grupo: "Mascota",
-    campos: [
-      { name: "mascota.nombre", label: "Nombre de la mascotita", placeholder: "Ej. Kira" },
-      { name: "mascota.tipo", label: "Tipo", placeholder: "Perro / Gato / Otro" },
-      { name: "mascota.raza", label: "Raza", placeholder: "Ej. Border Collie" },
-      { name: "mascota.sexo", label: "Sexo", placeholder: "Hembra/Macho" },
-      { name: "mascota.nacimiento", label: "Fecha de nacimiento de la mascota", type: "date" },
-      {
-        name: "mascota.vacunacion",
-        label: "Fecha de la última vacunación, desparasitación y antipulgas",
-        type: "date",
-      },
-      { name: "mascota.pelaje", label: "Color de pelaje", placeholder: "Ej. Blanco y negro" },
-      { name: "mascota.alimento", label: "Alimento (marca)", placeholder: "Ej. Royal Canin" },
-      { name: "mascota.esterilizado", label: "Indicar si está esterilizado/a", placeholder: "Sí/No" },
-      { name: "mascota.alergias", label: "Alérgic@ a alguna medicina o comida", placeholder: "Especificar" },
-      { name: "mascota.foto", label: "Fotito actualizada de su mascota (URL o adjunto)", placeholder: "URL o usar adjunto" },
-      { name: "mascota.peso", label: "Peso de la mascota", placeholder: "Ej. 16.3 kg" },
-      { name: "mascota.chip", label: "Código de chip (o colocar al llegar)", placeholder: "Ej. 985141003228990" },
-      { name: "mascota.medidaJaula", label: "Medidas de la jaula", placeholder: "Profundidad x altura x ancho" },
-    ],
-  },
-  {
-    grupo: "Viaje y requerimientos",
-    campos: [
-      { name: "viaje.fecha", label: "Fecha probable de viaje", type: "date" },
-      { name: "viaje.origen", label: "Origen", placeholder: "Ciudad y país" },
-      { name: "viaje.destino", label: "Destino", placeholder: "Ciudad y país" },
-      { name: "viaje.plan", label: "Tipo de servicio (plan)", placeholder: "Solo docs / docs + vuelo / puerta a puerta" },
-      {
-        name: "viaje.jaula",
-        label: "Medidas de jaula (profundidad x altura x ancho) y material",
-        placeholder: "Ej. 90x60x65 cm – plástico",
-      },
-      {
-        name: "viaje.necesitaCertificado",
-        label: "¿Necesita certificado de desinfección y desinsectación?",
-        placeholder: "Sí/No",
-      },
-      {
-        name: "viaje.requiereTitulacion",
-        label: "¿Requiere certificado de titulación de anticuerpos rabia?",
-        placeholder: "Sí/No/Depende del destino",
-      },
-      { name: "viaje.otros", label: "Otros documentos solicitados por el país", placeholder: "Listar requisitos" },
+    fecha_probable: "2024-09-15",
+    precio: 1800,
+    estado: "EN_PROCESO",
+    responsable: { comercial: "Fernando", operaciones: "Gabriel" },
+    riesgo: "En control",
+    pagos: {
+      pago70: { tipo: 70, comprobante_url: "voucher_70.pdf", fecha: "2024-06-02", aprobado: true },
+      pago30: { tipo: 30, comprobante_url: "", fecha: "", aprobado: false },
+    },
+    requisitos: REQUISITOS_BASE.map((nombre, index) => ({
+      id: `req-${index + 1}`,
+      nombre,
+      estado: index < 2 ? "VALIDADO" : index === 2 ? "OBSERVADO" : "PENDIENTE",
+      evidencia_url: index < 2 ? "archivo.pdf" : "",
+      fecha: "2024-06-10",
+      notas: index === 2 ? "Repetir examen, fecha vencida" : "",
+    })),
+    historial: [
+      { id: "h1", usuario: "Gabriel", fecha: "2024-06-05", descripcion: "Se cargan vacunas y microchip." },
+      { id: "h2", usuario: "Fernando", fecha: "2024-06-08", descripcion: "Pago 70% aprobado por Gerencia." },
     ],
   },
 ];
 
-function useFormState() {
-  const [data, setData] = useState(expedienteBase);
-  const [lastSaved, setLastSaved] = useState(null);
-
-  const readValue = (path) => path.split(".").reduce((acc, key) => acc?.[key], data);
-
-  const updateField = (path, value) => {
-    const keys = path.split(".");
-    setData((prev) => {
-      const clone = { ...prev };
-      let current = clone;
-      keys.forEach((key, index) => {
-        if (index === keys.length - 1) {
-          current[key] = value;
-        } else {
-          current[key] = { ...current[key] };
-          current = current[key];
-        }
-      });
-      return clone;
-    });
-  };
-
-  const saveNow = () => setLastSaved(new Date());
-
-  return { data, updateField, readValue, lastSaved, saveNow };
+function SectionTitle({ title, subtitle, badge }) {
+  return (
+    <div className="d-flex justify-content-between align-items-start mb-3">
+      <div>
+        <h4 className="mb-1">{title}</h4>
+        {subtitle ? <p className="text-muted mb-0">{subtitle}</p> : null}
+      </div>
+      {badge ? <span className="badge bg-primary-subtle text-primary">{badge}</span> : null}
+    </div>
+  );
 }
 
-function Badge({ value }) {
-  const style = statusStyles[value] || statusStyles.pendiente;
-  return <span className={`badge rounded-pill ${style}`}>{statusLabel[value] || value}</span>;
+function EstadoPill({ value }) {
+  const colors = {
+    CREADO: "bg-light text-muted border",
+    EN_PROCESO: "bg-warning-subtle text-warning",
+    DOCUMENTACION_COMPLETA: "bg-success-subtle text-success",
+    CERRADO: "bg-secondary-subtle text-secondary",
+  };
+  return <span className={`badge rounded-pill ${colors[value] || "bg-light"}`}>{value}</span>;
 }
 
-export default function TrackingDemo() {
-  const { data, updateField, readValue, lastSaved, saveNow } = useFormState();
-  const [docs, setDocs] = useState(initialDocs);
-  const [selectedFile, setSelectedFile] = useState(null);
-  const [acciones, setAcciones] = useState(
-    tareas.map((tarea) => ({ titulo: tarea, completada: false }))
+function ExpedienteCard({ expediente, onSelect, isActive }) {
+  return (
+    <div
+      className={`border rounded p-3 mb-2 ${isActive ? "border-primary shadow-sm" : "border-light bg-light"}`}
+      role="button"
+      onClick={onSelect}
+    >
+      <div className="d-flex justify-content-between align-items-center mb-1">
+        <div className="fw-semibold">{expediente.codigo}</div>
+        <EstadoPill value={expediente.estado} />
+      </div>
+      <p className="mb-0 small text-muted">
+        {expediente.mascota_name} · {expediente.owner_name} · {expediente.destino}
+      </p>
+      <small className="text-muted">Responsable: {expediente.responsable?.comercial}</small>
+    </div>
   );
-  const [leadCalificacion, setLeadCalificacion] = useState({
-    potencial: "Alto",
-    urgencia: "30-45 días",
-    tipoServicio: "Docs + vuelo",
-  });
+}
 
-  const completados = useMemo(
-    () => docs.filter((doc) => doc.status === "completo").length,
-    [docs]
+function RequisitoRow({ requisito, onUpdate }) {
+  return (
+    <tr>
+      <td className="fw-semibold">{requisito.nombre}</td>
+      <td>
+        <select
+          className="form-select form-select-sm"
+          value={requisito.estado}
+          onChange={(e) => onUpdate({ ...requisito, estado: e.target.value })}
+        >
+          {ESTADOS_REQUISITO.map((estado) => (
+            <option key={estado} value={estado}>
+              {estado}
+            </option>
+          ))}
+        </select>
+      </td>
+      <td>
+        <input
+          className="form-control form-control-sm"
+          placeholder="URL o nombre de evidencia"
+          value={requisito.evidencia_url}
+          onChange={(e) => onUpdate({ ...requisito, evidencia_url: e.target.value })}
+        />
+      </td>
+      <td>
+        <input
+          type="date"
+          className="form-control form-control-sm"
+          value={requisito.fecha || ""}
+          onChange={(e) => onUpdate({ ...requisito, fecha: e.target.value })}
+        />
+      </td>
+      <td>
+        <input
+          className="form-control form-control-sm"
+          placeholder="Notas internas"
+          value={requisito.notas}
+          onChange={(e) => onUpdate({ ...requisito, notas: e.target.value })}
+        />
+      </td>
+    </tr>
   );
+}
 
-  const criticosPendientes = useMemo(
-    () => docs.filter((doc) => doc.esCritico && doc.status !== "completo").length,
-    [docs]
-  );
-
-  const docsEnRevision = useMemo(
-    () => docs.filter((doc) => doc.status === "en-progreso").length,
-    [docs]
-  );
-
-  const camposRequeridos = useMemo(
-    () =>
-      camposFormulario.flatMap((grupo) =>
-        grupo.campos.map((campo) => ({ name: campo.name, label: campo.label }))
-      ),
-    []
-  );
-
-  const camposCompletos = useMemo(
-    () =>
-      camposRequeridos.filter(({ name }) => {
-        const value = readValue(name);
-        return typeof value === "string" ? value.trim().length > 0 : Boolean(value);
-      }).length,
-    [camposRequeridos, readValue]
-  );
-
-  const camposPendientes = camposRequeridos
-    .filter(({ name }) => {
-      const value = readValue(name);
-      return !(typeof value === "string" ? value.trim() : value);
-    })
-    .map(({ label }) => label);
-
-  const progress = Math.round((camposCompletos / camposRequeridos.length) * 100);
-
-  const diasParaViaje = useMemo(() => {
-    const fechaViaje = new Date(data.viaje.fecha);
-    const diff = (fechaViaje.getTime() - Date.now()) / (1000 * 60 * 60 * 24);
-    return Math.max(Math.round(diff), 0);
-  }, [data.viaje.fecha]);
-
-  const riesgoExpediente = criticosPendientes && diasParaViaje <= 30 ? "Riesgo alto" : "En control";
-
-  const computedEtapas = useMemo(
-    () =>
-      etapas.map((etapa) => {
-        if (etapa.titulo === "Reservas y pagos") {
-          return { ...etapa, status: criticosPendientes ? "pendiente" : "en-progreso" };
-        }
-        if (etapa.titulo === "Logística y entrega") {
-          return {
-            ...etapa,
-            status: data.pagos.estado === "Pagado" ? "en-progreso" : "pendiente",
-          };
-        }
-        if (etapa.titulo === "Cierre") {
-          return {
-            ...etapa,
-            status: data.pagos.estado === "Pagado" && criticosPendientes === 0 ? "en-progreso" : "pendiente",
-          };
-        }
-        return etapa;
-      }),
-    [criticosPendientes, data.pagos.estado]
+export default function TrackingPage() {
+  const [role, setRole] = useState("COMERCIAL");
+  const [leads, setLeads] = useState(SAMPLE_LEADS);
+  const [expedientes, setExpedientes] = useState(SAMPLE_EXPEDIENTES);
+  const [selectedExpedienteId, setSelectedExpedienteId] = useState(SAMPLE_EXPEDIENTES[0]?.id);
+  const [leadForm, setLeadForm] = useState({ name: "", phone: "", source: "", notes: "" });
+  const [notaInterna, setNotaInterna] = useState("");
+  const selectedExpediente = useMemo(
+    () => expedientes.find((exp) => exp.id === selectedExpedienteId),
+    [expedientes, selectedExpedienteId]
   );
 
-  const saldoPendiente = useMemo(
-    () => Math.max((data.pagos.montoTotal || 0) - (data.pagos.montoPagado || 0), 0),
-    [data.pagos.montoPagado, data.pagos.montoTotal]
-  );
+  const [mensaje, setMensaje] = useState("");
 
-  const handleDocUpload = (index, file) => {
-    setDocs((prev) => {
-      const next = [...prev];
-      next[index] = {
-        ...next[index],
-        status: "completo",
-        evidencia: file?.name || "Evidencia cargada",
-      };
-      return next;
-    });
+  const updateExpediente = (id, updater) => {
+    setExpedientes((prev) => prev.map((exp) => (exp.id === id ? updater(exp) : exp)));
   };
 
-  const toggleAccion = (index) => {
-    setAcciones((prev) => {
-      const next = [...prev];
-      next[index] = { ...next[index], completada: !next[index].completada };
-      return next;
-    });
+  const addHistorial = (descripcion) => {
+    if (!selectedExpediente) return;
+    updateExpediente(selectedExpediente.id, (exp) => ({
+      ...exp,
+      historial: [
+        {
+          id: `h-${Date.now()}`,
+          usuario: role,
+          fecha: new Date().toISOString().slice(0, 10),
+          descripcion,
+        },
+        ...exp.historial,
+      ],
+    }));
   };
+
+  const handleLeadSubmit = (e) => {
+    e.preventDefault();
+    const newLead = {
+      id: `lead-${Date.now()}`,
+      ...leadForm,
+      created_at: new Date().toISOString().slice(0, 10),
+    };
+    setLeads((prev) => [newLead, ...prev]);
+    setLeadForm({ name: "", phone: "", source: "", notes: "" });
+    setMensaje("Lead creado y listo para calificación.");
+  };
+
+  const handleConvertLead = (lead) => {
+    if (role !== "COMERCIAL") {
+      setMensaje("Solo Comercial convierte leads a expedientes.");
+      return;
+    }
+    const nuevo = {
+      id: `exp-${Date.now()}`,
+      codigo: `EXP-${String(expedientes.length + 1).padStart(3, "0")}`,
+      lead_id: lead.id,
+      owner_name: lead.name,
+      owner_doc: "Pendiente",
+      phone: lead.phone,
+      email: "",
+      mascota_name: "Mascota sin nombre",
+      especie: "Perro",
+      raza: "Por definir",
+      peso: "",
+      color: "",
+      destino: lead.notes || "Destino por definir",
+      origen: "",
+      fecha_probable: "",
+      precio: 0,
+      estado: "CREADO",
+      responsable: { comercial: "", operaciones: "" },
+      riesgo: "",
+      pagos: { pago70: { tipo: 70, comprobante_url: "", fecha: "", aprobado: false }, pago30: { tipo: 30, comprobante_url: "", fecha: "", aprobado: false } },
+      requisitos: REQUISITOS_BASE.map((nombre, index) => ({
+        id: `req-${Date.now()}-${index}`,
+        nombre,
+        estado: "PENDIENTE",
+        evidencia_url: "",
+        fecha: "",
+        notas: "",
+      })),
+      historial: [
+        {
+          id: `h-${Date.now()}`,
+          usuario: "COMERCIAL",
+          fecha: new Date().toISOString().slice(0, 10),
+          descripcion: "Lead convertido a expediente",
+        },
+      ],
+    };
+    setExpedientes((prev) => [nuevo, ...prev]);
+    setSelectedExpedienteId(nuevo.id);
+    setMensaje("Expediente creado desde el lead.");
+  };
+
+  const handlePago = (tipo) => {
+    if (!selectedExpediente) return;
+    if (tipo === 70 && role !== "COMERCIAL") {
+      setMensaje("Solo Comercial registra el pago 70%.");
+      return;
+    }
+    if (tipo === 30 && role !== "COMERCIAL") {
+      setMensaje("Solo Comercial registra el pago 30%.");
+      return;
+    }
+    updateExpediente(selectedExpediente.id, (exp) => ({
+      ...exp,
+      pagos: {
+        ...exp.pagos,
+        [`pago${tipo}`]: {
+          ...exp.pagos[`pago${tipo}`],
+          comprobante_url: `voucher_${tipo}.pdf`,
+          fecha: new Date().toISOString().slice(0, 10),
+          aprobado: tipo === 70 ? exp.pagos.pago70.aprobado : exp.pagos.pago30.aprobado,
+        },
+      },
+    }));
+    addHistorial(`Comprobante ${tipo}% cargado.`);
+    setMensaje(`Pago ${tipo}% registrado, pendiente aprobación de Gerencia.`);
+  };
+
+  const handleAprobarPago = (tipo) => {
+    if (!selectedExpediente) return;
+    if (role !== "GERENCIA") {
+      setMensaje("Solo Gerencia aprueba o valida pagos.");
+      return;
+    }
+    updateExpediente(selectedExpediente.id, (exp) => ({
+      ...exp,
+      pagos: {
+        ...exp.pagos,
+        [`pago${tipo}`]: { ...exp.pagos[`pago${tipo}`], aprobado: true },
+      },
+      estado: tipo === 70 ? "EN_PROCESO" : exp.estado,
+    }));
+    addHistorial(`Gerencia aprueba pago ${tipo}%.`);
+    setMensaje(`Pago ${tipo}% aprobado/validado.`);
+  };
+
+  const handleRequisitoUpdate = (reqActualizado) => {
+    if (!selectedExpediente) return;
+    if (!["OPERACIONES", "COMERCIAL", "GERENCIA"].includes(role)) {
+      setMensaje("Acción no permitida para este rol.");
+      return;
+    }
+    updateExpediente(selectedExpediente.id, (exp) => ({
+      ...exp,
+      requisitos: exp.requisitos.map((req) => (req.id === reqActualizado.id ? reqActualizado : req)),
+    }));
+  };
+
+  const handleDocumentacionCompleta = () => {
+    if (!selectedExpediente) return;
+    if (role !== "OPERACIONES") {
+      setMensaje("Solo Operaciones marca documentación completa.");
+      return;
+    }
+    if (selectedExpediente.requisitos.some((req) => req.estado !== "VALIDADO")) {
+      setMensaje("Todos los requisitos deben estar en VALIDADO.");
+      return;
+    }
+    updateExpediente(selectedExpediente.id, (exp) => ({ ...exp, estado: "DOCUMENTACION_COMPLETA" }));
+    addHistorial("Operaciones marca documentación completa.");
+    setMensaje("Documentación completa. Listo para cierre.");
+  };
+
+  const handleEstadoChange = (nextEstado) => {
+    if (!selectedExpediente) return;
+    const actual = selectedExpediente.estado;
+    const allowedTransitions = {
+      CREADO: ["EN_PROCESO"],
+      EN_PROCESO: ["DOCUMENTACION_COMPLETA"],
+      DOCUMENTACION_COMPLETA: ["CERRADO"],
+      CERRADO: [],
+    };
+    if (!allowedTransitions[actual].includes(nextEstado)) {
+      setMensaje("Transición no permitida según la regla del flujo.");
+      return;
+    }
+    if (nextEstado === "EN_PROCESO" && !selectedExpediente.pagos.pago70.aprobado) {
+      setMensaje("Gerencia debe aprobar el 70% antes de EN_PROCESO.");
+      return;
+    }
+    if (
+      nextEstado === "DOCUMENTACION_COMPLETA" &&
+      selectedExpediente.requisitos.some((req) => req.estado !== "VALIDADO")
+    ) {
+      setMensaje("Faltan requisitos por validar.");
+      return;
+    }
+    if (nextEstado === "CERRADO" && role !== "GERENCIA") {
+      setMensaje("Solo Gerencia puede cerrar el expediente.");
+      return;
+    }
+    updateExpediente(selectedExpediente.id, (exp) => ({ ...exp, estado: nextEstado }));
+    addHistorial(`Estado actualizado a ${nextEstado}.`);
+    setMensaje(`Expediente en estado ${nextEstado}.`);
+  };
+
+  const handleAgregarNota = () => {
+    if (!notaInterna.trim()) return;
+    addHistorial(notaInterna.trim());
+    setNotaInterna("");
+    setMensaje("Nota interna registrada en historial.");
+  };
+
+  const requisitosPendientes = selectedExpediente?.requisitos.filter((req) => req.estado !== "VALIDADO").length;
 
   return (
-    <Layout header={3} footer={1} breadcrumbTitle="Tracking" breadcrumbSubtitle="Demo end-to-end">
-      <section className="py-5" style={{ background: "#f5f6f9" }}>
+    <Layout header={3} footer={1} breadcrumbTitle="WOW Tracking" breadcrumbSubtitle="Sistema interno MVP">
+      <section className="py-5" style={{ background: "#f7f8fb" }}>
         <div className="container">
           <div className="row align-items-center mb-4">
             <div className="col-lg-8">
-              <p className="text-uppercase text-primary fw-semibold mb-2">Demo interno</p>
-              <h1 className="mb-2">Tracking operativo: de lead a cierre</h1>
+              <p className="text-uppercase text-primary fw-semibold mb-2">MVP interno · Roles protegidos</p>
+              <h1 className="mb-2">Gestión de Leads, Expedientes y Documentos</h1>
               <p className="text-muted mb-0">
-                Crea, valida y cierra expedientes de viaje de mascotas en una sola vista. Captura todos los datos
-                solicitados, sube documentos y sigue el estado del pipeline.
+                Flujo completo de WOW Travel: captura de lead, creación de expediente, pagos 70/30, checklist de
+                requisitos y cierre con control de roles COMERCIAL, OPERACIONES y GERENCIA.
               </p>
             </div>
             <div className="col-lg-4 text-lg-end mt-3 mt-lg-0">
-              <button className="btn btn-primary me-2">+ Nuevo expediente</button>
-              <button className="btn btn-outline-secondary">Exportar PDF</button>
+              <div className="d-inline-flex align-items-center gap-2">
+                <label className="small fw-semibold text-muted mb-0">Rol activo</label>
+                <select className="form-select" value={role} onChange={(e) => setRole(e.target.value)}>
+                  {ROLES.map((r) => (
+                    <option key={r}>{r}</option>
+                  ))}
+                </select>
+              </div>
             </div>
           </div>
+
+          {mensaje ? (
+            <div className="alert alert-info d-flex align-items-center" role="alert">
+              <i className="bi bi-info-circle me-2" aria-hidden="true"></i>
+              <span>{mensaje}</span>
+            </div>
+          ) : null}
 
           <div className="row g-4 mb-4">
-            <div className="col-lg-6">
-              <div className="card h-100 border-0 shadow-sm">
-                <div className="card-body">
-                  <div className="d-flex justify-content-between align-items-start mb-2">
-                    <h5 className="mb-0">Qué hace cada módulo</h5>
-                    <span className="badge bg-primary-subtle text-primary">Mapa rápido</span>
-                  </div>
-                  <div className="row g-2">
-                    {modulosSistema.map((modulo) => (
-                      <div key={modulo.nombre} className="col-sm-6">
-                        <div className="border rounded p-3 h-100 bg-light">
-                          <div className="fw-semibold mb-1">{modulo.nombre}</div>
-                          <small className="text-muted d-block mb-2">{modulo.detalle}</small>
-                          <div className="d-flex flex-wrap gap-1">
-                            {modulo.badges.map((badge) => (
-                              <span key={badge} className="badge bg-white text-muted border">
-                                {badge}
-                              </span>
-                            ))}
-                          </div>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="col-lg-6">
-              <div className="card h-100 border-0 shadow-sm">
-                <div className="card-body">
-                  <div className="d-flex justify-content-between align-items-start mb-2">
-                    <h5 className="mb-0">Pasos claros del viaje</h5>
-                    <span className="badge bg-success-subtle text-success">Responsables</span>
-                  </div>
-                  <div className="d-flex flex-column gap-2">
-                    {pasosClave.map((paso) => (
-                      <div key={paso.titulo} className="border rounded p-3 bg-light">
-                        <div className="d-flex justify-content-between align-items-center mb-1">
-                          <div className="fw-semibold">{paso.titulo}</div>
-                          <span className="badge bg-white text-muted border">{paso.rol}</span>
-                        </div>
-                        <small className="text-muted d-block">{paso.objetivo}</small>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div className="row g-4 mb-4">
-            <div className="col-md-3">
-              <div className="card h-100 border-0 shadow-sm">
-                <div className="card-body">
-                  <p className="text-muted small mb-1">Documentos completos</p>
-                  <h3 className="mb-0">{completados} / {docs.length}</h3>
-                  <small className="text-success">Actualizado en vivo</small>
-                </div>
-              </div>
-            </div>
-            <div className="col-md-3">
-              <div className="card h-100 border-0 shadow-sm">
-                <div className="card-body">
-                  <p className="text-muted small mb-1">Propietario</p>
-                  <h5 className="mb-1">{data.propietario}</h5>
-                  <small className="text-muted">{data.documento}</small>
-                </div>
-              </div>
-            </div>
-            <div className="col-md-3">
-              <div className="card h-100 border-0 shadow-sm">
-                <div className="card-body">
-                  <p className="text-muted small mb-1">Mascota</p>
-                  <h5 className="mb-1">{data.mascota.nombre}</h5>
-                  <small className="text-muted">{data.mascota.raza} · {data.mascota.peso}</small>
-                </div>
-              </div>
-            </div>
-            <div className="col-md-3">
-              <div className="card h-100 border-0 shadow-sm">
-                <div className="card-body">
-                  <p className="text-muted small mb-1">Destino</p>
-                  <h5 className="mb-1">{data.viaje.destino}</h5>
-                  <small className="text-muted">Fecha probable: {data.viaje.fecha}</small>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div className="row g-4 mb-4">
-            <div className="col-md-4">
-              <div className="card h-100 border-0 shadow-sm">
-                <div className="card-body">
-                  <p className="text-muted small mb-1">Riesgo del expediente</p>
-                  <h5 className="mb-1">{riesgoExpediente}</h5>
-                  <small className="text-muted">{criticosPendientes} críticos pendientes · {diasParaViaje} días al viaje</small>
-                </div>
-              </div>
-            </div>
-            <div className="col-md-4">
-              <div className="card h-100 border-0 shadow-sm">
-                <div className="card-body">
-                  <p className="text-muted small mb-1">Pagos</p>
-                  <h5 className="mb-1">
-                    {data.pagos.moneda} {data.pagos.montoPagado} pagado / {data.pagos.montoTotal}
-                  </h5>
-                  <small className="text-muted">Saldo pendiente: {data.pagos.moneda} {saldoPendiente} · Estado {data.pagos.estado}</small>
-                </div>
-              </div>
-            </div>
-            <div className="col-md-4">
-              <div className="card h-100 border-0 shadow-sm">
-                <div className="card-body">
-                  <p className="text-muted small mb-1">Responsables internos</p>
-                  <h5 className="mb-1">{data.responsable.comercial} & {data.responsable.operaciones}</h5>
-                  <small className="text-muted">Canal: {data.canal} · Servicio: {data.servicio}</small>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div className="row g-4 mb-4">
-            <div className="col-lg-7">
-              <div className="card h-100 border-0 shadow-sm">
-                <div className="card-body p-4">
-                  <div className="d-flex justify-content-between align-items-center mb-3">
-                    <div>
-                      <p className="text-muted small mb-1">Avance del expediente</p>
-                      <h4 className="mb-0">{progress}% completo</h4>
-                    </div>
-                    <div className="w-50">
-                      <div className="progress" role="progressbar" aria-valuenow={progress} aria-valuemin="0" aria-valuemax="100">
-                        <div className="progress-bar bg-success" style={{ width: `${progress}%` }} />
-                      </div>
-                    </div>
-                  </div>
-                  <div className="d-flex flex-wrap gap-2">
-                    <span className="badge bg-success-subtle text-success">{camposCompletos} campos completos</span>
-                    <span className="badge bg-warning-subtle text-warning">{camposRequeridos.length - camposCompletos} pendientes</span>
-                    <span className="badge bg-info-subtle text-info">{docs.length} requisitos documentales</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="col-lg-5">
-              <div className="card h-100 border-0 shadow-sm">
-                <div className="card-body p-4">
-                  <div className="d-flex justify-content-between align-items-center mb-3">
-                    <h6 className="mb-0">Alertas de calidad</h6>
-                    <Badge value={camposPendientes.length ? "en-progreso" : "completo"} />
-                  </div>
-                  {camposPendientes.length ? (
-                    <ul className="mb-0 small text-muted">
-                      {camposPendientes.slice(0, 6).map((campo) => (
-                        <li key={campo}>{campo}</li>
-                      ))}
-                      {camposPendientes.length > 6 && (
-                        <li className="text-primary">+ {camposPendientes.length - 6} campos adicionales pendientes</li>
-                      )}
-                    </ul>
-                  ) : (
-                    <p className="mb-0 text-success">Todos los campos obligatorios están completos.</p>
-                  )}
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div className="card border-0 shadow-sm mb-4">
-            <div className="card-body p-4">
-              <div className="d-flex justify-content-between align-items-start mb-3">
-                <div>
-                  <h4 className="mb-1">Módulos principales WOW Travel</h4>
-                  <p className="text-muted mb-0">Diseñados para cubrir leads, expedientes, documentos, tareas, comunicaciones, pagos y reportes.</p>
-                </div>
-                <span className="badge bg-info-subtle text-info">Vista operativa</span>
-              </div>
-              <div className="row g-3">
-                {modulosSistema.map((modulo) => (
-                  <div key={modulo.nombre} className="col-md-6 col-xl-3">
-                    <div className="border rounded p-3 h-100" style={{ background: "#fdfefe" }}>
-                      <div className="d-flex justify-content-between align-items-center mb-2">
-                        <h6 className="mb-0">{modulo.nombre}</h6>
-                        <Badge value="en-progreso" />
-                      </div>
-                      <p className="text-muted small mb-2">{modulo.detalle}</p>
-                      <div className="d-flex flex-wrap gap-1">
-                        {modulo.badges.map((b) => (
-                          <span key={b} className="badge bg-light text-muted border">{b}</span>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-
-          <div className="row g-4 mb-4">
-            <div className="col-lg-7">
-              <div className="card border-0 shadow-sm h-100">
-                <div className="card-body p-4">
-                  <div className="d-flex justify-content-between align-items-start mb-3">
-                    <div>
-                      <h4 className="mb-1">Lead ➜ Expediente</h4>
-                      <p className="text-muted mb-0">Captura rápida y calificación antes de crear el expediente.</p>
-                    </div>
-                    <span className="badge bg-primary-subtle text-primary">ETAPA 0</span>
-                  </div>
-                  <div className="row g-3 mb-3">
-                    <div className="col-md-6">
-                      <label className="form-label small fw-semibold">Nombre</label>
-                      <input className="form-control" value={leadDemo.nombre} readOnly />
-                    </div>
-                    <div className="col-md-6">
-                      <label className="form-label small fw-semibold">Canal</label>
-                      <input className="form-control" value={leadDemo.canal} readOnly />
-                    </div>
-                    <div className="col-md-4">
-                      <label className="form-label small fw-semibold">Potencial de cierre</label>
-                      <select
-                        className="form-select"
-                        value={leadCalificacion.potencial}
-                        onChange={(e) => setLeadCalificacion((prev) => ({ ...prev, potencial: e.target.value }))}
-                      >
-                        <option>Alto</option>
-                        <option>Medio</option>
-                        <option>Bajo</option>
-                      </select>
-                    </div>
-                    <div className="col-md-4">
-                      <label className="form-label small fw-semibold">Urgencia</label>
-                      <select
-                        className="form-select"
-                        value={leadCalificacion.urgencia}
-                        onChange={(e) => setLeadCalificacion((prev) => ({ ...prev, urgencia: e.target.value }))}
-                      >
-                        <option>15-30 días</option>
-                        <option>30-45 días</option>
-                        <option>60+ días</option>
-                      </select>
-                    </div>
-                    <div className="col-md-4">
-                      <label className="form-label small fw-semibold">Tipo de servicio</label>
-                      <select
-                        className="form-select"
-                        value={leadCalificacion.tipoServicio}
-                        onChange={(e) => setLeadCalificacion((prev) => ({ ...prev, tipoServicio: e.target.value }))}
-                      >
-                        <option>Solo docs</option>
-                        <option>Docs + vuelo</option>
-                        <option>Puerta a puerta</option>
-                      </select>
-                    </div>
-                  </div>
-                  <div className="d-flex flex-wrap gap-2 align-items-center">
-                    <button className="btn btn-primary">Crear expediente de viaje</button>
-                    <span className="badge bg-warning-subtle text-warning">Estado lead: {leadDemo.estado}</span>
-                    <small className="text-muted">Origen: {leadDemo.origen} · Destino: {leadDemo.destino}</small>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="col-lg-5">
-              <div className="card border-0 shadow-sm h-100">
-                <div className="card-body p-4">
-                  <div className="d-flex justify-content-between align-items-start mb-3">
-                    <div>
-                      <h4 className="mb-1">Tablero de expedientes</h4>
-                      <p className="text-muted mb-0">Kanban por etapa con indicadores de documentos y pagos.</p>
-                    </div>
-                    <span className="badge bg-secondary-subtle text-secondary">Pipeline</span>
-                  </div>
-                  <div className="row g-3">
-                    {pipelineTablero.map((col) => (
-                      <div key={col.etapa} className="col-6">
-                        <div className="border rounded p-3 h-100" style={{ background: "#fcfcfc" }}>
-                          <div className="d-flex justify-content-between align-items-center mb-2">
-                            <h6 className="mb-0">{col.etapa}</h6>
-                            <Badge value={col.items.length ? "en-progreso" : "pendiente"} />
-                          </div>
-                          {col.items.length ? (
-                            <ul className="small text-muted mb-0">
-                              {col.items.map((item) => (
-                                <li key={item}>{item}</li>
-                              ))}
-                            </ul>
-                          ) : (
-                            <p className="text-muted small mb-0">Sin casos en esta columna</p>
-                          )}
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div className="row g-4">
-            <div className="col-lg-7">
+            <div className="col-lg-4">
               <div className="card border-0 shadow-sm mb-4">
-                <div className="card-body p-4">
-                  <div className="d-flex justify-content-between align-items-start mb-3">
-                    <div>
-                      <h4 className="mb-1">Ficha completa del cliente</h4>
-                      <p className="text-muted mb-0">Incluye los 21 campos obligatorios</p>
-                    </div>
-                    <span className="badge bg-primary-subtle text-primary">Editable en vivo</span>
-                  </div>
-                  <div className="row g-4">
-                    {camposFormulario.map((grupo) => (
-                      <div key={grupo.grupo} className="col-12">
-                        <h6 className="text-uppercase text-muted small mb-2">{grupo.grupo}</h6>
-                        <div className="row g-3">
-                          {grupo.campos.map((campo) => (
-                            <div key={campo.name} className="col-md-6">
-                              <label className="form-label small fw-semibold">{campo.label}</label>
-                              <input
-                                type={campo.type || "text"}
-                                className="form-control"
-                                placeholder={campo.placeholder}
-                                value={readValue(campo.name) || ""}
-                                onChange={(e) => updateField(campo.name, e.target.value)}
-                              />
-                            </div>
-                          ))}
-                          <div className="col-md-6">
-                            <label className="form-label small fw-semibold">Adjuntar foto o tarjeta</label>
-                            <input
-                              type="file"
-                              className="form-control"
-                              onChange={(e) => setSelectedFile(e.target.files?.[0])}
-                            />
-                            {selectedFile && <small className="text-success">Cargado: {selectedFile.name}</small>}
-                          </div>
-                          <div className="col-md-6">
-                            <label className="form-label small fw-semibold">Referencia visual de la mascota</label>
-                            <div className="d-flex align-items-center gap-3 border rounded p-2 bg-light">
-                              <img
-                                src={data.mascota.foto}
-                                alt="Mascota"
-                                style={{ width: 60, height: 60, objectFit: "cover", borderRadius: 8 }}
-                              />
-                              <div>
-                                <div className="fw-semibold">{data.mascota.nombre}</div>
-                                <small className="text-muted">Peso {data.mascota.peso} · Chip {data.mascota.chip}</small>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
+                <div className="card-body">
+                  <SectionTitle
+                    title="Módulo de Leads"
+                    subtitle="Captura, calificación y conversión"
+                    badge="ETAPA 0"
+                  />
+                  <form className="mb-3" onSubmit={handleLeadSubmit}>
+                    <div className="row g-2">
+                      <div className="col-12">
+                        <input
+                          className="form-control"
+                          placeholder="Nombre del cliente"
+                          value={leadForm.name}
+                          onChange={(e) => setLeadForm((prev) => ({ ...prev, name: e.target.value }))}
+                          required
+                        />
                       </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-
-              <div className="card border-0 shadow-sm">
-                <div className="card-body p-4">
-                  <div className="d-flex justify-content-between align-items-start mb-3">
-                    <div>
-                      <h4 className="mb-1">Timeline del expediente</h4>
-                      <p className="text-muted mb-0">Del lead al cierre con el cliente</p>
+                      <div className="col-6">
+                        <input
+                          className="form-control"
+                          placeholder="Teléfono / WhatsApp"
+                          value={leadForm.phone}
+                          onChange={(e) => setLeadForm((prev) => ({ ...prev, phone: e.target.value }))}
+                          required
+                        />
+                      </div>
+                      <div className="col-6">
+                        <input
+                          className="form-control"
+                          placeholder="Canal de origen (web/WhatsApp/referido)"
+                          value={leadForm.source}
+                          onChange={(e) => setLeadForm((prev) => ({ ...prev, source: e.target.value }))}
+                          required
+                        />
+                      </div>
+                      <div className="col-12">
+                        <textarea
+                          className="form-control"
+                          placeholder="Destino deseado o notas"
+                          value={leadForm.notes}
+                          onChange={(e) => setLeadForm((prev) => ({ ...prev, notes: e.target.value }))}
+                        />
+                      </div>
                     </div>
-                    <span className="badge bg-secondary-subtle text-secondary">Seguimiento</span>
-                  </div>
-                  <ul className="list-unstyled mb-0">
-                    {computedEtapas.map((etapa) => (
-                      <li key={etapa.titulo} className="d-flex gap-3 align-items-start mb-3">
-                        <div className="text-center">
-                          <Badge value={etapa.status} />
-                          <div className="small text-muted mt-1">{etapa.owner}</div>
-                        </div>
-                        <div>
-                          <h6 className="mb-1">{etapa.titulo}</h6>
-                          <p className="text-muted small mb-0">{etapa.descripcion}</p>
-                        </div>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </div>
-            </div>
-
-            <div className="col-lg-5">
-              <div className="card border-0 shadow-sm mb-4">
-                <div className="card-body p-4">
-                  <div className="d-flex justify-content-between align-items-start mb-3">
-                    <div>
-                      <h4 className="mb-1">Checklist crítico de viaje</h4>
-                      <p className="text-muted mb-0">
-                        Debe completarse antes de pasar a Reservas. Incluye certificados obligatorios y quién valida.
-                      </p>
-                    </div>
-                    <span className="badge bg-danger-subtle text-danger">Bloquea avance</span>
-                  </div>
-                  <ul className="list-unstyled mb-0 d-flex flex-column gap-2">
-                    {requisitosCriticos.map((item) => (
-                      <li key={item} className="d-flex align-items-start gap-2">
-                        <span className="badge bg-light text-muted border">Doc</span>
-                        <div className="flex-grow-1">
-                          <div className="text-muted small">{item}</div>
-                        </div>
-                        <span className="badge bg-success-subtle text-success">Valida Operaciones</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </div>
-              <div className="card border-0 shadow-sm mb-4">
-                <div className="card-body p-4">
-                  <div className="d-flex justify-content-between align-items-start mb-3">
-                    <div>
-                      <h4 className="mb-1">Documentos y evidencias</h4>
-                      <p className="text-muted mb-0">Carga, valida y marca cada requisito. Para pasar a Reservas todos los críticos deben estar completos.</p>
-                    </div>
-                    <span className="badge bg-primary-subtle text-primary">Subida directa</span>
-                  </div>
-                  <div className="d-flex flex-column gap-3">
-                    {docs.map((doc, idx) => (
-                      <div key={doc.titulo} className="border rounded p-3" style={{ background: "#fdfdfd" }}>
-                        <div className="d-flex justify-content-between align-items-start mb-2">
+                    <button className="btn btn-primary mt-3 w-100" type="submit">
+                      Crear lead
+                    </button>
+                  </form>
+                  <div className="border-top pt-3">
+                    <p className="fw-semibold mb-2">Leads recientes</p>
+                    {leads.length ? (
+                      leads.map((lead) => (
+                        <div key={lead.id} className="d-flex justify-content-between align-items-start mb-2">
                           <div>
-                            <h6 className="mb-0">{doc.titulo}</h6>
-                            <small className="text-muted">{doc.descripcion}</small>
-                            <div className="d-flex gap-2 flex-wrap mt-1">
-                              {doc.esCritico && (
-                                <span className="badge bg-danger-subtle text-danger">Crítico</span>
-                              )}
-                              {doc.status === "observado" && (
-                                <span className="badge bg-danger-subtle text-danger">Observado</span>
-                              )}
-                              {doc.status === "en-progreso" && (
-                                <span className="badge bg-warning-subtle text-warning">En revisión</span>
-                              )}
-                            </div>
-                            {doc.evidencia && (
-                              <div className="small text-success">Evidencia: {doc.evidencia}</div>
-                            )}
+                            <div className="fw-semibold">{lead.name}</div>
+                            <small className="text-muted">
+                              {lead.phone} · {lead.source}
+                            </small>
                           </div>
-                          <Badge value={doc.status} />
-                        </div>
-                        <div className="d-flex gap-2">
-                          <input
-                            type="file"
-                            className="form-control form-control-sm"
-                            onChange={(e) => handleDocUpload(idx, e.target.files?.[0])}
-                          />
                           <button
-                            className="btn btn-outline-primary btn-sm"
-                            onClick={() => handleDocUpload(idx, { name: "Validación manual" })}
+                            className="btn btn-sm btn-outline-primary"
+                            onClick={() => handleConvertLead(lead)}
+                            type="button"
                           >
-                            Validar
+                            Convertir
                           </button>
                         </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-
-              <div className="card border-0 shadow-sm mb-4">
-                <div className="card-body p-4">
-                  <div className="d-flex justify-content-between align-items-start mb-3">
-                    <div>
-                      <h4 className="mb-1">Pagos y condiciones</h4>
-                      <p className="text-muted mb-0">Estado: {data.pagos.estado}</p>
-                    </div>
-                    <Badge value={data.pagos.estado === "Pagado" ? "completo" : "en-progreso"} />
-                  </div>
-                  <div className="d-flex align-items-center gap-3 mb-3">
-                    <div>
-                      <div className="fw-semibold">
-                        Total {data.pagos.moneda} {data.pagos.montoTotal}
-                      </div>
-                      <small className="text-muted">Pagado {data.pagos.moneda} {data.pagos.montoPagado}</small>
-                    </div>
-                    <div className="ms-auto text-end">
-                      <span className="badge bg-warning-subtle text-warning">Saldo {data.pagos.moneda} {saldoPendiente}</span>
-                    </div>
-                  </div>
-                  <div className="d-flex flex-wrap gap-2">
-                    <button className="btn btn-outline-primary btn-sm">Registrar pago</button>
-                    <button className="btn btn-outline-secondary btn-sm">Adjuntar voucher</button>
-                    <button className="btn btn-outline-success btn-sm">Marcar como pagado</button>
-                  </div>
-                </div>
-              </div>
-
-              <div className="card border-0 shadow-sm">
-                <div className="card-body p-4">
-                  <div className="d-flex justify-content-between align-items-start mb-3">
-                    <div>
-                      <h4 className="mb-1">Centro de acciones</h4>
-                      <p className="text-muted mb-0">Próximos pasos con el cliente</p>
-                    </div>
-                    <span className="badge bg-success-subtle text-success">Coordina</span>
-                  </div>
-                  <ul className="list-unstyled mb-3">
-                    {acciones.map((accion, index) => (
-                      <li key={accion.titulo} className="d-flex align-items-center justify-content-between mb-2">
-                        <div className="d-flex align-items-center">
-                          <input
-                            className="form-check-input me-2"
-                            type="checkbox"
-                            checked={accion.completada}
-                            onChange={() => toggleAccion(index)}
-                            id={`accion-${index}`}
-                          />
-                          <label className={`mb-0 ${accion.completada ? "text-success" : ""}`} htmlFor={`accion-${index}`}>
-                            {accion.titulo}
-                          </label>
-                        </div>
-                        <Badge value={accion.completada ? "completo" : "en-progreso"} />
-                      </li>
-                    ))}
-                  </ul>
-                  <div className="d-flex gap-2 align-items-center flex-wrap">
-                    <button className="btn btn-primary" onClick={saveNow}>Guardar borrador</button>
-                    <button className="btn btn-outline-secondary">Notificar al cliente</button>
-                    {lastSaved && (
-                      <small className="text-muted">Último guardado: {lastSaved.toLocaleString()}</small>
+                      ))
+                    ) : (
+                      <p className="text-muted">No hay leads cargados.</p>
                     )}
                   </div>
                 </div>
               </div>
-            </div>
-          </div>
 
-          <div className="row g-4 mt-1">
-            <div className="col-lg-6">
-              <div className="card border-0 shadow-sm h-100">
-                <div className="card-body p-4">
-                  <div className="d-flex justify-content-between align-items-start mb-3">
-                    <div>
-                      <h4 className="mb-1">Comunicaciones</h4>
-                      <p className="text-muted mb-0">WhatsApp, email y llamadas con autor y fecha.</p>
-                    </div>
-                    <span className="badge bg-primary-subtle text-primary">Historial</span>
-                  </div>
-                  <ul className="list-unstyled mb-0">
-                    {comunicaciones.map((item) => (
-                      <li key={item.resumen} className="d-flex justify-content-between align-items-start mb-3">
-                        <div>
-                          <div className="fw-semibold">{item.canal}</div>
-                          <div className="text-muted small">{item.resumen}</div>
-                          <small className="text-muted">Por {item.autor}</small>
-                        </div>
-                        <span className="badge bg-light text-muted border">{item.fecha}</span>
-                      </li>
-                    ))}
-                  </ul>
+              <div className="card border-0 shadow-sm">
+                <div className="card-body">
+                  <SectionTitle title="Tablero de Expedientes" subtitle="Pipeline CREADO → CERRADO" badge="Kanban" />
+                  {expedientes.map((exp) => (
+                    <ExpedienteCard
+                      key={exp.id}
+                      expediente={exp}
+                      onSelect={() => setSelectedExpedienteId(exp.id)}
+                      isActive={exp.id === selectedExpedienteId}
+                    />
+                  ))}
                 </div>
               </div>
             </div>
-            <div className="col-lg-6">
-              <div className="card border-0 shadow-sm h-100">
-                <div className="card-body p-4">
-                  <div className="d-flex justify-content-between align-items-start mb-3">
-                    <div>
-                      <h4 className="mb-1">Reportes y KPIs</h4>
-                      <p className="text-muted mb-0">Pipeline por etapa, tiempos y riesgos automáticos.</p>
-                    </div>
-                    <span className="badge bg-success-subtle text-success">Tablero</span>
-                  </div>
-                  <div className="row g-3">
-                    <div className="col-6">
-                      <div className="border rounded p-3 h-100" style={{ background: "#fdfdfd" }}>
-                        <div className="fw-semibold">{completados}/{docs.length}</div>
-                        <small className="text-muted">Documentos completos</small>
+
+            <div className="col-lg-8">
+              {selectedExpediente ? (
+                <div className="card border-0 shadow-sm mb-4">
+                  <div className="card-body p-4">
+                    <SectionTitle
+                      title={`Expediente ${selectedExpediente.codigo}`}
+                      subtitle="Datos generales"
+                      badge="Vista principal"
+                    />
+                    <div className="row g-3 mb-3">
+                      <div className="col-md-6">
+                        <label className="form-label small fw-semibold">Propietario</label>
+                        <input className="form-control" value={selectedExpediente.owner_name} readOnly />
+                      </div>
+                      <div className="col-md-6">
+                        <label className="form-label small fw-semibold">Contacto</label>
+                        <input className="form-control" value={`${selectedExpediente.phone}`} readOnly />
+                      </div>
+                      <div className="col-md-6">
+                        <label className="form-label small fw-semibold">Mascota</label>
+                        <input
+                          className="form-control"
+                          value={`${selectedExpediente.mascota_name} · ${selectedExpediente.raza}`}
+                          readOnly
+                        />
+                      </div>
+                      <div className="col-md-6">
+                        <label className="form-label small fw-semibold">Destino</label>
+                        <input className="form-control" value={selectedExpediente.destino} readOnly />
+                      </div>
+                      <div className="col-md-4">
+                        <label className="form-label small fw-semibold">Fecha probable</label>
+                        <input className="form-control" value={selectedExpediente.fecha_probable} readOnly />
+                      </div>
+                      <div className="col-md-4">
+                        <label className="form-label small fw-semibold">Precio del servicio</label>
+                        <input className="form-control" value={`USD ${selectedExpediente.precio}`} readOnly />
+                      </div>
+                      <div className="col-md-4">
+                        <label className="form-label small fw-semibold">Estado</label>
+                        <div className="d-flex align-items-center gap-2">
+                          <EstadoPill value={selectedExpediente.estado} />
+                          {selectedExpediente.estado !== "CERRADO" && (
+                            <select
+                              className="form-select"
+                              value={selectedExpediente.estado}
+                              onChange={(e) => handleEstadoChange(e.target.value)}
+                            >
+                              {ESTADOS_EXPEDIENTE.filter((est) => est !== selectedExpediente.estado).map((estado) => (
+                                <option key={estado}>{estado}</option>
+                              ))}
+                            </select>
+                          )}
+                        </div>
                       </div>
                     </div>
-                    <div className="col-6">
-                      <div className="border rounded p-3 h-100" style={{ background: "#fdfdfd" }}>
-                        <div className="fw-semibold">{docsEnRevision} en revisión</div>
-                        <small className="text-muted">Documentos en progreso</small>
+                    <div className="alert alert-secondary d-flex justify-content-between align-items-center">
+                      <div>
+                        <strong>Reglas clave:</strong> 70% aprobado → EN_PROCESO. Todos los requisitos VALIDADO →
+                        DOCUMENTACION_COMPLETA. Solo GERENCIA → CERRADO.
                       </div>
-                    </div>
-                    <div className="col-6">
-                      <div className="border rounded p-3 h-100" style={{ background: "#fdfdfd" }}>
-                        <div className="fw-semibold">{diasParaViaje} días</div>
-                        <small className="text-muted">Para la fecha probable</small>
-                      </div>
-                    </div>
-                    <div className="col-6">
-                      <div className="border rounded p-3 h-100" style={{ background: "#fdfdfd" }}>
-                        <div className="fw-semibold">Saldo {data.pagos.moneda} {saldoPendiente}</div>
-                        <small className="text-muted">Estado de pago {data.pagos.estado}</small>
+                      <div className="text-end">
+                        <div className="small mb-1">Requisitos pendientes: {requisitosPendientes}</div>
+                        <div className="small">Rol activo: {role}</div>
                       </div>
                     </div>
                   </div>
                 </div>
-              </div>
+              ) : null}
+
+              {selectedExpediente ? (
+                <div className="row g-4">
+                  <div className="col-lg-6">
+                    <div className="card border-0 shadow-sm mb-4">
+                      <div className="card-body p-4">
+                        <SectionTitle title="Pagos" subtitle="70% y 30% con aprobación de Gerencia" badge="Finanzas" />
+                        <div className="mb-3">
+                          <div className="d-flex justify-content-between align-items-center mb-2">
+                            <div>
+                              <div className="fw-semibold">Pago 70%</div>
+                              <small className="text-muted">Registro: Comercial · Aprobación: Gerencia</small>
+                            </div>
+                            <EstadoPill
+                              value={selectedExpediente.pagos.pago70.aprobado ? "DOCUMENTACION_COMPLETA" : "CREADO"}
+                            />
+                          </div>
+                          <div className="d-flex gap-2">
+                            <button className="btn btn-outline-primary btn-sm" onClick={() => handlePago(70)}>
+                              Registrar 70%
+                            </button>
+                            <button className="btn btn-primary btn-sm" onClick={() => handleAprobarPago(70)}>
+                              Aprobar 70% (Gerencia)
+                            </button>
+                          </div>
+                          <small className="text-muted d-block mt-1">
+                            Comprobante: {selectedExpediente.pagos.pago70.comprobante_url || "No cargado"}
+                          </small>
+                        </div>
+                        <div className="border-top pt-3">
+                          <div className="d-flex justify-content-between align-items-center mb-2">
+                            <div>
+                              <div className="fw-semibold">Pago 30%</div>
+                              <small className="text-muted">Registro: Comercial · Validación: Gerencia</small>
+                            </div>
+                            <EstadoPill
+                              value={selectedExpediente.pagos.pago30.aprobado ? "DOCUMENTACION_COMPLETA" : "EN_PROCESO"}
+                            />
+                          </div>
+                          <div className="d-flex gap-2">
+                            <button className="btn btn-outline-secondary btn-sm" onClick={() => handlePago(30)}>
+                              Registrar 30%
+                            </button>
+                            <button className="btn btn-secondary btn-sm" onClick={() => handleAprobarPago(30)}>
+                              Validar 30% (Gerencia)
+                            </button>
+                          </div>
+                          <small className="text-muted d-block mt-1">
+                            Comprobante: {selectedExpediente.pagos.pago30.comprobante_url || "No cargado"}
+                          </small>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="card border-0 shadow-sm">
+                      <div className="card-body p-4">
+                        <SectionTitle title="Notas internas e historial" subtitle="Conversaciones internas" badge="Log" />
+                        <div className="mb-3">
+                          <textarea
+                            className="form-control"
+                            placeholder="Agregar nota visible para el equipo"
+                            value={notaInterna}
+                            onChange={(e) => setNotaInterna(e.target.value)}
+                          />
+                          <button className="btn btn-primary btn-sm mt-2" onClick={handleAgregarNota} type="button">
+                            Guardar nota
+                          </button>
+                        </div>
+                        <div className="border-top pt-2" style={{ maxHeight: 220, overflowY: "auto" }}>
+                          {selectedExpediente.historial.map((item) => (
+                            <div key={item.id} className="d-flex justify-content-between align-items-start mb-2">
+                              <div>
+                                <div className="fw-semibold">{item.usuario}</div>
+                                <small className="text-muted">{item.descripcion}</small>
+                              </div>
+                              <small className="text-muted">{item.fecha}</small>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="col-lg-6">
+                    <div className="card border-0 shadow-sm mb-4">
+                      <div className="card-body p-4">
+                        <SectionTitle
+                          title="Gestión documentaria"
+                          subtitle="Tabla editable de requisitos"
+                          badge="Operaciones"
+                        />
+                        <div className="table-responsive">
+                          <table className="table align-middle">
+                            <thead className="table-light">
+                              <tr>
+                                <th>Requisito</th>
+                                <th>Estado</th>
+                                <th>Evidencia</th>
+                                <th>Fecha</th>
+                                <th>Notas</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              {selectedExpediente.requisitos.map((req) => (
+                                <RequisitoRow key={req.id} requisito={req} onUpdate={handleRequisitoUpdate} />
+                              ))}
+                            </tbody>
+                          </table>
+                        </div>
+                        <div className="d-flex justify-content-between align-items-center mt-2">
+                          <div className="text-muted small">
+                            Estados: PENDIENTE → ENTREGADO → OBSERVADO/VALIDADO.
+                          </div>
+                          <button className="btn btn-success btn-sm" onClick={handleDocumentacionCompleta}>
+                            Marcar documentación completa
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="card border-0 shadow-sm">
+                      <div className="card-body p-4">
+                        <SectionTitle
+                          title="API y roles requeridos"
+                          subtitle="Endpoints protegidos por rol"
+                          badge="Backend"
+                        />
+                        <div className="row g-3">
+                          <div className="col-6">
+                            <p className="fw-semibold mb-1">Auth y usuarios</p>
+                            <ul className="small text-muted mb-0">
+                              <li>POST /auth/login</li>
+                              <li>GET /users/me</li>
+                              <li>Roles: COMERCIAL, OPERACIONES, GERENCIA</li>
+                            </ul>
+                          </div>
+                          <div className="col-6">
+                            <p className="fw-semibold mb-1">Leads</p>
+                            <ul className="small text-muted mb-0">
+                              <li>POST /leads</li>
+                              <li>GET /leads</li>
+                              <li>POST /leads/:id/convertir</li>
+                            </ul>
+                          </div>
+                          <div className="col-6">
+                            <p className="fw-semibold mb-1">Expedientes</p>
+                            <ul className="small text-muted mb-0">
+                              <li>POST /expedientes</li>
+                              <li>GET /expedientes/:id</li>
+                              <li>PUT /expedientes/:id/estado</li>
+                            </ul>
+                          </div>
+                          <div className="col-6">
+                            <p className="fw-semibold mb-1">Pagos</p>
+                            <ul className="small text-muted mb-0">
+                              <li>POST /pagos (70/30)</li>
+                              <li>PUT /pagos/:id/aprobar</li>
+                              <li>PUT /pagos/:id/validar</li>
+                            </ul>
+                          </div>
+                          <div className="col-6">
+                            <p className="fw-semibold mb-1">Requisitos</p>
+                            <ul className="small text-muted mb-0">
+                              <li>POST /requisitos</li>
+                              <li>PUT /requisitos/:id</li>
+                              <li>POST /requisitos/:id/evidencia</li>
+                            </ul>
+                          </div>
+                          <div className="col-6">
+                            <p className="fw-semibold mb-1">Historial</p>
+                            <ul className="small text-muted mb-0">
+                              <li>POST /historial</li>
+                              <li>GET /historial/:expediente_id</li>
+                            </ul>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ) : (
+                <div className="card border-0 shadow-sm">
+                  <div className="card-body">
+                    <p className="mb-0">Selecciona o crea un expediente para ver el detalle.</p>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         </div>
