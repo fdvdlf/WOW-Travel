@@ -4,7 +4,7 @@ import { getSessionFromCookies } from "@/lib/admin-auth";
 import { getConversationWithMessages } from "@/lib/chat-service";
 
 export async function GET(request, { params }) {
-  const session = getSessionFromCookies();
+  const session = await getSessionFromCookies();
   if (!session) {
     return NextResponse.json({ error: "No autorizado" }, { status: 401 });
   }

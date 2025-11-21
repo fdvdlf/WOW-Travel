@@ -11,7 +11,7 @@ function resolvePhoneNumberId(contact) {
 }
 
 export async function POST(request) {
-  const session = getSessionFromCookies();
+  const session = await getSessionFromCookies();
   if (!session) {
     return NextResponse.json({ error: "No autorizado" }, { status: 401 });
   }

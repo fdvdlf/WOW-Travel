@@ -1,5 +1,8 @@
-import { ConversationStatus, MessageDirection, MessageSource } from "@prisma/client";
-import prisma from "./prisma";
+import prisma, {
+  ConversationStatus,
+  MessageDirection,
+  MessageSource,
+} from "./prisma";
 
 const VALID_STATUSES = new Set([
   ConversationStatus.open,

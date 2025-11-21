@@ -4,7 +4,7 @@ import { SESSION_COOKIE, parseSessionToken } from "@/lib/admin-auth";
 
 const PUBLIC_API_ROUTES = ["/api/admin/login"];
 
-export function middleware(request) {
+export async function middleware(request) {
   const { pathname } = request.nextUrl;
 
   if (pathname.startsWith("/admin/login")) {
@@ -16,7 +16,7 @@ export function middleware(request) {
   }
 
   const token = request.cookies.get(SESSION_COOKIE)?.value;
-  const session = parseSessionToken(token);
+  const session = await parseSessionToken(token);
 
   const isAdminPage = pathname.startsWith("/admin");
   const isAdminApi = pathname.startsWith("/api/admin");
