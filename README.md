@@ -4,18 +4,11 @@ Sistema de atención interno que convive con el bot actual de WhatsApp/OpenAI. P
 
 ## Arquitectura general
 - **Webhook `/api/webhook-wt`**: sigue respondiendo con OpenAI, ahora además crea contactos, conversaciones y mensajes en base de datos.
-- **Base de datos (Prisma + Postgres Neon)**: modelos `Contact`, `Conversation`, `Message` y `AgentUser` para representar el mini-CRM.
+- **Capa de datos en memoria (Prisma en pausa)**: modelos `Contact`, `Conversation`, `Message` y `AgentUser` se resuelven con un almacén en memoria para evitar dependencias externas mientras Prisma permanece desactivado.
 - **API interna `/api/admin/*`**: autenticada por cookie de sesión, expone endpoints para listar conversaciones, cambiar estado y enviar respuestas manuales.
 - **Panel `/admin/chat`**: inbox estilo helpdesk para ver conversaciones, estado y enviar mensajes.
 
 Diagrama de flujo: `WhatsApp → Webhook → DB → OpenAI → DB → WhatsApp`, y `Panel interno → API /admin → DB → WhatsApp`.
-
-## Modelado de datos
-Modelos definidos en `prisma/schema.prisma`:
-- **Contact**: número de WhatsApp, nombre opcional, metadata libre (incluye `lastPhoneNumberId`), timestamps.
-- **Conversation**: estado (`open|pending|closed`), referencia a contacto, `lastMessageAt`, agente asignado opcional.
-- **Message**: `direction` (`inbound|outbound`), `source` (`whatsapp|bot|agent`), contenido y `rawPayload` JSON.
-- **AgentUser**: estructura base para agentes (roles admin/agent) por si se requiere autenticación persistente.
 
 ## Endpoints principales
 - `POST /api/webhook-wt`: maneja eventos de WhatsApp, guarda mensajes entrantes/salientes y envía respuesta automática con OpenAI.
@@ -27,24 +20,16 @@ Modelos definidos en `prisma/schema.prisma`:
 
 ## Configuración y variables de entorno
 Copia `.env.example` a `.env` y completa:
-- `DATABASE_URL` (ya apunta a la instancia Neon provisionada: `postgresql://neondb_owner:npg_jJSvCTe9W6to@ep-cold-unit-aht87yxk-pooler.c-3.us-east-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require`).
 - `WHATSAPP_TOKEN`, `WHATSAPP_GRAPH_VERSION`, `VERIFY_TOKEN`, `WHATSAPP_PHONE_NUMBER_ID`.
 - `OPENAI_API_KEY`, `OPENAI_MODEL`, `OPENAI_BASE_URL`, `OPENAI_TEMPERATURE`.
 - Panel interno: `ADMIN_USER`, `ADMIN_PASSWORD`, `ADMIN_SESSION_SECRET`, `ADMIN_SESSION_TTL_DAYS`.
 
-## Instalación y migraciones
-1. Instala dependencias (incluye Prisma y el cliente):
+## Instalación (sin Prisma)
+1. Instala dependencias:
    ```bash
    npm install
    ```
-2. Genera el cliente de Prisma y aplica el esquema (usa el Postgres remoto incluido):
-   ```bash
-   npx prisma generate
-   npx prisma migrate dev --name init
-   ```
-   Para actualizar sin migraciones explícitas en local puedes usar `npx prisma db push`.
-
-> Nota: este repositorio se preparó sin descargar nuevas dependencias desde el entorno de CI. Si el lockfile no refleja las versiones de Prisma en tu máquina, vuelve a ejecutar `npm install` para regenerarlo con conectividad a npm.
+   > Prisma está deshabilitado temporalmente para evitar bloqueos de descarga; no se requiere ninguna generación de cliente ni conexión a base de datos para probar el panel.
 
 ## Ejecución local
 ```bash
