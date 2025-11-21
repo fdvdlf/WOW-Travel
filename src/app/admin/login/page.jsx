@@ -8,7 +8,7 @@ import styles from "../chat/chat.module.css";
 // Force dynamic rendering to avoid static prerender failures when the page
 // expects client-only APIs like search params and router navigation.
 export const dynamic = "force-dynamic";
-export const revalidate = 0;
+export const revalidate = false;
 
 export default function AdminLoginPage() {
   const router = useRouter();
