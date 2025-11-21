@@ -4,7 +4,7 @@ import { getSessionFromCookies } from "@/lib/admin-auth";
 import { updateConversationStatus } from "@/lib/chat-service";
 
 export async function PATCH(request, { params }) {
-  const session = getSessionFromCookies();
+  const session = await getSessionFromCookies();
   if (!session) {
     return NextResponse.json({ error: "No autorizado" }, { status: 401 });
   }

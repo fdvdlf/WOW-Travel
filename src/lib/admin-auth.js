@@ -1,8 +1,24 @@
-import crypto from "crypto";
-import { cookies } from "next/headers";
-
 const SESSION_COOKIE = "wow_admin_session";
 const DEFAULT_TTL_MS = (Number(process.env.ADMIN_SESSION_TTL_DAYS || 7) || 7) * 24 * 60 * 60 * 1000;
+const textEncoder = new TextEncoder();
+
+function encodeBase64Url(value) {
+  if (typeof Buffer !== "undefined") {
+    return Buffer.from(value, "utf-8").toString("base64url");
+  }
+
+  const base64 = btoa(value);
+  return base64.replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/g, "");
+}
+
+function decodeBase64Url(value) {
+  if (typeof Buffer !== "undefined") {
+    return Buffer.from(value, "base64url").toString("utf-8");
+  }
+
+  const normalized = value.replace(/-/g, "+").replace(/_/g, "/");
+  return atob(normalized);
+}
 
 function getSecret() {
   const secret = process.env.ADMIN_SESSION_SECRET;
@@ -24,28 +40,44 @@ export function validateAdminCredentials(username, password) {
   return username === expectedUser && password === expectedPassword;
 }
 
-function signPayload(payload) {
+function toHex(buffer) {
+  return Array.from(new Uint8Array(buffer))
+    .map((byte) => byte.toString(16).padStart(2, "0"))
+    .join("");
+}
+
+async function signPayload(payload) {
   const secret = getSecret();
   if (!secret) return null;
-  return crypto.createHmac("sha256", secret).update(payload).digest("hex");
+
+  const key = await crypto.subtle.importKey(
+    "raw",
+    textEncoder.encode(secret),
+    { name: "HMAC", hash: "SHA-256" },
+    false,
+    ["sign"]
+  );
+
+  const signature = await crypto.subtle.sign("HMAC", key, textEncoder.encode(payload));
+  return toHex(signature);
 }
 
-export function createSessionToken(username) {
+export async function createSessionToken(username) {
   const issuedAt = Date.now();
   const payload = `${username}|${issuedAt}`;
-  const signature = signPayload(payload);
+  const signature = await signPayload(payload);
   if (!signature) return null;
 
-  return Buffer.from(`${payload}|${signature}`).toString("base64url");
+  return encodeBase64Url(`${payload}|${signature}`);
 }
 
-export function parseSessionToken(token) {
+export async function parseSessionToken(token) {
   if (!token) return null;
-  const decoded = Buffer.from(token, "base64url").toString("utf-8");
+  const decoded = decodeBase64Url(token);
   const [username, issuedAt, signature] = decoded.split("|");
   if (!username || !issuedAt || !signature) return null;
 
-  const expectedSignature = signPayload(`${username}|${issuedAt}`);
+  const expectedSignature = await signPayload(`${username}|${issuedAt}`);
   if (!expectedSignature || expectedSignature !== signature) return null;
 
   if (Date.now() - Number(issuedAt) > DEFAULT_TTL_MS) {
@@ -55,9 +87,11 @@ export function parseSessionToken(token) {
   return { username };
 }
 
-export function setSessionCookie(username) {
-  const token = createSessionToken(username);
+export async function setSessionCookie(username) {
+  const token = await createSessionToken(username);
   if (!token) return null;
+
+  const { cookies } = await import("next/headers");
 
   cookies().set(SESSION_COOKIE, token, {
     httpOnly: true,
@@ -70,11 +104,13 @@ export function setSessionCookie(username) {
   return token;
 }
 
-export function clearSessionCookie() {
+export async function clearSessionCookie() {
+  const { cookies } = await import("next/headers");
   cookies().delete(SESSION_COOKIE);
 }
 
-export function getSessionFromCookies() {
+export async function getSessionFromCookies() {
+  const { cookies } = await import("next/headers");
   const token = cookies().get(SESSION_COOKIE)?.value;
   return parseSessionToken(token);
 }

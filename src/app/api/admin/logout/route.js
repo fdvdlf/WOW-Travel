@@ -3,9 +3,9 @@ import { NextResponse } from "next/server";
 import { clearSessionCookie, getSessionFromCookies } from "@/lib/admin-auth";
 
 export async function POST() {
-  const session = getSessionFromCookies();
+  const session = await getSessionFromCookies();
   if (session) {
-    clearSessionCookie();
+    await clearSessionCookie();
   }
 
   return NextResponse.json({ ok: true });
