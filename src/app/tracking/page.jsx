@@ -602,8 +602,9 @@ export default function TrackingPage() {
                 </div>
               ) : null}
 
-              {selectedExpediente ? (
-                <div className="row g-4">
+                {selectedExpediente ? (
+                  <>
+                  <div className="row g-4">
                   <div className="col-lg-6">
                     <div className="card border-0 shadow-sm mb-4">
                       <div className="card-body p-4">
@@ -685,106 +686,6 @@ export default function TrackingPage() {
                   </div>
 
                   <div className="col-lg-6">
-                    <div className="card border-0 shadow-sm mb-4">
-                      <div className="card-body p-4">
-                        <SectionTitle
-                          title="Gestión documentaria"
-                          subtitle="Tabla editable de requisitos"
-                          badge="Operaciones"
-                        />
-                        <div className="table-responsive">
-                          <table className="table align-middle">
-                            <thead className="table-light">
-                              <tr>
-                                <th>Requisito</th>
-                                <th>Estado</th>
-                                <th>Evidencia</th>
-                                <th>Fecha</th>
-                                <th>Notas</th>
-                              </tr>
-                            </thead>
-                            <tbody>
-                              {selectedExpediente.requisitos.map((req) => (
-                                <RequisitoRow key={req.id} requisito={req} onUpdate={handleRequisitoUpdate} />
-                              ))}
-                            </tbody>
-                          </table>
-                        </div>
-                        <div className="d-flex justify-content-between align-items-center mt-2">
-                          <div className="text-muted small">
-                            Estados: PENDIENTE → ENTREGADO → OBSERVADO/VALIDADO.
-                          </div>
-                          <button className="btn btn-success btn-sm" onClick={handleDocumentacionCompleta}>
-                            Marcar documentación completa
-                          </button>
-                        </div>
-
-                        <div className="border-top pt-3 mt-3">
-                          <p className="fw-semibold mb-2">Agregar requisito y evidencias</p>
-                          <p className="text-muted small mb-3">
-                            Usa este bloque ampliado para registrar nuevos requisitos, la fecha del documento, notas internas y el
-                            enlace a la evidencia sin que la tabla quede apretada.
-                          </p>
-                          <div className="row g-3">
-                            <div className="col-md-6">
-                              <label className="form-label small fw-semibold">Nombre del requisito</label>
-                              <input
-                                className="form-control"
-                                placeholder="Ej. Certificado SENASA especial"
-                                value={nuevoRequisito.nombre}
-                                onChange={(e) => setNuevoRequisito({ ...nuevoRequisito, nombre: e.target.value })}
-                              />
-                            </div>
-                            <div className="col-md-6">
-                              <label className="form-label small fw-semibold">Estado inicial</label>
-                              <select
-                                className="form-select"
-                                value={nuevoRequisito.estado}
-                                onChange={(e) => setNuevoRequisito({ ...nuevoRequisito, estado: e.target.value })}
-                              >
-                                {ESTADOS_REQUISITO.map((estado) => (
-                                  <option key={estado}>{estado}</option>
-                                ))}
-                              </select>
-                            </div>
-                            <div className="col-md-6">
-                              <label className="form-label small fw-semibold">Evidencia (URL o nombre de archivo)</label>
-                              <input
-                                className="form-control"
-                                placeholder="Sube o pega el enlace a la evidencia"
-                                value={nuevoRequisito.evidencia_url}
-                                onChange={(e) => setNuevoRequisito({ ...nuevoRequisito, evidencia_url: e.target.value })}
-                              />
-                            </div>
-                            <div className="col-md-3">
-                              <label className="form-label small fw-semibold">Fecha del documento</label>
-                              <input
-                                type="date"
-                                className="form-control"
-                                value={nuevoRequisito.fecha}
-                                onChange={(e) => setNuevoRequisito({ ...nuevoRequisito, fecha: e.target.value })}
-                              />
-                            </div>
-                            <div className="col-md-3">
-                              <label className="form-label small fw-semibold">Notas internas</label>
-                              <input
-                                className="form-control"
-                                placeholder="Detalles u observaciones"
-                                value={nuevoRequisito.notas}
-                                onChange={(e) => setNuevoRequisito({ ...nuevoRequisito, notas: e.target.value })}
-                              />
-                            </div>
-                          </div>
-                          <div className="d-flex justify-content-end gap-2 mt-3">
-                            <small className="text-muted">Solo Operaciones puede agregar requisitos.</small>
-                            <button className="btn btn-outline-primary" onClick={handleAgregarRequisito}>
-                              Añadir requisito con evidencia
-                            </button>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-
                     <div className="card border-0 shadow-sm">
                       <div className="card-body p-4">
                         <SectionTitle
@@ -845,6 +746,111 @@ export default function TrackingPage() {
                     </div>
                   </div>
                 </div>
+
+                <div className="row g-4 mt-1">
+                  <div className="col-12">
+                    <div className="card border-0 shadow-sm">
+                      <div className="card-body p-4">
+                        <SectionTitle
+                          title="Gestión documentaria"
+                          subtitle="Tabla editable de requisitos"
+                          badge="Operaciones"
+                        />
+                        <div className="table-responsive">
+                          <table className="table align-middle mb-0">
+                            <thead className="table-light">
+                              <tr>
+                                <th>Requisito</th>
+                                <th>Estado</th>
+                                <th>Evidencia</th>
+                                <th>Fecha</th>
+                                <th>Notas</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              {selectedExpediente.requisitos.map((req) => (
+                                <RequisitoRow key={req.id} requisito={req} onUpdate={handleRequisitoUpdate} />
+                              ))}
+                            </tbody>
+                          </table>
+                        </div>
+                        <div className="d-flex flex-wrap justify-content-between align-items-center gap-2 mt-3">
+                          <div className="text-muted small">
+                            Estados: PENDIENTE → ENTREGADO → OBSERVADO/VALIDADO.
+                          </div>
+                          <button className="btn btn-success btn-sm" onClick={handleDocumentacionCompleta}>
+                            Marcar documentación completa
+                          </button>
+                        </div>
+
+                        <div className="border-top pt-3 mt-4">
+                          <p className="fw-semibold mb-2">Agregar requisito y evidencias</p>
+                          <p className="text-muted small mb-3">
+                            Usa este bloque amplio, debajo de la tabla principal, para registrar nuevos requisitos con su evidencia
+                            y fechas sin que el panel se sienta apretado.
+                          </p>
+                          <div className="row g-3">
+                            <div className="col-md-6">
+                              <label className="form-label small fw-semibold">Nombre del requisito</label>
+                              <input
+                                className="form-control"
+                                placeholder="Ej. Certificado SENASA especial"
+                                value={nuevoRequisito.nombre}
+                                onChange={(e) => setNuevoRequisito({ ...nuevoRequisito, nombre: e.target.value })}
+                              />
+                            </div>
+                            <div className="col-md-6">
+                              <label className="form-label small fw-semibold">Estado inicial</label>
+                              <select
+                                className="form-select"
+                                value={nuevoRequisito.estado}
+                                onChange={(e) => setNuevoRequisito({ ...nuevoRequisito, estado: e.target.value })}
+                              >
+                                {ESTADOS_REQUISITO.map((estado) => (
+                                  <option key={estado}>{estado}</option>
+                                ))}
+                              </select>
+                            </div>
+                            <div className="col-md-6">
+                              <label className="form-label small fw-semibold">Evidencia (URL o nombre de archivo)</label>
+                              <input
+                                className="form-control"
+                                placeholder="Sube o pega el enlace a la evidencia"
+                                value={nuevoRequisito.evidencia_url}
+                                onChange={(e) => setNuevoRequisito({ ...nuevoRequisito, evidencia_url: e.target.value })}
+                              />
+                            </div>
+                            <div className="col-md-3">
+                              <label className="form-label small fw-semibold">Fecha del documento</label>
+                              <input
+                                type="date"
+                                className="form-control"
+                                value={nuevoRequisito.fecha}
+                                onChange={(e) => setNuevoRequisito({ ...nuevoRequisito, fecha: e.target.value })}
+                              />
+                            </div>
+                            <div className="col-md-3">
+                              <label className="form-label small fw-semibold">Notas internas</label>
+                              <input
+                                className="form-control"
+                                placeholder="Detalles u observaciones"
+                                value={nuevoRequisito.notas}
+                                onChange={(e) => setNuevoRequisito({ ...nuevoRequisito, notas: e.target.value })}
+                              />
+                            </div>
+                          </div>
+                          <div className="d-flex flex-wrap justify-content-end align-items-center gap-2 mt-3">
+                            <small className="text-muted">Solo Operaciones puede agregar requisitos.</small>
+                            <button className="btn btn-outline-primary" onClick={handleAgregarRequisito}>
+                              Añadir requisito con evidencia
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                  </>
               ) : (
                 <div className="card border-0 shadow-sm">
                   <div className="card-body">
