@@ -26,12 +26,10 @@
     "slick-carousel": "^1.8.1",
     "swiper": "^11.0.2",
     "wow.js": "^1.2.2",
-    "yet-another-react-lightbox": "^3.21.6",
-    "@prisma/client": "^5.21.1"
+    "yet-another-react-lightbox": "^3.21.6"
   },
   "devDependencies": {
     "eslint": "^8",
-    "eslint-config-next": "14.2.16",
-    "prisma": "^5.21.1"
+    "eslint-config-next": "14.2.16"
   }
 }
