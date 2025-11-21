@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import { Layout } from "@/layouts/Layout";
 
 const ROLES = ["COMERCIAL", "OPERACIONES", "GERENCIA"];
@@ -41,6 +41,22 @@ const SAMPLE_LEADS = [
     source: "Web",
     notes: "Consulta puerta a puerta Madrid",
     created_at: "2024-06-03",
+  },
+  {
+    id: "lead-3",
+    name: "Lucía Rojas",
+    phone: "+51 977 111 333",
+    source: "Referido",
+    notes: "Traslado VIP a Buenos Aires con visado al día",
+    created_at: "2024-06-04",
+  },
+  {
+    id: "lead-4",
+    name: "Santiago Paredes",
+    phone: "+51 955 000 121",
+    source: "Landing campaña",
+    notes: "Ruta combinada Lima → Miami → Toronto, requiere crate especial",
+    created_at: "2024-06-05",
   },
 ];
 
@@ -126,6 +142,19 @@ function ExpedienteCard({ expediente, onSelect, isActive }) {
 }
 
 function RequisitoRow({ requisito, onUpdate }) {
+  const fileInputRef = useRef(null);
+
+  const handleAdjuntarEvidencia = () => {
+    fileInputRef.current?.click();
+  };
+
+  const handleFileChange = (event) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      onUpdate({ ...requisito, evidencia_url: file.name });
+    }
+  };
+
   return (
     <tr>
       <td className="fw-semibold">{requisito.nombre}</td>
@@ -143,12 +172,18 @@ function RequisitoRow({ requisito, onUpdate }) {
         </select>
       </td>
       <td>
-        <input
-          className="form-control form-control-sm"
-          placeholder="URL o nombre de evidencia"
-          value={requisito.evidencia_url}
-          onChange={(e) => onUpdate({ ...requisito, evidencia_url: e.target.value })}
-        />
+        <div className="d-flex align-items-center gap-2">
+          <input
+            className="form-control form-control-sm"
+            placeholder="URL o nombre de evidencia"
+            value={requisito.evidencia_url}
+            onChange={(e) => onUpdate({ ...requisito, evidencia_url: e.target.value })}
+          />
+          <input ref={fileInputRef} type="file" className="d-none" onChange={handleFileChange} />
+          <button className="btn btn-link btn-sm p-0" type="button" onClick={handleAdjuntarEvidencia}>
+            Adjuntar evidencia
+          </button>
+        </div>
       </td>
       <td>
         <input
@@ -572,96 +607,161 @@ export default function TrackingPage() {
                 </div>
               ) : null}
 
-              {selectedExpediente ? (
-                <div className="row g-4">
-                  <div className="col-lg-6">
-                    <div className="card border-0 shadow-sm mb-4">
-                      <div className="card-body p-4">
-                        <SectionTitle title="Pagos" subtitle="70% y 30% con aprobación de Gerencia" badge="Finanzas" />
-                        <div className="mb-3">
-                          <div className="d-flex justify-content-between align-items-center mb-2">
-                            <div>
-                              <div className="fw-semibold">Pago 70%</div>
-                              <small className="text-muted">Registro: Comercial · Aprobación: Gerencia</small>
-                            </div>
-                            <EstadoPill
-                              value={selectedExpediente.pagos.pago70.aprobado ? "DOCUMENTACION_COMPLETA" : "CREADO"}
-                            />
-                          </div>
-                          <div className="d-flex gap-2">
-                            <button className="btn btn-outline-primary btn-sm" onClick={() => handlePago(70)}>
-                              Registrar 70%
-                            </button>
-                            <button className="btn btn-primary btn-sm" onClick={() => handleAprobarPago(70)}>
-                              Aprobar 70% (Gerencia)
-                            </button>
-                          </div>
-                          <small className="text-muted d-block mt-1">
-                            Comprobante: {selectedExpediente.pagos.pago70.comprobante_url || "No cargado"}
-                          </small>
-                        </div>
-                        <div className="border-top pt-3">
-                          <div className="d-flex justify-content-between align-items-center mb-2">
-                            <div>
-                              <div className="fw-semibold">Pago 30%</div>
-                              <small className="text-muted">Registro: Comercial · Validación: Gerencia</small>
-                            </div>
-                            <EstadoPill
-                              value={selectedExpediente.pagos.pago30.aprobado ? "DOCUMENTACION_COMPLETA" : "EN_PROCESO"}
-                            />
-                          </div>
-                          <div className="d-flex gap-2">
-                            <button className="btn btn-outline-secondary btn-sm" onClick={() => handlePago(30)}>
-                              Registrar 30%
-                            </button>
-                            <button className="btn btn-secondary btn-sm" onClick={() => handleAprobarPago(30)}>
-                              Validar 30% (Gerencia)
-                            </button>
-                          </div>
-                          <small className="text-muted d-block mt-1">
-                            Comprobante: {selectedExpediente.pagos.pago30.comprobante_url || "No cargado"}
-                          </small>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className="card border-0 shadow-sm">
-                      <div className="card-body p-4">
-                        <SectionTitle title="Notas internas e historial" subtitle="Conversaciones internas" badge="Log" />
-                        <div className="mb-3">
-                          <textarea
-                            className="form-control"
-                            placeholder="Agregar nota visible para el equipo"
-                            value={notaInterna}
-                            onChange={(e) => setNotaInterna(e.target.value)}
-                          />
-                          <button className="btn btn-primary btn-sm mt-2" onClick={handleAgregarNota} type="button">
-                            Guardar nota
-                          </button>
-                        </div>
-                        <div className="border-top pt-2" style={{ maxHeight: 220, overflowY: "auto" }}>
-                          {selectedExpediente.historial.map((item) => (
-                            <div key={item.id} className="d-flex justify-content-between align-items-start mb-2">
-                              <div>
-                                <div className="fw-semibold">{item.usuario}</div>
-                                <small className="text-muted">{item.descripcion}</small>
+                {selectedExpediente ? (
+                  <>
+                    <div className="row g-4">
+                      <div className="col-lg-6">
+                        <div className="card border-0 shadow-sm mb-4">
+                          <div className="card-body p-4">
+                            <SectionTitle title="Pagos" subtitle="70% y 30% con aprobación de Gerencia" badge="Finanzas" />
+                            <div className="mb-3">
+                              <div className="d-flex justify-content-between align-items-center mb-2">
+                                <div>
+                                  <div className="fw-semibold">Pago 70%</div>
+                                  <small className="text-muted">Registro: Comercial · Aprobación: Gerencia</small>
+                                </div>
+                                <EstadoPill
+                                  value={selectedExpediente.pagos.pago70.aprobado ? "DOCUMENTACION_COMPLETA" : "CREADO"}
+                                />
                               </div>
-                              <small className="text-muted">{item.fecha}</small>
+                              <div className="d-flex gap-2">
+                                <button className="btn btn-outline-primary btn-sm" onClick={() => handlePago(70)}>
+                                  Registrar 70%
+                                </button>
+                                <button className="btn btn-primary btn-sm" onClick={() => handleAprobarPago(70)}>
+                                  Aprobar 70% (Gerencia)
+                                </button>
+                              </div>
+                              <small className="text-muted d-block mt-1">
+                                Comprobante: {selectedExpediente.pagos.pago70.comprobante_url || "No cargado"}
+                              </small>
                             </div>
-                          ))}
+                            <div className="border-top pt-3">
+                              <div className="d-flex justify-content-between align-items-center mb-2">
+                                <div>
+                                  <div className="fw-semibold">Pago 30%</div>
+                                  <small className="text-muted">Registro: Comercial · Validación: Gerencia</small>
+                                </div>
+                                <EstadoPill
+                                  value={selectedExpediente.pagos.pago30.aprobado ? "DOCUMENTACION_COMPLETA" : "EN_PROCESO"}
+                                />
+                              </div>
+                              <div className="d-flex gap-2">
+                                <button className="btn btn-outline-secondary btn-sm" onClick={() => handlePago(30)}>
+                                  Registrar 30%
+                                </button>
+                                <button className="btn btn-secondary btn-sm" onClick={() => handleAprobarPago(30)}>
+                                  Validar 30% (Gerencia)
+                                </button>
+                              </div>
+                              <small className="text-muted d-block mt-1">
+                                Comprobante: {selectedExpediente.pagos.pago30.comprobante_url || "No cargado"}
+                              </small>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div className="card border-0 shadow-sm">
+                          <div className="card-body p-4">
+                            <SectionTitle title="Notas internas e historial" subtitle="Conversaciones internas" badge="Log" />
+                            <div className="mb-3">
+                              <textarea
+                                className="form-control"
+                                placeholder="Agregar nota visible para el equipo"
+                                value={notaInterna}
+                                onChange={(e) => setNotaInterna(e.target.value)}
+                              />
+                              <button className="btn btn-primary btn-sm mt-2" onClick={handleAgregarNota} type="button">
+                                Guardar nota
+                              </button>
+                            </div>
+                            <div className="border-top pt-2" style={{ maxHeight: 220, overflowY: "auto" }}>
+                              {selectedExpediente.historial.map((item) => (
+                                <div key={item.id} className="d-flex justify-content-between align-items-start mb-2">
+                                  <div>
+                                    <div className="fw-semibold">{item.usuario}</div>
+                                    <small className="text-muted">{item.descripcion}</small>
+                                  </div>
+                                  <small className="text-muted">{item.fecha}</small>
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="col-lg-6">
+                        <div className="card border-0 shadow-sm">
+                          <div className="card-body p-4">
+                            <SectionTitle
+                              title="API y roles requeridos"
+                              subtitle="Endpoints protegidos por rol"
+                              badge="Backend"
+                            />
+                            <div className="row g-3">
+                              <div className="col-6">
+                                <p className="fw-semibold mb-1">Auth y usuarios</p>
+                                <ul className="small text-muted mb-0">
+                                  <li>POST /auth/login</li>
+                                  <li>GET /users/me</li>
+                                  <li>Roles: COMERCIAL, OPERACIONES, GERENCIA</li>
+                                </ul>
+                              </div>
+                              <div className="col-6">
+                                <p className="fw-semibold mb-1">Leads</p>
+                                <ul className="small text-muted mb-0">
+                                  <li>POST /leads</li>
+                                  <li>GET /leads</li>
+                                  <li>POST /leads/:id/convertir</li>
+                                </ul>
+                              </div>
+                              <div className="col-6">
+                                <p className="fw-semibold mb-1">Expedientes</p>
+                                <ul className="small text-muted mb-0">
+                                  <li>POST /expedientes</li>
+                                  <li>GET /expedientes/:id</li>
+                                  <li>PUT /expedientes/:id/estado</li>
+                                </ul>
+                              </div>
+                              <div className="col-6">
+                                <p className="fw-semibold mb-1">Pagos</p>
+                                <ul className="small text-muted mb-0">
+                                  <li>POST /pagos (70/30)</li>
+                                  <li>PUT /pagos/:id/aprobar</li>
+                                  <li>PUT /pagos/:id/validar</li>
+                                </ul>
+                              </div>
+                              <div className="col-6">
+                                <p className="fw-semibold mb-1">Requisitos</p>
+                                <ul className="small text-muted mb-0">
+                                  <li>POST /requisitos</li>
+                                  <li>PUT /requisitos/:id</li>
+                                  <li>POST /requisitos/:id/evidencia</li>
+                                </ul>
+                              </div>
+                              <div className="col-6">
+                                <p className="fw-semibold mb-1">Historial</p>
+                                <ul className="small text-muted mb-0">
+                                  <li>POST /historial</li>
+                                  <li>GET /historial/:expediente_id</li>
+                                </ul>
+                              </div>
+                            </div>
+                          </div>
                         </div>
                       </div>
                     </div>
-                  </div>
 
-                  <div className="col-lg-6">
-                    <div className="card border-0 shadow-sm mb-4">
+                    <div className="card border-0 shadow-sm mt-4">
                       <div className="card-body p-4">
                         <SectionTitle
                           title="Gestión documentaria"
-                          subtitle="Tabla editable de requisitos"
+                          subtitle="Tabla editable de requisitos con espacio completo"
                           badge="Operaciones"
                         />
+                        <p className="text-muted small mb-3">
+                          Controla todo el checklist en un solo panel y adjunta evidencia directamente desde aquí.
+                        </p>
                         <div className="table-responsive">
                           <table className="table align-middle">
                             <thead className="table-light">
@@ -680,84 +780,29 @@ export default function TrackingPage() {
                             </tbody>
                           </table>
                         </div>
-                        <div className="d-flex justify-content-between align-items-center mt-2">
+                        <div className="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center gap-2 mt-2">
                           <div className="text-muted small">
                             Estados: PENDIENTE → ENTREGADO → OBSERVADO/VALIDADO.
                           </div>
-                          <button className="btn btn-success btn-sm" onClick={handleDocumentacionCompleta}>
-                            Marcar documentación completa
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className="card border-0 shadow-sm">
-                      <div className="card-body p-4">
-                        <SectionTitle
-                          title="API y roles requeridos"
-                          subtitle="Endpoints protegidos por rol"
-                          badge="Backend"
-                        />
-                        <div className="row g-3">
-                          <div className="col-6">
-                            <p className="fw-semibold mb-1">Auth y usuarios</p>
-                            <ul className="small text-muted mb-0">
-                              <li>POST /auth/login</li>
-                              <li>GET /users/me</li>
-                              <li>Roles: COMERCIAL, OPERACIONES, GERENCIA</li>
-                            </ul>
-                          </div>
-                          <div className="col-6">
-                            <p className="fw-semibold mb-1">Leads</p>
-                            <ul className="small text-muted mb-0">
-                              <li>POST /leads</li>
-                              <li>GET /leads</li>
-                              <li>POST /leads/:id/convertir</li>
-                            </ul>
-                          </div>
-                          <div className="col-6">
-                            <p className="fw-semibold mb-1">Expedientes</p>
-                            <ul className="small text-muted mb-0">
-                              <li>POST /expedientes</li>
-                              <li>GET /expedientes/:id</li>
-                              <li>PUT /expedientes/:id/estado</li>
-                            </ul>
-                          </div>
-                          <div className="col-6">
-                            <p className="fw-semibold mb-1">Pagos</p>
-                            <ul className="small text-muted mb-0">
-                              <li>POST /pagos (70/30)</li>
-                              <li>PUT /pagos/:id/aprobar</li>
-                              <li>PUT /pagos/:id/validar</li>
-                            </ul>
-                          </div>
-                          <div className="col-6">
-                            <p className="fw-semibold mb-1">Requisitos</p>
-                            <ul className="small text-muted mb-0">
-                              <li>POST /requisitos</li>
-                              <li>PUT /requisitos/:id</li>
-                              <li>POST /requisitos/:id/evidencia</li>
-                            </ul>
-                          </div>
-                          <div className="col-6">
-                            <p className="fw-semibold mb-1">Historial</p>
-                            <ul className="small text-muted mb-0">
-                              <li>POST /historial</li>
-                              <li>GET /historial/:expediente_id</li>
-                            </ul>
+                          <div className="d-flex gap-2">
+                            <button className="btn btn-outline-secondary btn-sm" type="button">
+                              Exportar checklist
+                            </button>
+                            <button className="btn btn-success btn-sm" onClick={handleDocumentacionCompleta}>
+                              Marcar documentación completa
+                            </button>
                           </div>
                         </div>
                       </div>
                     </div>
+                  </>
+                ) : (
+                  <div className="card border-0 shadow-sm">
+                    <div className="card-body">
+                      <p className="mb-0">Selecciona o crea un expediente para ver el detalle.</p>
+                    </div>
                   </div>
-                </div>
-              ) : (
-                <div className="card border-0 shadow-sm">
-                  <div className="card-body">
-                    <p className="mb-0">Selecciona o crea un expediente para ver el detalle.</p>
-                  </div>
-                </div>
-              )}
+                )}
             </div>
           </div>
         </div>
