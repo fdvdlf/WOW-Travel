@@ -183,6 +183,42 @@ const modulosSistema = [
   },
 ];
 
+const pasosClave = [
+  {
+    titulo: "0. Lead → Expediente",
+    rol: "Comercial",
+    objetivo: "Calificar interés y crear expediente con datos mínimos del propietario, mascota y viaje.",
+  },
+  {
+    titulo: "1. Validación documental",
+    rol: "Operaciones",
+    objetivo: "Obtener certificados críticos (vacunas, microchip, salud, desinfección de jaula, anticuerpos si aplica).",
+  },
+  {
+    titulo: "2. Reservas y pagos",
+    rol: "Finanzas + Operaciones",
+    objetivo: "Armar cotización, registrar vouchers y confirmar estado Pagado antes de logística.",
+  },
+  {
+    titulo: "3. Logística y entrega",
+    rol: "Operaciones",
+    objetivo: "Validar jaula y checklist día de vuelo (ayuno, documentos físicos, foto de entrega).",
+  },
+  {
+    titulo: "4. Cierre y satisfacción",
+    rol: "CX",
+    objetivo: "Confirmar entrega en destino, solicitar feedback y congelar histórico de eventos.",
+  },
+];
+
+const requisitosCriticos = [
+  "Vacunas, desparasitación y antipulgas vigentes (foto de tarjeta).",
+  "Certificado de salud + microchip con número legible.",
+  "Certificado de desinfección y desinsectación con medidas y material de la jaula.",
+  "Titulación de anticuerpos de rabia si el país destino lo exige.",
+  "Permisos especiales o cartas consulares del país de origen/destino.",
+];
+
 const leadDemo = {
   nombre: "Carolina Vega",
   telefono: "+51 999 888 777",
@@ -446,6 +482,57 @@ export default function TrackingDemo() {
             <div className="col-lg-4 text-lg-end mt-3 mt-lg-0">
               <button className="btn btn-primary me-2">+ Nuevo expediente</button>
               <button className="btn btn-outline-secondary">Exportar PDF</button>
+            </div>
+          </div>
+
+          <div className="row g-4 mb-4">
+            <div className="col-lg-6">
+              <div className="card h-100 border-0 shadow-sm">
+                <div className="card-body">
+                  <div className="d-flex justify-content-between align-items-start mb-2">
+                    <h5 className="mb-0">Qué hace cada módulo</h5>
+                    <span className="badge bg-primary-subtle text-primary">Mapa rápido</span>
+                  </div>
+                  <div className="row g-2">
+                    {modulosSistema.map((modulo) => (
+                      <div key={modulo.nombre} className="col-sm-6">
+                        <div className="border rounded p-3 h-100 bg-light">
+                          <div className="fw-semibold mb-1">{modulo.nombre}</div>
+                          <small className="text-muted d-block mb-2">{modulo.detalle}</small>
+                          <div className="d-flex flex-wrap gap-1">
+                            {modulo.badges.map((badge) => (
+                              <span key={badge} className="badge bg-white text-muted border">
+                                {badge}
+                              </span>
+                            ))}
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="col-lg-6">
+              <div className="card h-100 border-0 shadow-sm">
+                <div className="card-body">
+                  <div className="d-flex justify-content-between align-items-start mb-2">
+                    <h5 className="mb-0">Pasos claros del viaje</h5>
+                    <span className="badge bg-success-subtle text-success">Responsables</span>
+                  </div>
+                  <div className="d-flex flex-column gap-2">
+                    {pasosClave.map((paso) => (
+                      <div key={paso.titulo} className="border rounded p-3 bg-light">
+                        <div className="d-flex justify-content-between align-items-center mb-1">
+                          <div className="fw-semibold">{paso.titulo}</div>
+                          <span className="badge bg-white text-muted border">{paso.rol}</span>
+                        </div>
+                        <small className="text-muted d-block">{paso.objetivo}</small>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
 
@@ -784,6 +871,30 @@ export default function TrackingDemo() {
             </div>
 
             <div className="col-lg-5">
+              <div className="card border-0 shadow-sm mb-4">
+                <div className="card-body p-4">
+                  <div className="d-flex justify-content-between align-items-start mb-3">
+                    <div>
+                      <h4 className="mb-1">Checklist crítico de viaje</h4>
+                      <p className="text-muted mb-0">
+                        Debe completarse antes de pasar a Reservas. Incluye certificados obligatorios y quién valida.
+                      </p>
+                    </div>
+                    <span className="badge bg-danger-subtle text-danger">Bloquea avance</span>
+                  </div>
+                  <ul className="list-unstyled mb-0 d-flex flex-column gap-2">
+                    {requisitosCriticos.map((item) => (
+                      <li key={item} className="d-flex align-items-start gap-2">
+                        <span className="badge bg-light text-muted border">Doc</span>
+                        <div className="flex-grow-1">
+                          <div className="text-muted small">{item}</div>
+                        </div>
+                        <span className="badge bg-success-subtle text-success">Valida Operaciones</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
               <div className="card border-0 shadow-sm mb-4">
                 <div className="card-body p-4">
                   <div className="d-flex justify-content-between align-items-start mb-3">
