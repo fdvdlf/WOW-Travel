@@ -27,8 +27,8 @@ const expedienteBase = {
     fecha: "2024-09-15",
     destino: "Toronto, Canadá",
     jaula: "90x60x65 cm (plástico rígido)",
-    necesitaCertificado: true,
-    requiereTitulacion: true,
+    necesitaCertificado: "Sí",
+    requiereTitulacion: "Depende del destino",
   },
 };
 
@@ -179,6 +179,9 @@ const camposFormulario = [
 
 function useFormState() {
   const [data, setData] = useState(expedienteBase);
+  const [lastSaved, setLastSaved] = useState(null);
+
+  const readValue = (path) => path.split(".").reduce((acc, key) => acc?.[key], data);
 
   const updateField = (path, value) => {
     const keys = path.split(".");
@@ -197,7 +200,9 @@ function useFormState() {
     });
   };
 
-  return { data, updateField };
+  const saveNow = () => setLastSaved(new Date());
+
+  return { data, updateField, readValue, lastSaved, saveNow };
 }
 
 function Badge({ value }) {
@@ -206,14 +211,43 @@ function Badge({ value }) {
 }
 
 export default function TrackingDemo() {
-  const { data, updateField } = useFormState();
+  const { data, updateField, readValue, lastSaved, saveNow } = useFormState();
   const [docs, setDocs] = useState(initialDocs);
   const [selectedFile, setSelectedFile] = useState(null);
+  const [acciones, setAcciones] = useState(
+    tareas.map((tarea) => ({ titulo: tarea, completada: false }))
+  );
 
   const completados = useMemo(
     () => docs.filter((doc) => doc.status === "completo").length,
     [docs]
   );
+
+  const camposRequeridos = useMemo(
+    () =>
+      camposFormulario.flatMap((grupo) =>
+        grupo.campos.map((campo) => ({ name: campo.name, label: campo.label }))
+      ),
+    []
+  );
+
+  const camposCompletos = useMemo(
+    () =>
+      camposRequeridos.filter(({ name }) => {
+        const value = readValue(name);
+        return typeof value === "string" ? value.trim().length > 0 : Boolean(value);
+      }).length,
+    [camposRequeridos, readValue]
+  );
+
+  const camposPendientes = camposRequeridos
+    .filter(({ name }) => {
+      const value = readValue(name);
+      return !(typeof value === "string" ? value.trim() : value);
+    })
+    .map(({ label }) => label);
+
+  const progress = Math.round((camposCompletos / camposRequeridos.length) * 100);
 
   const handleDocUpload = (index, file) => {
     setDocs((prev) => {
@@ -223,6 +257,14 @@ export default function TrackingDemo() {
         status: "completo",
         evidencia: file?.name || "Evidencia cargada",
       };
+      return next;
+    });
+  };
+
+  const toggleAccion = (index) => {
+    setAcciones((prev) => {
+      const next = [...prev];
+      next[index] = { ...next[index], completada: !next[index].completada };
       return next;
     });
   };
@@ -285,6 +327,53 @@ export default function TrackingDemo() {
             </div>
           </div>
 
+          <div className="row g-4 mb-4">
+            <div className="col-lg-7">
+              <div className="card h-100 border-0 shadow-sm">
+                <div className="card-body p-4">
+                  <div className="d-flex justify-content-between align-items-center mb-3">
+                    <div>
+                      <p className="text-muted small mb-1">Avance del expediente</p>
+                      <h4 className="mb-0">{progress}% completo</h4>
+                    </div>
+                    <div className="w-50">
+                      <div className="progress" role="progressbar" aria-valuenow={progress} aria-valuemin="0" aria-valuemax="100">
+                        <div className="progress-bar bg-success" style={{ width: `${progress}%` }} />
+                      </div>
+                    </div>
+                  </div>
+                  <div className="d-flex flex-wrap gap-2">
+                    <span className="badge bg-success-subtle text-success">{camposCompletos} campos completos</span>
+                    <span className="badge bg-warning-subtle text-warning">{camposRequeridos.length - camposCompletos} pendientes</span>
+                    <span className="badge bg-info-subtle text-info">{docs.length} requisitos documentales</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="col-lg-5">
+              <div className="card h-100 border-0 shadow-sm">
+                <div className="card-body p-4">
+                  <div className="d-flex justify-content-between align-items-center mb-3">
+                    <h6 className="mb-0">Alertas de calidad</h6>
+                    <Badge value={camposPendientes.length ? "en-progreso" : "completo"} />
+                  </div>
+                  {camposPendientes.length ? (
+                    <ul className="mb-0 small text-muted">
+                      {camposPendientes.slice(0, 6).map((campo) => (
+                        <li key={campo}>{campo}</li>
+                      ))}
+                      {camposPendientes.length > 6 && (
+                        <li className="text-primary">+ {camposPendientes.length - 6} campos adicionales pendientes</li>
+                      )}
+                    </ul>
+                  ) : (
+                    <p className="mb-0 text-success">Todos los campos obligatorios están completos.</p>
+                  )}
+                </div>
+              </div>
+            </div>
+          </div>
+
           <div className="row g-4">
             <div className="col-lg-7">
               <div className="card border-0 shadow-sm mb-4">
@@ -308,14 +397,18 @@ export default function TrackingDemo() {
                                 type={campo.type || "text"}
                                 className="form-control"
                                 placeholder={campo.placeholder}
-                                value={campo.name.split(".").reduce((acc, key) => acc?.[key], data) || ""}
+                                value={readValue(campo.name) || ""}
                                 onChange={(e) => updateField(campo.name, e.target.value)}
                               />
                             </div>
                           ))}
                           <div className="col-md-6">
                             <label className="form-label small fw-semibold">Adjuntar foto o tarjeta</label>
-                            <input type="file" className="form-control" onChange={(e) => setSelectedFile(e.target.files?.[0])} />
+                            <input
+                              type="file"
+                              className="form-control"
+                              onChange={(e) => setSelectedFile(e.target.files?.[0])}
+                            />
                             {selectedFile && <small className="text-success">Cargado: {selectedFile.name}</small>}
                           </div>
                           <div className="col-md-6">
@@ -418,16 +511,30 @@ export default function TrackingDemo() {
                     <span className="badge bg-success-subtle text-success">Coordina</span>
                   </div>
                   <ul className="list-unstyled mb-3">
-                    {tareas.map((tarea) => (
-                      <li key={tarea} className="d-flex align-items-center mb-2">
-                        <i className="fas fa-check-circle text-primary me-2" aria-hidden></i>
-                        <span>{tarea}</span>
+                    {acciones.map((accion, index) => (
+                      <li key={accion.titulo} className="d-flex align-items-center justify-content-between mb-2">
+                        <div className="d-flex align-items-center">
+                          <input
+                            className="form-check-input me-2"
+                            type="checkbox"
+                            checked={accion.completada}
+                            onChange={() => toggleAccion(index)}
+                            id={`accion-${index}`}
+                          />
+                          <label className={`mb-0 ${accion.completada ? "text-success" : ""}`} htmlFor={`accion-${index}`}>
+                            {accion.titulo}
+                          </label>
+                        </div>
+                        <Badge value={accion.completada ? "completo" : "en-progreso"} />
                       </li>
                     ))}
                   </ul>
-                  <div className="d-flex gap-2">
-                    <button className="btn btn-primary w-50">Marcar completado</button>
-                    <button className="btn btn-outline-secondary w-50">Notificar al cliente</button>
+                  <div className="d-flex gap-2 align-items-center flex-wrap">
+                    <button className="btn btn-primary" onClick={saveNow}>Guardar borrador</button>
+                    <button className="btn btn-outline-secondary">Notificar al cliente</button>
+                    {lastSaved && (
+                      <small className="text-muted">Último guardado: {lastSaved.toLocaleString()}</small>
+                    )}
                   </div>
                 </div>
               </div>
