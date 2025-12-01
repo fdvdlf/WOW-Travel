@@ -4,6 +4,7 @@ import { BlogOne } from "@/components/blogs/BlogOne";
 import { BrandOne } from "@/components/brands/BrandOne";
 import { CounterOne } from "@/components/counter/CounterOne";
 import { InstagramOne } from "@/components/insta/InstagramOne";
+import { LanguageCloud } from "@/components/language/LanguageCloud";
 import { MarqueeOne } from "@/components/marquee/MarqueeOne";
 import { RegistrationOne } from "@/components/registration/RegistrationOne";
 import { ServiceOne } from "@/components/service/ServiceOne";
@@ -23,6 +24,9 @@ export default function Home() {
 
       {/* marquee one */}
       <MarqueeOne />
+
+      {/* language cloud */}
+      <LanguageCloud />
 
       {/* service one */}
       <ServiceOne />

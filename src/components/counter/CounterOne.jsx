@@ -38,11 +38,12 @@ export const CounterOne = () => {
                   </strong>
                 </span>
                 <h2 className="title">
-                  Servicio profesional y viajes garantizados
+                  Servicio profesional y asesoría garantizada
                 </h2>
               </div>
               <p>
-                En WOW Travel organizamos el vije de tu mascota de forma completa, segura y sin errores. Nos ocupamos de todo, desde los documentos hasta el vuelo.
+                En WOW Travel te orientamos en cada etapa: requisitos, certificados, validaciones y preparación del viaje.
+                Verificamos toda la documentación antes del vuelo y te acompañamos para que el proceso sea seguro y sin contratiempos.
               </p>
               <Link href="/about" className="btn border-btn white-btn">
                 Saber más
@@ -56,13 +57,13 @@ export const CounterOne = () => {
             <div className="counter__item-wrap">
               <div className="counter__item">
                 <h2 className="count">
-                  <Odometer end={7} suffix="+" />
+                  <Odometer end={8} suffix="+" />
                 </h2>
                 <p>Años de experiencia</p>
               </div>
               <div className="counter__item">
                 <h2 className="count">
-                  <Odometer end={230} suffix="K" />
+                  <Odometer end={350} suffix="+" />
                 </h2>
                 <p>Mascotas trasladadas</p>
               </div>
@@ -70,7 +71,7 @@ export const CounterOne = () => {
                 <h2 className="count">
                   <Odometer end={100} suffix="%" />
                 </h2>
-                <p>Familias felices</p>
+                <p>Familias tranquilas</p>
               </div>
             </div>
           </div>

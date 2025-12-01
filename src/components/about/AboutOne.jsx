@@ -6,10 +6,6 @@ const videoShape = "/images/about_video_shape.svg";
 const petIcon = "/icon/pet_icon02.svg";
 const experienceShape = "/images/experience_shape.svg";
 const authorSign = "/images/author_sign.png";
-const author1 = "/images/author_01.png";
-const author2 = "/images/author_02.png";
-const author3 = "/images/author_03.png";
-const author4 = "/images/author_04.png";
 const aboutShape1 = "/images/about_shape01.png";
 const aboutShape2 = "/images/about_shape02.png";
 const aboutShape3 = "/images/about_shape03.png";
@@ -68,46 +64,19 @@ export const AboutOne = () => {
                   </div>
                 </div>
                 <p>
-                  Nosotros nos encargamos de todo el proceso: trámites, certificados, logística y cuidados. 
-                  Acompañamos a cada mascota con amor y responsabilidad para que viaje tranquila y protegida.
+                  En WOW Travel asesoramos a las familias en cada parte del proceso: requisitos sanitarios,
+                  certificados, preparación del viaje y orientación personalizada. Acompañamos cada caso con
+                  responsabilidad, empatía y compromiso, asegurándonos de que tu mascota viaje protegida y sin
+                  estrés.
                 </p>
               </div>
               <p>
-                Contamos con un equipo especializado que te guía en cada paso. 
-                Desde el microchip hasta el embarque, todo está pensado para garantizar una experiencia sin estrés 
-                para tu mascota y total tranquilidad para ti.
+                Nuestro médico veterinario, Dr. Víctor Quispe, supervisa los protocolos de bienestar animal y brinda
+                orientación especializada en cada viaje.
               </p>
               <div className="about__content-bottom">
                 <div className="about__content-sign">
                   <img src={authorSign} alt="" />
-                </div>
-                <div className="customer__review">
-                  <div className="customer__review-img">
-                    <ul className="list-wrap">
-                      <li>
-                        <img src={author1} alt="" />
-                      </li>
-                      <li>
-                        <img src={author2} alt="" />
-                      </li>
-                      <li>
-                        <img src={author3} alt="" />
-                      </li>
-                      <li>
-                        <img src={author4} alt="" />
-                      </li>
-                    </ul>
-                  </div>
-                  <div className="customer__review-content">
-                    <div className="rating">
-                      <i className="fas fa-star"></i>
-                      <i className="fas fa-star"></i>
-                      <i className="fas fa-star"></i>
-                      <i className="fas fa-star"></i>
-                      <i className="fas fa-star"></i>
-                    </div>
-                    <span>4.9 (1,244 opiniones)</span>
-                  </div>
                 </div>
               </div>
               <div className="shape">

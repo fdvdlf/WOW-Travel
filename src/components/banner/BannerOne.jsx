@@ -33,15 +33,13 @@ export const BannerOne = () => {
                   <img src={titleImg02} alt="" />
                 </span>
               </h2>
-              <p data-aos="fade-up" data-aos-delay="400">
-                En WOW Travel cuidamos cada detalle: desde los trámites hasta su llegada segura.
-                Vuela con respaldo, amor y profesionalismo.
-              </p>
               <Link
-                href="/about"
+                href="https://wa.me/51941482291"
                 className="btn"
                 data-aos="fade-up"
                 data-aos-delay="600"
+                target="_blank"
+                rel="noreferrer"
               >
                 Conversemos
                 <img src={rightArrow} alt="" className="injectable" />

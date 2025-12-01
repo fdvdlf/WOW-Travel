@@ -8,6 +8,7 @@ import "../assets/css/responsive.css";
 import "../assets/css/main.css";
 
 import { ProviderComponent } from "@/components/provider/Provider";
+import { WhatsAppButton } from "@/components/whatsapp/WhatsAppButton";
 import { Baloo_Bhaina_2, Plus_Jakarta_Sans } from "next/font/google";
 
 // Font configurations
@@ -42,7 +43,10 @@ export default function RootLayout({ children }) {
         <style dangerouslySetInnerHTML={{ __html: fontVariables }} />
       </head>
       <body>
-        <ProviderComponent>{children}</ProviderComponent>
+        <ProviderComponent>
+          {children}
+          <WhatsAppButton />
+        </ProviderComponent>
       </body>
     </html>
   );

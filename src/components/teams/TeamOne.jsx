@@ -1,36 +1,34 @@
 import React from "react";
 import { TeamOneItem } from "./TeamOneItem";
-import Link from "next/link";
 
 const teamImg01 = "/team/team_img01.jpg";
 const teamImg02 = "/team/team_img02.jpg";
 const teamImg03 = "/team/team_img03.jpg";
 const teamImg04 = "/team/team_img04.jpg";
 const petIcon = "/icon/pet_icon02.svg";
-const rightArrow = "/icon/right_arrow.svg";
 const teamShape = "/team/team_shape.png";
 
 export const TeamOne = () => {
   const teamMembers = [
     {
       src: teamImg01,
-      name: "Eduardo Ascuña",
-      designation: "Director Comercial",
+      name: "Felipe Padolfi",
+      designation: "Gerente General",
     },
     {
       src: teamImg02,
-      name: "Fernando Del Valle",
-      designation: "Director de Operaciones",
+      name: "Angie Parra",
+      designation: "Directora Comercial",
     },
     {
       src: teamImg03,
-      name: "Valeria Mansilla",
-      designation: "Asesora de Viajes Internacionales",
+      name: "Gabriel Larrea",
+      designation: "Director de Operaciones",
     },
     {
       src: teamImg04,
-      name: "Jorge Esteban",
-      designation: "Especialista en Logística Pet Travel",
+      name: "Dr. Víctor Quispe",
+      designation: "Médico Veterinario",
     },
   ];
 
@@ -69,10 +67,6 @@ export const TeamOne = () => {
 
         <div className="team__bottom-content">
           <p>Nuestro equipo de expertos en viajes para mascotas</p>
-          <Link href="/team" className="btn">
-            Ver todo el equipo
-            <img src={rightArrow} alt="right arrow" className="injectable" />
-          </Link>
         </div>
       </div>
 

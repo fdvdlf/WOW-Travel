@@ -50,7 +50,7 @@ export const InstagramOne = () => {
           <div className="col-12">
             <div className="instagram__follow-btn">
               <Link href="https://www.instagram.com/" target="_blank">
-                Follow Us On Instagram
+                Síguenos en Instagram
               </Link>
             </div>
           </div>
