@@ -203,24 +203,39 @@ const COUNTRY_PRICING = COUNTRY_NAMES.reduce((acc, name, index) => {
 const getPriceForCountry = (pais) => COUNTRY_PRICING[pais] ?? BASE_PRICE;
 const getPriceReason = (pais) => `Precio estándar ${getPaisLabel(pais)}`;
 
-const SAMPLE_LEADS = [
-  {
-    id: "lead-1",
-    name: "Carolina Vega",
-    phone: "+51 999 888 777",
-    source: "Whatsapp",
-    notes: "Viaje con mascota a Toronto",
-    created_at: "2024-06-01",
-  },
-  {
-    id: "lead-2",
-    name: "Marco Díaz",
-    phone: "+51 988 222 444",
-    source: "Web",
-    notes: "Consulta puerta a puerta Madrid",
-    created_at: "2024-06-03",
-  },
+const LEAD_NAMES = [
+  "Carolina Vega",
+  "Marco Díaz",
+  "Lucía Rojas",
+  "Santiago Paredes",
+  "Valeria Torres",
+  "José Salas",
+  "Ana Navarro",
+  "Diego Ruiz",
+  "Fernanda Salazar",
+  "Diego Castillo",
 ];
+const LEAD_SOURCES = ["Whatsapp", "Meta Ads", "Web", "Referido", "Email", "Evento"];
+const LEAD_SPECIES = ["Perro", "Gato"];
+const LEAD_BREEDS = ["Border Collie", "Labrador", "Golden", "Sphynx", "Persa", "Bulldog", "Beagle", "Husky"];
+
+const SAMPLE_LEADS = Array.from({ length: 50 }, (_, index) => {
+  const name = LEAD_NAMES[index % LEAD_NAMES.length];
+  const species = LEAD_SPECIES[index % LEAD_SPECIES.length];
+  const notes = species === "Perro" ? "Viaje con crate especial" : "Requiere receta veterinaria";
+  return {
+    id: `lead-${index + 1}`,
+    name,
+    phone: `+51991${String(100000 + index).slice(-6)}`,
+    source: LEAD_SOURCES[index % LEAD_SOURCES.length],
+    notes,
+    created_at: "2024-06-01",
+    species,
+    breed: LEAD_BREEDS[index % LEAD_BREEDS.length],
+    age: `${2 + (index % 7)} años`,
+    weight: `${6 + (index % 15)} kg`,
+  };
+});
 
 const SAMPLE_EXPEDIENTES = [
   {
@@ -354,7 +369,16 @@ export default function TrackingPage() {
   const [leads, setLeads] = useState(SAMPLE_LEADS);
   const [expedientes, setExpedientes] = useState(SAMPLE_EXPEDIENTES);
   const [selectedExpedienteId, setSelectedExpedienteId] = useState(SAMPLE_EXPEDIENTES[0]?.id);
-  const [leadForm, setLeadForm] = useState({ name: "", phone: "", source: "", notes: "" });
+  const [leadForm, setLeadForm] = useState({
+    name: "",
+    phone: "",
+    source: "",
+    notes: "",
+    species: "Perro",
+    breed: "",
+    age: "",
+    weight: "",
+  });
   const [notaInterna, setNotaInterna] = useState("");
   const [mensaje, setMensaje] = useState("");
   const [precioDraft, setPrecioDraft] = useState("0");
@@ -362,6 +386,10 @@ export default function TrackingPage() {
   const [currentTab, setCurrentTab] = useState("pagos");
   const [checklistFilter, setChecklistFilter] = useState("TODOS");
   const [notesExpanded, setNotesExpanded] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [sourceFilter, setSourceFilter] = useState("TODOS");
+  const [speciesFilter, setSpeciesFilter] = useState("TODOS");
+  const importRef = useRef(null);
 
   const selectedExpediente = useMemo(() => expedientes.find((exp) => exp.id === selectedExpedienteId), [expedientes, selectedExpedienteId]);
 
@@ -398,9 +426,13 @@ export default function TrackingPage() {
 
   const handleLeadSubmit = (e) => {
     e.preventDefault();
-    const newLead = { id: `lead-${Date.now()}`, ...leadForm, created_at: new Date().toISOString().slice(0, 10) };
+    const newLead = {
+      id: `lead-${Date.now()}`,
+      ...leadForm,
+      created_at: new Date().toISOString().slice(0, 10),
+    };
     setLeads((prev) => [newLead, ...prev]);
-    setLeadForm({ name: "", phone: "", source: "", notes: "" });
+    setLeadForm({ name: "", phone: "", source: "", notes: "", species: "Perro", breed: "", age: "", weight: "" });
     setMensaje("Lead creado y listo para calificación.");
   };
 
@@ -416,11 +448,11 @@ export default function TrackingPage() {
       lead_id: lead.id,
       owner_name: lead.name,
       phone: lead.phone,
-      mascota_name: "Mascota sin nombre",
-      raza: "Por definir",
-      tipo_mascota: "Perro",
-      edad: "",
-      peso: "",
+      mascota_name: lead.name.includes(" ") ? lead.name.split(" ")[0] : "Mascota",
+      raza: lead.breed || "Por definir",
+      tipo_mascota: lead.species || "Perro",
+      edad: lead.age || "",
+      peso: lead.weight || "",
       destino: lead.notes || "Destino por definir",
       pais: paisInicial,
       fecha_probable: "",
@@ -584,15 +616,67 @@ export default function TrackingPage() {
     setMensaje("Nota interna registrada.");
   };
 
+  const handleImportClick = () => {
+    importRef.current?.click();
+  };
+
+  const handleImportLeads = (event) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = () => {
+      try {
+        const parsed = JSON.parse(reader.result);
+        if (Array.isArray(parsed)) {
+          const imported = parsed.map((item, index) => ({
+            id: `imported-${Date.now()}-${index}`,
+            name: item.name || `Lead importado ${index + 1}`,
+            phone: item.phone || "",
+            source: item.source || "Importado",
+            notes: item.notes || "",
+            species: item.species || "Perro",
+            breed: item.breed || "Por definir",
+            age: item.age || "",
+            weight: item.weight || "",
+            created_at: new Date().toISOString().slice(0, 10),
+          }));
+          setLeads((prev) => [...imported, ...prev]);
+          setMensaje(`Se importaron ${imported.length} leads.`);
+        } else {
+          setMensaje("El archivo debe contener un arreglo JSON de leads.");
+        }
+      } catch (error) {
+        setMensaje("No se pudo parsear el archivo.");
+      }
+    };
+    reader.readAsText(file);
+    event.target.value = "";
+  };
+
   const requisitosPendientes =
     selectedExpediente?.requisitos.filter((req) => req.estado !== "VALIDADO").length ?? 0;
   const requiredRequisitos = selectedExpediente?.requisitos.slice(0, 5) ?? [];
   const optionalRequisitos = selectedExpediente?.requisitos.slice(5) ?? [];
-  const filterRequisitos = (items) => (checklistFilter === "TODOS" ? items : items.filter((req) => req.estado === checklistFilter));
+  const filterRequisitos = (items) =>
+    checklistFilter === "TODOS" ? items : items.filter((req) => req.estado === checklistFilter);
   const filteredRequired = filterRequisitos(requiredRequisitos);
   const filteredOptional = filterRequisitos(optionalRequisitos);
   const completedCount = selectedExpediente?.requisitos.filter((req) => req.estado === "VALIDADO").length ?? 0;
   const checklistProgressText = `${completedCount}/${selectedExpediente?.requisitos.length ?? 0} completados`;
+
+
+  const filteredLeads = useMemo(() => {
+    return leads.filter((lead) => {
+      const matchesSearch =
+        lead.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        lead.notes.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        lead.phone.includes(searchTerm);
+      const matchesSource = sourceFilter === "TODOS" || lead.source === sourceFilter;
+      const matchesSpecies = speciesFilter === "TODOS" || lead.species === speciesFilter;
+      return matchesSearch && matchesSource && matchesSpecies;
+    });
+  }, [leads, searchTerm, sourceFilter, speciesFilter]);
+
   const checklistStatusCounts = (selectedExpediente?.requisitos ?? []).reduce((acc, req) => {
     acc[req.estado] = (acc[req.estado] || 0) + 1;
     return acc;
@@ -641,7 +725,7 @@ export default function TrackingPage() {
             <div className="col-lg-4 d-flex flex-column gap-4">
               <div className="card bg-white border border-secondary-subtle shadow-sm">
                 <div className="card-body">
-                  <SectionTitle title="Leads" subtitle="Captura y conversión rápida" badge="ETAPA 0" />
+                  <SectionTitle title="Leads" subtitle="Captura, filtros y conversión" badge="ETAPA 0" />
                   <form className="mb-3" onSubmit={handleLeadSubmit}>
                     <div className="row g-2">
                       <div className="col-12">
@@ -663,18 +747,61 @@ export default function TrackingPage() {
                         />
                       </div>
                       <div className="col-6">
-                        <input
-                          className="form-control"
-                          placeholder="Canal de origen (web/WhatsApp/referido)"
+                        <select
+                          className="form-select"
                           value={leadForm.source}
                           onChange={(e) => setLeadForm((prev) => ({ ...prev, source: e.target.value }))}
                           required
+                        >
+                          <option value="">Canal de origen</option>
+                          {LEAD_SOURCES.map((source) => (
+                            <option key={source} value={source}>
+                              {source}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
+                      <div className="col-6">
+                        <select
+                          className="form-select"
+                          value={leadForm.species}
+                          onChange={(e) => setLeadForm((prev) => ({ ...prev, species: e.target.value }))}
+                        >
+                          {LEAD_SPECIES.map((species) => (
+                            <option key={species} value={species}>
+                              {species}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
+                      <div className="col-6">
+                        <input
+                          className="form-control"
+                          placeholder="Raza (opcional)"
+                          value={leadForm.breed}
+                          onChange={(e) => setLeadForm((prev) => ({ ...prev, breed: e.target.value }))}
+                        />
+                      </div>
+                      <div className="col-6">
+                        <input
+                          className="form-control"
+                          placeholder="Edad"
+                          value={leadForm.age}
+                          onChange={(e) => setLeadForm((prev) => ({ ...prev, age: e.target.value }))}
+                        />
+                      </div>
+                      <div className="col-6">
+                        <input
+                          className="form-control"
+                          placeholder="Peso"
+                          value={leadForm.weight}
+                          onChange={(e) => setLeadForm((prev) => ({ ...prev, weight: e.target.value }))}
                         />
                       </div>
                       <div className="col-12">
                         <textarea
                           className="form-control"
-                          placeholder="Destino deseado o notas"
+                          placeholder="Notas o destino"
                           value={leadForm.notes}
                           onChange={(e) => setLeadForm((prev) => ({ ...prev, notes: e.target.value }))}
                         />
@@ -684,25 +811,104 @@ export default function TrackingPage() {
                       Crear lead
                     </button>
                   </form>
-                  <div className="border-top pt-3">
-                    <p className="fw-semibold mb-2">Leads recientes</p>
-                    {leads.length ? (
-                      leads.map((lead) => (
-                        <div key={lead.id} className="d-flex justify-content-between align-items-start mb-2">
+                  <div className="mb-3">
+                    <div className="row g-2">
+                      <div className="col-12">
+                        <div className="input-group">
+                          <span className="input-group-text">Buscar</span>
+                          <input
+                            className="form-control"
+                            placeholder="Nombre, teléfono o nota"
+                            value={searchTerm}
+                            onChange={(e) => setSearchTerm(e.target.value)}
+                          />
+                        </div>
+                      </div>
+                      <div className="col-6">
+                        <select
+                          className="form-select"
+                          value={sourceFilter}
+                          onChange={(e) => setSourceFilter(e.target.value)}
+                        >
+                          <option value="TODOS">Todas las fuentes</option>
+                          {LEAD_SOURCES.map((source) => (
+                            <option key={source} value={source}>
+                              {source}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
+                      <div className="col-6">
+                        <select
+                          className="form-select"
+                          value={speciesFilter}
+                          onChange={(e) => setSpeciesFilter(e.target.value)}
+                        >
+                          <option value="TODOS">Todas las especies</option>
+                          {LEAD_SPECIES.map((species) => (
+                            <option key={species} value={species}>
+                              {species}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="d-flex justify-content-between align-items-center mb-3">
+                    <small className="text-muted">Leads encontrados: {filteredLeads.length}</small>
+                    <div className="d-flex gap-2">
+                      <button className="btn btn-outline-secondary btn-sm" type="button" onClick={handleImportClick}>
+                        Importar datos
+                      </button>
+                      <input
+                        ref={importRef}
+                        type="file"
+                        accept="application/json"
+                        className="d-none"
+                        onChange={handleImportLeads}
+                      />
+                    </div>
+                  </div>
+                  <div className="list-group list-group-flush">
+                    {filteredLeads.slice(0, 12).map((lead) => (
+                      <div key={lead.id} className="list-group-item d-flex flex-column gap-2">
+                        <div className="d-flex justify-content-between align-items-start">
                           <div>
-                            <div className="fw-semibold">{lead.name}</div>
+                            <h6 className="mb-1">{lead.name}</h6>
                             <small className="text-muted">
                               {lead.phone} · {lead.source}
                             </small>
                           </div>
-                          <button className="btn btn-sm btn-outline-secondary" onClick={() => handleConvertLead(lead)} type="button">
-                            Convertir
-                          </button>
+                          <div className="d-flex flex-wrap gap-2">
+                            <a
+                              className="btn btn-outline-secondary btn-sm"
+                              href={`https://wa.me/${lead.phone.replace(/\\D/g, "")}`}
+                              target="_blank"
+                              rel="noreferrer noopener"
+                            >
+                              WhatsApp
+                            </a>
+                            <button
+                              className="btn btn-primary btn-sm"
+                              type="button"
+                              onClick={() => handleConvertLead(lead)}
+                            >
+                              Convertir
+                            </button>
+                          </div>
                         </div>
-                      ))
-                    ) : (
-                      <p className="text-muted">No hay leads cargados.</p>
-                    )}
+                        <div className="d-flex flex-wrap gap-3 small text-muted">
+                          <span>{lead.species}</span>
+                          <span>{lead.breed}</span>
+                          <span>{lead.age}</span>
+                          <span>{lead.weight}</span>
+                        </div>
+                        <p className="mb-0 small text-muted">Creado: {lead.created_at}</p>
+                      </div>
+                    ))}
+                    {!filteredLeads.length ? (
+                      <p className="text-muted small mb-0">No se encontraron leads con esos filtros.</p>
+                    ) : null}
                   </div>
                 </div>
               </div>
