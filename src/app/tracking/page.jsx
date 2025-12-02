@@ -14,16 +14,67 @@ const ESTADOS_EXPEDIENTE = [
 
 const ESTADOS_REQUISITO = ["PENDIENTE", "ENTREGADO", "OBSERVADO", "VALIDADO"];
 
-const REQUISITOS_BASE = [
-  "Microchip",
-  "Vacuna antirrábica",
-  "Certificado de salud veterinario",
-  "Certificado de SENASA",
-  "Tratamiento antiparasitario",
-  "Documento país destino",
-  "Permisos adicionales",
-  "Ticket de vuelo (opcional)",
+const PAISES = [
+  { value: "CANADA", label: "Canadá" },
+  { value: "EEUU", label: "Estados Unidos" },
+  { value: "MEXICO", label: "México" },
+  { value: "UE", label: "Unión Europea" },
 ];
+
+const REQUISITOS_POR_PAIS = {
+  CANADA: [
+    "Microchip ISO",
+    "Vacuna antirrábica vigente",
+    "Certificado veterinario bilingüe",
+    "Permiso de importación CFIA/SFIA",
+    "Tratamiento antiparasitario",
+    "Formato aduana / aerolínea",
+    "Ticket de vuelo (opcional)",
+  ],
+  EEUU: [
+    "Microchip ISO",
+    "Vacuna antirrábica (21 días)",
+    "Certificado APHIS 7001",
+    "Formulario CDC (si aplica)",
+    "Certificado de salud",
+    "Serología si país de riesgo",
+    "Ticket de vuelo (opcional)",
+  ],
+  MEXICO: [
+    "Microchip ISO",
+    "Vacuna antirrábica vigente",
+    "Certificado zoosanitario",
+    "Tratamiento antiparasitario",
+    "Constancia libre de enfermedades",
+    "Formato SENASICA",
+    "Ticket de vuelo (opcional)",
+  ],
+  UE: [
+    "Microchip ISO",
+    "Vacuna antirrábica con espera",
+    "Pasaporte o certificado UE",
+    "Títulos de anticuerpos",
+    "Tratamiento antiparasitario",
+    "Notificación TRACES/ADNS",
+    "Ticket de vuelo (opcional)",
+  ],
+};
+
+const buildRequisitosPorPais = (pais, seed = {}) =>
+  (REQUISITOS_POR_PAIS[pais] || REQUISITOS_POR_PAIS.CANADA).map((nombre, index) => {
+    const preset = seed[index] || {};
+    return {
+      id: `req-${pais}-${index + 1}`,
+      nombre,
+      estado: "PENDIENTE",
+      evidencia_url: "",
+      fecha: "",
+      notas: "",
+      ...preset,
+    };
+  });
+
+const getPaisLabel = (value) => PAISES.find((p) => p.value === value)?.label || value;
 
 const SAMPLE_LEADS = [
   {
@@ -75,6 +126,7 @@ const SAMPLE_EXPEDIENTES = [
     peso: "16.3 kg",
     color: "Blanco y negro",
     destino: "Toronto, Canadá",
+    pais: "CANADA",
     origen: "Lima, Perú",
     fecha_probable: "2024-09-15",
     precio: 1800,
@@ -85,14 +137,11 @@ const SAMPLE_EXPEDIENTES = [
       pago70: { tipo: 70, comprobante_url: "voucher_70.pdf", fecha: "2024-06-02", aprobado: true },
       pago30: { tipo: 30, comprobante_url: "", fecha: "", aprobado: false },
     },
-    requisitos: REQUISITOS_BASE.map((nombre, index) => ({
-      id: `req-${index + 1}`,
-      nombre,
-      estado: index < 2 ? "VALIDADO" : index === 2 ? "OBSERVADO" : "PENDIENTE",
-      evidencia_url: index < 2 ? "archivo.pdf" : "",
-      fecha: "2024-06-10",
-      notas: index === 2 ? "Repetir examen, fecha vencida" : "",
-    })),
+    requisitos: buildRequisitosPorPais("CANADA", {
+      0: { estado: "VALIDADO", evidencia_url: "archivo.pdf", fecha: "2024-06-10" },
+      1: { estado: "VALIDADO", evidencia_url: "archivo.pdf", fecha: "2024-06-10" },
+      2: { estado: "OBSERVADO", notas: "Repetir examen, fecha vencida" },
+    }),
     historial: [
       { id: "h1", usuario: "Gabriel", fecha: "2024-06-05", descripcion: "Se cargan vacunas y microchip." },
       { id: "h2", usuario: "Fernando", fecha: "2024-06-08", descripcion: "Pago 70% aprobado por Gerencia." },
@@ -136,7 +185,8 @@ function ExpedienteCard({ expediente, onSelect, isActive }) {
       <p className="mb-0 small text-muted">
         {expediente.mascota_name} · {expediente.owner_name} · {expediente.destino}
       </p>
-      <small className="text-muted">Responsable: {expediente.responsable?.comercial}</small>
+      <small className="text-muted d-block">Responsable: {expediente.responsable?.comercial}</small>
+      <small className="text-muted">Checklist país: {getPaisLabel(expediente.pais || "CANADA")}</small>
     </div>
   );
 }
@@ -256,6 +306,7 @@ export default function TrackingPage() {
       setMensaje("Solo Comercial convierte leads a expedientes.");
       return;
     }
+    const paisInicial = PAISES[0]?.value || "CANADA";
     const nuevo = {
       id: `exp-${Date.now()}`,
       codigo: `EXP-${String(expedientes.length + 1).padStart(3, "0")}`,
@@ -270,6 +321,7 @@ export default function TrackingPage() {
       peso: "",
       color: "",
       destino: lead.notes || "Destino por definir",
+      pais: paisInicial,
       origen: "",
       fecha_probable: "",
       precio: 0,
@@ -277,14 +329,7 @@ export default function TrackingPage() {
       responsable: { comercial: "", operaciones: "" },
       riesgo: "",
       pagos: { pago70: { tipo: 70, comprobante_url: "", fecha: "", aprobado: false }, pago30: { tipo: 30, comprobante_url: "", fecha: "", aprobado: false } },
-      requisitos: REQUISITOS_BASE.map((nombre, index) => ({
-        id: `req-${Date.now()}-${index}`,
-        nombre,
-        estado: "PENDIENTE",
-        evidencia_url: "",
-        fecha: "",
-        notas: "",
-      })),
+      requisitos: buildRequisitosPorPais(paisInicial),
       historial: [
         {
           id: `h-${Date.now()}`,
@@ -297,6 +342,17 @@ export default function TrackingPage() {
     setExpedientes((prev) => [nuevo, ...prev]);
     setSelectedExpedienteId(nuevo.id);
     setMensaje("Expediente creado desde el lead.");
+  };
+
+  const handlePaisChange = (paisValue) => {
+    if (!selectedExpediente) return;
+    updateExpediente(selectedExpediente.id, (exp) => ({
+      ...exp,
+      pais: paisValue,
+      requisitos: buildRequisitosPorPais(paisValue),
+    }));
+    addHistorial(`País de destino actualizado a ${getPaisLabel(paisValue)}. Checklist regenerado.`);
+    setMensaje("Checklist actualizado según país seleccionado.");
   };
 
   const handlePago = (tipo) => {
@@ -564,8 +620,25 @@ export default function TrackingPage() {
                         />
                       </div>
                       <div className="col-md-6">
-                        <label className="form-label small fw-semibold">Destino</label>
+                        <label className="form-label small fw-semibold">Destino (ciudad)</label>
                         <input className="form-control" value={selectedExpediente.destino} readOnly />
+                      </div>
+                      <div className="col-md-6">
+                        <label className="form-label small fw-semibold">País destino</label>
+                        <select
+                          className="form-select"
+                          value={selectedExpediente.pais || PAISES[0]?.value}
+                          onChange={(e) => handlePaisChange(e.target.value)}
+                        >
+                          {PAISES.map((pais) => (
+                            <option key={pais.value} value={pais.value}>
+                              {pais.label}
+                            </option>
+                          ))}
+                        </select>
+                        <small className="text-muted small">
+                          Al cambiar país se recarga el checklist con sus requisitos.
+                        </small>
                       </div>
                       <div className="col-md-4">
                         <label className="form-label small fw-semibold">Fecha probable</label>
@@ -756,12 +829,24 @@ export default function TrackingPage() {
                       <div className="card-body p-4">
                         <SectionTitle
                           title="Gestión documentaria"
-                          subtitle="Tabla editable de requisitos con espacio completo"
+                          subtitle={`Checklist según país: ${getPaisLabel(
+                            selectedExpediente.pais || PAISES[0]?.value
+                          )}`}
                           badge="Operaciones"
                         />
                         <p className="text-muted small mb-3">
-                          Controla todo el checklist en un solo panel y adjunta evidencia directamente desde aquí.
+                          Controla todo el checklist en un solo panel y adjunta evidencia directamente desde aquí. El país
+                          de destino define los requisitos visibles.
                         </p>
+                        <div className="alert alert-light border d-flex justify-content-between align-items-center py-2">
+                          <span className="small">
+                            País seleccionado: <strong>{getPaisLabel(selectedExpediente.pais || PAISES[0]?.value)}</strong>
+                            . Cambia el país en Datos generales para regenerar la lista con sus requisitos oficiales.
+                          </span>
+                          <span className="badge bg-primary-subtle text-primary">
+                            Pendientes: {requisitosPendientes}
+                          </span>
+                        </div>
                         <div className="table-responsive">
                           <table className="table align-middle">
                             <thead className="table-light">
