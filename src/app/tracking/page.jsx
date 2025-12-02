@@ -302,6 +302,16 @@ function EstadoPill({ value }) {
   );
 }
 
+function CountryFlag({ pais }) {
+  const label = getPaisLabel(pais || DEFAULT_COUNTRY);
+  return (
+    <span className="d-inline-flex align-items-center gap-1">
+      <i className="bi bi-flag-fill text-danger" aria-hidden="true"></i>
+      <span>{label}</span>
+    </span>
+  );
+}
+
 function RequisitoRow({ requisito, onUpdate }) {
   const fileInputRef = useRef(null);
   return (
@@ -717,9 +727,6 @@ export default function TrackingPage() {
             <div className="col-lg-8">
               <p className="text-uppercase text-primary fw-semibold mb-2">MVP interno · Roles protegidos</p>
               <h1 className="mb-2">Gestión de Leads, Expedientes y Documentos</h1>
-              <p className="text-muted mb-0">
-                Flujo completo WOW Travel: captura de lead, expediente, pagos 70/30, checklist y cierre con control de roles.
-              </p>
             </div>
             <div className="col-lg-4 text-lg-end mt-3 mt-lg-0">
               <div className="text-uppercase fs-7 fw-semibold text-muted">Rol: {ROLE}</div>
@@ -740,7 +747,7 @@ export default function TrackingPage() {
             <div className="col-12">
               <div className="card bg-white border border-secondary-subtle shadow-sm w-100">
                 <div className="card-body">
-                  <SectionTitle title="Leads" subtitle="Captura, filtros y conversión" badge="ETAPA 0" />
+                  <SectionTitle title="Leads" badge="ETAPA 0" />
                   <div className="d-flex flex-wrap gap-2 justify-content-between align-items-center mb-3">
                     <div className="d-flex flex-wrap gap-2 align-items-center">
                       <div className="input-group flex-grow-1 min-w-0">
@@ -959,7 +966,7 @@ export default function TrackingPage() {
             <div className="col-12">
               <div className="card bg-white border border-secondary-subtle shadow-sm">
                 <div className="card-body">
-                  <SectionTitle title="Datos generales" subtitle="Resumen del expediente" badge="Expediente" />
+                  <SectionTitle title="Datos generales" badge="Expediente" />
                   {selectedExpediente ? (
                     <>
                       <div className="row g-3">
@@ -984,7 +991,10 @@ export default function TrackingPage() {
                         <input className="form-control" value={selectedExpediente.destino} readOnly />
                       </div>
                       <div className="col-md-6">
-                        <label className="form-label small fw-semibold">País destino</label>
+                        <label className="form-label small fw-semibold d-flex align-items-center gap-2">
+                          Pais destino
+                          <CountryFlag pais={selectedExpediente.pais || DEFAULT_COUNTRY} />
+                        </label>
                         <select
                           className="form-select"
                           value={selectedExpediente.pais || DEFAULT_COUNTRY}
@@ -1082,6 +1092,9 @@ export default function TrackingPage() {
                       <div>
                         <h2 className="h5 mb-1">Expediente {selectedExpediente.codigo}</h2>
                         <p className="text-muted mb-0">{selectedExpediente.destino}</p>
+                        <div className="d-flex align-items-center gap-2 small text-muted">
+                          <CountryFlag pais={selectedExpediente.pais || DEFAULT_COUNTRY} />
+                        </div>
                       </div>
                       <div className="text-end">
                         <EstadoPill value={selectedExpediente.estado} />
@@ -1123,8 +1136,10 @@ export default function TrackingPage() {
                               <p className="fw-semibold mb-0">{selectedExpediente.destino}</p>
                             </div>
                             <div className="col-md-6">
-                              <p className="small text-muted mb-1">País</p>
-                              <p className="fw-semibold mb-0">{getPaisLabel(selectedExpediente.pais || DEFAULT_COUNTRY)}</p>
+                              <p className="small text-muted mb-1">Pais</p>
+                              <p className="fw-semibold mb-0">
+                                <CountryFlag pais={selectedExpediente.pais || DEFAULT_COUNTRY} />
+                              </p>
                             </div>
                             <div className="col-md-6">
                               <p className="small text-muted mb-1">Fecha probable</p>
