@@ -15,12 +15,122 @@ const ESTADOS_EXPEDIENTE = [
 
 const ESTADOS_REQUISITO = ["PENDIENTE", "ENTREGADO", "OBSERVADO", "VALIDADO"];
 
-const PAISES = [
-  { value: "CANADA", label: "Canadá" },
-  { value: "EEUU", label: "Estados Unidos" },
-  { value: "MEXICO", label: "México" },
-  { value: "UE", label: "Unión Europea" },
+const REQUISITOS_BASE = [
+  "Microchip",
+  "Vacuna antirrábica",
+  "Certificado de salud veterinario",
+  "Certificado de SENASA",
+  "Tratamiento antiparasitario",
+  "Documento país destino",
+  "Permisos adicionales",
+  "Ticket de vuelo (opcional)",
 ];
+
+const COUNTRY_NAMES = [
+  "ALEMANIA",
+  "ARGENTINA",
+  "ARUBA",
+  "AUSTRALIA",
+  "AUSTRIA",
+  "BELGICA",
+  "BOLIVIA",
+  "BRASIL",
+  "BULGARIA",
+  "CANADA",
+  "CHILE",
+  "CHINA",
+  "CHIPRE",
+  "COLOMBIA",
+  "COREA DEL NORTE",
+  "COREA DEL SUR",
+  "COSTA RICA",
+  "CROACIA",
+  "CUBA",
+  "DINAMARCA",
+  "DUBAI",
+  "ECUADOR",
+  "EEUU",
+  "EGIPTO",
+  "EL SALVADOR",
+  "ESCOCIA",
+  "ESLOVAQUIA",
+  "ESLOVENIA",
+  "ESPAÑA",
+  "ESTONIA",
+  "FILIPINAS",
+  "FINLANDIA",
+  "FRANCIA",
+  "GRECIA",
+  "GUATEMALA",
+  "HONDURAS",
+  "HUNGRIA",
+  "INDIA",
+  "INDONESIA",
+  "INGLATERRA",
+  "IRLANDA",
+  "ISRAEL",
+  "ITALIA",
+  "JAPON",
+  "LETONIA",
+  "LITUANIA",
+  "LUXEMBURGO",
+  "MALASIA",
+  "MALTA",
+  "MARRUECOS",
+  "MEXICO",
+  "NICARAGUA",
+  "NORUEGA",
+  "PAISES BAJOS",
+  "PANAMA",
+  "PARAGUAY",
+  "POLONIA",
+  "PORTUGAL",
+  "QATAR",
+  "REINO DE ARABIA SAUDITA",
+  "REINO UNIDO",
+  "REPUBLICA CHECA",
+  "REPUBLICA DOMINICANA",
+  "RUMANIA",
+  "RUSIA",
+  "SERBIA",
+  "SUDAFRICA",
+  "SUECIA",
+  "SUIZA",
+  "TAILANDIA",
+  "TAIWAN",
+  "TRINIDAD Y TOBAGO",
+  "URUGUAY",
+  "VENEZUELA",
+  "VIETNAM",
+  "ZAMBIA",
+];
+
+const DEFAULT_COUNTRY = "CANADA";
+
+const COUNTRY_PRETTY_LABELS = {
+  CANADA: "Canadá",
+  ESPAÑA: "España",
+  MEXICO: "México",
+  "PAISES BAJOS": "Países Bajos",
+  "REINO DE ARABIA SAUDITA": "Reino de Arabia Saudita",
+  "REINO UNIDO": "Reino Unido",
+  "REPUBLICA CHECA": "República Checa",
+  "REPUBLICA DOMINICANA": "República Dominicana",
+  SUDAFRICA: "Sudáfrica",
+  "TRINIDAD Y TOBAGO": "Trinidad y Tobago",
+};
+
+const formatCountryLabel = (value) =>
+  value
+    .toLowerCase()
+    .split(" ")
+    .map((word) => (word ? word[0].toUpperCase() + word.slice(1) : word))
+    .join(" ");
+
+const PAISES = COUNTRY_NAMES.map((name) => ({
+  value: name,
+  label: COUNTRY_PRETTY_LABELS[name] || formatCountryLabel(name),
+}));
 
 const REQUISITOS_POR_PAIS = {
   CANADA: [
@@ -61,8 +171,9 @@ const REQUISITOS_POR_PAIS = {
   ],
 };
 
-const buildRequisitosPorPais = (pais, seed = {}) =>
-  (REQUISITOS_POR_PAIS[pais] || REQUISITOS_POR_PAIS.CANADA).map((nombre, index) => {
+const buildRequisitosPorPais = (pais, seed = {}) => {
+  const source = REQUISITOS_POR_PAIS[pais] || REQUISITOS_BASE;
+  return source.map((nombre, index) => {
     const preset = seed[index] || {};
     return {
       id: `req-${pais}-${index + 1}`,
@@ -74,6 +185,7 @@ const buildRequisitosPorPais = (pais, seed = {}) =>
       ...preset,
     };
   });
+};
 
 const getPaisLabel = (value) => PAISES.find((p) => p.value === value)?.label || value;
 
@@ -127,7 +239,7 @@ const SAMPLE_EXPEDIENTES = [
     peso: "16.3 kg",
     color: "Blanco y negro",
     destino: "Toronto, Canadá",
-    pais: "CANADA",
+    pais: DEFAULT_COUNTRY,
     origen: "Lima, Perú",
     fecha_probable: "2024-09-15",
     precio: 1800,
@@ -307,7 +419,8 @@ export default function TrackingPage() {
       setMensaje("Solo Comercial convierte leads a expedientes.");
       return;
     }
-    const paisInicial = PAISES[0]?.value || "CANADA";
+    const paisInicial =
+      PAISES.find((p) => p.value === DEFAULT_COUNTRY)?.value || PAISES[0]?.value || DEFAULT_COUNTRY;
     const nuevo = {
       id: `exp-${Date.now()}`,
       codigo: `EXP-${String(expedientes.length + 1).padStart(3, "0")}`,
