@@ -170,6 +170,14 @@ const REQUISITOS_POR_PAIS = {
   ],
 };
 
+const DESTINOS_POR_PAIS = {
+  CANADA: ["Toronto", "Vancouver", "Montreal"],
+  EEUU: ["San Francisco", "Miami", "New York", "Los Angeles", "Houston"],
+  MEXICO: ["CDMX", "Guadalajara", "Monterrey", "Cancun"],
+  "REINO UNIDO": ["Londres", "Manchester", "Edimburgo"],
+  ESPA¥A: ["Madrid", "Barcelona", "Valencia"],
+};
+
 const buildRequisitosPorPais = (pais, seed = {}) => {
   const source = REQUISITOS_POR_PAIS[pais] || REQUISITOS_BASE;
   return source.map((nombre, index) => ({
@@ -184,6 +192,7 @@ const buildRequisitosPorPais = (pais, seed = {}) => {
 };
 
 const getPaisLabel = (value) => PAISES.find((p) => p.value === value)?.label || value;
+const getDestinosPorPais = (pais) => DESTINOS_POR_PAIS[pais] || ["Destino por definir"];
 
 const TAB_DEFINITIONS = [
   { key: "datos", label: "Datos generales" },
@@ -463,6 +472,8 @@ export default function TrackingPage() {
       return;
     }
     const paisInicial = PAISES.find((p) => p.value === DEFAULT_COUNTRY)?.value || DEFAULT_COUNTRY;
+    const destinoInicial = getDestinosPorPais(paisInicial)[0] || "Destino por definir";
+    const destinoInicial = getDestinosPorPais(paisInicial)[0] || "Destino por definir";
     const nuevo = {
       id: `exp-${Date.now()}`,
       codigo: `EXP-${String(expedientes.length + 1).padStart(3, "0")}`,
@@ -474,7 +485,7 @@ export default function TrackingPage() {
       tipo_mascota: lead.species || "Perro",
       edad: lead.age || "",
       peso: lead.weight || "",
-      destino: lead.notes || "Destino por definir",
+      destino: lead.notes || destinoInicial,
       pais: paisInicial,
       fecha_probable: "",
       precio: getPriceForCountry(paisInicial),
@@ -503,9 +514,11 @@ export default function TrackingPage() {
 
   const handlePaisChange = (paisValue) => {
     if (!selectedExpediente) return;
+    const destinos = getDestinosPorPais(paisValue);
     updateExpediente(selectedExpediente.id, (exp) => ({
       ...exp,
       pais: paisValue,
+      destino: destinos.includes(exp.destino) ? exp.destino : destinos[0] || "Destino por definir",
       requisitos: buildRequisitosPorPais(paisValue),
       precio: getPriceForCountry(paisValue),
       priceReason: getPriceReason(paisValue),
@@ -514,6 +527,12 @@ export default function TrackingPage() {
     setMensaje("Checklist y precio estándar actualizados.");
     setPrecioDraft(String(getPriceForCountry(paisValue)));
     setRazonPrecio(getPriceReason(paisValue));
+  };
+
+  const handleDestinoChange = (destino) => {
+    if (!selectedExpediente) return;
+    updateExpediente(selectedExpediente.id, (exp) => ({ ...exp, destino }));
+    addHistorial(`Destino actualizado a ${destino}.`);
   };
 
   const handleTipoMascotaChange = (tipo) => {
@@ -857,8 +876,15 @@ export default function TrackingPage() {
                         <div className="row g-3">
                           <div className="col-md-6"><label className="form-label small fw-semibold">Propietario</label><input className="form-control" value={selectedExpediente.owner_name} readOnly /></div>
                           <div className="col-md-6"><label className="form-label small fw-semibold">Contacto</label><input className="form-control" value={`${selectedExpediente.phone}`} readOnly /></div>
-                          <div className="col-md-6"><label className="form-label small fw-semibold">Mascota</label><input className="form-control" value={`${selectedExpediente.mascota_name} ? ${selectedExpediente.raza}`} readOnly /></div>
-                          <div className="col-md-6"><label className="form-label small fw-semibold">Destino</label><input className="form-control" value={selectedExpediente.destino} readOnly /></div>
+                          <div className="col-md-6"><label className="form-label small fw-semibold">Mascota</label><input className="form-control" value={`${selectedExpediente.mascota_name} · ${selectedExpediente.raza}`} readOnly /></div>
+                          <div className="col-md-6">
+                            <label className="form-label small fw-semibold">Destino (ciudad/aeropuerto)</label>
+                            <select className="form-select" value={selectedExpediente.destino} onChange={(e) => handleDestinoChange(e.target.value)}>
+                              {getDestinosPorPais(selectedExpediente.pais || DEFAULT_COUNTRY).map((dest) => (
+                                <option key={dest} value={dest}>{dest}</option>
+                              ))}
+                            </select>
+                          </div>
                           <div className="col-md-6"><label className="form-label small fw-semibold d-flex align-items-center gap-2">Pais destino<CountryFlag pais={selectedExpediente.pais || DEFAULT_COUNTRY} /></label><select className="form-select" value={selectedExpediente.pais || DEFAULT_COUNTRY} onChange={(e) => { setCurrentTab("datos"); handlePaisChange(e.target.value); }}>{PAISES.map((pais) => (<option key={pais.value} value={pais.value}>{pais.label}</option>))}</select></div>
                           <div className="col-md-6"><label className="form-label small fw-semibold">Estado</label><div className="d-flex align-items-center gap-2"><EstadoPill value={selectedExpediente.estado} />{selectedExpediente.estado !== "CERRADO" && (<select className="form-select" value={selectedExpediente.estado} onChange={(e) => handleEstadoChange(e.target.value)}>{ESTADOS_EXPEDIENTE.filter((est) => est !== selectedExpediente.estado).map((estado) => (<option key={estado}>{estado}</option>))}</select>)}</div></div>
                           <div className="col-12"><small className="text-muted">Requisitos pendientes: {requisitosPendientes}</small></div>
