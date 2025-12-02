@@ -4,7 +4,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { Layout } from "@/layouts/Layout";
 import { APP_VERSION, TRACKING_CODE } from "@/lib/appVersion";
 
-const ROLES = ["COMERCIAL", "OPERACIONES", "GERENCIA"];
+const ROLE = "ADMINISTRADOR";
 
 const ESTADOS_EXPEDIENTE = ["CREADO", "EN_PROCESO", "DOCUMENTACION_COMPLETA", "CERRADO"];
 
@@ -367,7 +367,7 @@ function RequisitoRow({ requisito, onUpdate }) {
   );
 }
 export default function TrackingPage() {
-  const [role, setRole] = useState("COMERCIAL");
+  const role = ROLE;
   const [leads, setLeads] = useState(SAMPLE_LEADS);
   const [expedientes, setExpedientes] = useState(SAMPLE_EXPEDIENTES);
   const [selectedExpedienteId, setSelectedExpedienteId] = useState(null);
@@ -722,17 +722,10 @@ export default function TrackingPage() {
               </p>
             </div>
             <div className="col-lg-4 text-lg-end mt-3 mt-lg-0">
-              <div className="d-inline-flex align-items-center gap-2">
-                <label className="small fw-semibold text-muted mb-0">Rol</label>
-                <select className="form-select" value={role} onChange={(e) => setRole(e.target.value)}>
-                  {ROLES.map((r) => (
-                    <option key={r}>{r}</option>
-                  ))}
-                </select>
-              </div>
-              <div className="text-muted small mt-2">
-                Tracking versión {APP_VERSION} <span className="text-uppercase">({TRACKING_CODE})</span>
-              </div>
+              <div className="text-uppercase fs-7 fw-semibold text-muted">Rol: {ROLE}</div>
+                <div className="text-muted small mt-2">
+                  Versión actual {APP_VERSION} <span className="text-uppercase">({TRACKING_CODE})</span>
+                </div>
             </div>
           </div>
 
