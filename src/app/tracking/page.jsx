@@ -53,7 +53,7 @@ const COUNTRY_NAMES = [
   "ESCOCIA",
   "ESLOVAQUIA",
   "ESLOVENIA",
-  "ESPAÑA",
+  "ESPANA",
   "ESTONIA",
   "FILIPINAS",
   "FINLANDIA",
@@ -107,7 +107,7 @@ const DEFAULT_COUNTRY = "CANADA";
 
 const COUNTRY_PRETTY = {
   CANADA: "Canadá",
-  ESPAÑA: "España",
+  ESPANA: "España",
   MEXICO: "México",
   "PAISES BAJOS": "Países Bajos",
   "REINO DE ARABIA SAUDITA": "Reino de Arabia Saudita",
@@ -175,7 +175,7 @@ const DESTINOS_POR_PAIS = {
   EEUU: ["San Francisco", "Miami", "New York", "Los Angeles", "Houston"],
   MEXICO: ["CDMX", "Guadalajara", "Monterrey", "Cancun"],
   "REINO UNIDO": ["Londres", "Manchester", "Edimburgo"],
-  ESPA¥A: ["Madrid", "Barcelona", "Valencia"],
+  ESPANA: ["Madrid", "Barcelona", "Valencia"],
 };
 
 const buildRequisitosPorPais = (pais, seed = {}) => {
