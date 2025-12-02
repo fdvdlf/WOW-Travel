@@ -368,7 +368,8 @@ export default function TrackingPage() {
   const [role, setRole] = useState("COMERCIAL");
   const [leads, setLeads] = useState(SAMPLE_LEADS);
   const [expedientes, setExpedientes] = useState(SAMPLE_EXPEDIENTES);
-  const [selectedExpedienteId, setSelectedExpedienteId] = useState(SAMPLE_EXPEDIENTES[0]?.id);
+  const [selectedExpedienteId, setSelectedExpedienteId] = useState(null);
+  const [selectedLeadId, setSelectedLeadId] = useState(SAMPLE_LEADS[0]?.id);
   const [leadForm, setLeadForm] = useState({
     name: "",
     phone: "",
@@ -391,7 +392,10 @@ export default function TrackingPage() {
   const [speciesFilter, setSpeciesFilter] = useState("TODOS");
   const importRef = useRef(null);
 
-  const selectedExpediente = useMemo(() => expedientes.find((exp) => exp.id === selectedExpedienteId), [expedientes, selectedExpedienteId]);
+  const selectedExpediente = useMemo(
+    () => expedientes.find((exp) => exp.id === selectedExpedienteId),
+    [expedientes, selectedExpedienteId]
+  );
 
   useEffect(() => {
     if (!selectedExpediente) return;
@@ -475,6 +479,8 @@ export default function TrackingPage() {
     };
     setExpedientes((prev) => [nuevo, ...prev]);
     setSelectedExpedienteId(nuevo.id);
+    setCurrentTab("datos");
+    setSelectedLeadId(lead.id);
     setMensaje("Expediente creado desde el lead.");
   };
 
@@ -871,18 +877,23 @@ export default function TrackingPage() {
                   </div>
                   <div className="list-group list-group-flush">
                     {filteredLeads.slice(0, 12).map((lead) => (
-                      <div key={lead.id} className="list-group-item d-flex flex-column gap-2">
+                      <div
+                        key={lead.id}
+                        role="button"
+                        className={`list-group-item d-flex flex-column gap-2 ${selectedLeadId === lead.id ? "bg-primary-subtle border border-primary" : ""}`}
+                        onClick={() => setSelectedLeadId(lead.id)}
+                      >
                         <div className="d-flex justify-content-between align-items-start">
                           <div>
                             <h6 className="mb-1">{lead.name}</h6>
                             <small className="text-muted">
-                              {lead.phone} · {lead.source}
+                              {lead.phone} ? {lead.source}
                             </small>
                           </div>
                           <div className="d-flex flex-wrap gap-2">
                             <a
                               className="btn btn-outline-secondary btn-sm"
-                              href={`https://wa.me/${lead.phone.replace(/\\D/g, "")}`}
+                              href={`https://wa.me/${lead.phone.replace(/\D/g, "")}`}
                               target="_blank"
                               rel="noreferrer noopener"
                             >
@@ -891,9 +902,12 @@ export default function TrackingPage() {
                             <button
                               className="btn btn-primary btn-sm"
                               type="button"
-                              onClick={() => handleConvertLead(lead)}
+                              onClick={(event) => {
+                                event.stopPropagation();
+                                handleConvertLead(lead);
+                              }}
                             >
-                              Convertir
+                              Abrir expediente
                             </button>
                           </div>
                         </div>
