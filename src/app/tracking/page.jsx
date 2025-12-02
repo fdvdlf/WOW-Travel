@@ -171,11 +171,23 @@ const REQUISITOS_POR_PAIS = {
 };
 
 const DESTINOS_POR_PAIS = {
-  CANADA: ["Toronto", "Vancouver", "Montreal"],
-  EEUU: ["San Francisco", "Miami", "New York", "Los Angeles", "Houston"],
-  MEXICO: ["CDMX", "Guadalajara", "Monterrey", "Cancun"],
-  "REINO UNIDO": ["Londres", "Manchester", "Edimburgo"],
-  ESPANA: ["Madrid", "Barcelona", "Valencia"],
+  CANADA: ["Toronto (YYZ)", "Vancouver (YVR)", "Montreal (YUL)", "Calgary (YYC)"],
+  EEUU: ["San Francisco (SFO)", "Miami (MIA)", "New York (JFK)", "Los Angeles (LAX)", "Houston (IAH)", "Chicago (ORD)"],
+  MEXICO: ["CDMX (MEX)", "Guadalajara (GDL)", "Monterrey (MTY)", "Cancun (CUN)"],
+  "REINO UNIDO": ["Londres (LHR)", "Manchester (MAN)", "Edimburgo (EDI)"],
+  ESPANA: ["Madrid (MAD)", "Barcelona (BCN)", "Valencia (VLC)"],
+  FRANCIA: ["París (CDG)", "Lyon (LYS)", "Niza (NCE)"],
+  ALEMANIA: ["Frankfurt (FRA)", "Múnich (MUC)", "Berlín (BER)"],
+  ITALIA: ["Roma (FCO)", "Milán (MXP)", "Venecia (VCE)"],
+  BRASIL: ["São Paulo (GRU)", "Rio de Janeiro (GIG)", "Brasilia (BSB)"],
+  ARGENTINA: ["Buenos Aires (EZE)", "Córdoba (COR)", "Mendoza (MDZ)"],
+  CHILE: ["Santiago (SCL)", "Antofagasta (ANF)", "Concepción (CCP)"],
+  COLOMBIA: ["Bogotá (BOG)", "Medellín (MDE)", "Cartagena (CTG)"],
+  PERU: ["Lima (LIM)", "Cusco (CUZ)", "Arequipa (AQP)"],
+  AUSTRALIA: ["Sydney (SYD)", "Melbourne (MEL)", "Brisbane (BNE)"],
+  NUEVA_ZELANDA: ["Auckland (AKL)", "Wellington (WLG)", "Christchurch (CHC)"],
+  JAPON: ["Tokio (HND)", "Osaka (KIX)", "Nagoya (NGO)"],
+  CHINA: ["Beijing (PEK)", "Shanghai (PVG)", "Guangzhou (CAN)"],
 };
 
 const buildRequisitosPorPais = (pais, seed = {}) => {
@@ -192,7 +204,7 @@ const buildRequisitosPorPais = (pais, seed = {}) => {
 };
 
 const getPaisLabel = (value) => PAISES.find((p) => p.value === value)?.label || value;
-const getDestinosPorPais = (pais) => DESTINOS_POR_PAIS[pais] || ["Destino por definir"];
+const getDestinosPorPais = (pais) => DESTINOS_POR_PAIS[pais] || ["Aeropuerto principal", "Destino por definir"];
 
 const TAB_DEFINITIONS = [
   { key: "datos", label: "Datos generales" },
