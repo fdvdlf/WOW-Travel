@@ -967,7 +967,6 @@ export default function TrackingPage() {
                   </div>
                 </div>
               </div>
-            </div>
 
               <div className="card bg-white border border-secondary-subtle shadow-sm">
                 <div className="card-body">
