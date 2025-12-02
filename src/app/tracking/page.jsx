@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Layout } from "@/layouts/Layout";
 import { APP_VERSION, TRACKING_CODE } from "@/lib/appVersion";
 
@@ -188,6 +188,17 @@ const buildRequisitosPorPais = (pais, seed = {}) => {
 };
 
 const getPaisLabel = (value) => PAISES.find((p) => p.value === value)?.label || value;
+
+const BASE_PRICE = 1500;
+const PRICE_STEP = 30;
+const COUNTRY_PRICING = COUNTRY_NAMES.reduce((acc, name, index) => {
+  acc[name] = BASE_PRICE + PRICE_STEP * (index % 10);
+  return acc;
+}, {});
+
+const getPriceForCountry = (pais) => COUNTRY_PRICING[pais] ?? BASE_PRICE;
+
+const getPriceReason = (pais) => `Precio estándar ${getPaisLabel(pais)}`;
 
 const SAMPLE_LEADS = [
   {
