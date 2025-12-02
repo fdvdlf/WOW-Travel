@@ -253,7 +253,8 @@ const SAMPLE_EXPEDIENTES = [
     pais: DEFAULT_COUNTRY,
     origen: "Lima, Perú",
     fecha_probable: "2024-09-15",
-    precio: 1800,
+    precio: getPriceForCountry(DEFAULT_COUNTRY),
+    priceReason: getPriceReason(DEFAULT_COUNTRY),
     estado: "EN_PROCESO",
     responsable: { comercial: "Fernando", operaciones: "Gabriel" },
     riesgo: "En control",
@@ -261,7 +262,7 @@ const SAMPLE_EXPEDIENTES = [
       pago70: { tipo: 70, comprobante_url: "voucher_70.pdf", fecha: "2024-06-02", aprobado: true },
       pago30: { tipo: 30, comprobante_url: "", fecha: "", aprobado: false },
     },
-    requisitos: buildRequisitosPorPais("CANADA", {
+    requisitos: buildRequisitosPorPais(DEFAULT_COUNTRY, {
       0: { estado: "VALIDADO", evidencia_url: "archivo.pdf", fecha: "2024-06-10" },
       1: { estado: "VALIDADO", evidencia_url: "archivo.pdf", fecha: "2024-06-10" },
       2: { estado: "OBSERVADO", notas: "Repetir examen, fecha vencida" },
@@ -392,6 +393,14 @@ export default function TrackingPage() {
   );
 
   const [mensaje, setMensaje] = useState("");
+  const [precioDraft, setPrecioDraft] = useState("0");
+  const [razonPrecio, setRazonPrecio] = useState("");
+
+  useEffect(() => {
+    if (!selectedExpediente) return;
+    setPrecioDraft(String(selectedExpediente.precio ?? 0));
+    setRazonPrecio(selectedExpediente.priceReason || "");
+  }, [selectedExpediente?.id, selectedExpediente?.precio, selectedExpediente?.priceReason]);
 
   const updateExpediente = (id, updater) => {
     setExpedientes((prev) => prev.map((exp) => (exp.id === id ? updater(exp) : exp)));
@@ -449,7 +458,8 @@ export default function TrackingPage() {
       pais: paisInicial,
       origen: "",
       fecha_probable: "",
-      precio: 0,
+      precio: getPriceForCountry(paisInicial),
+      priceReason: getPriceReason(paisInicial),
       estado: "CREADO",
       responsable: { comercial: "", operaciones: "" },
       riesgo: "",
@@ -471,13 +481,77 @@ export default function TrackingPage() {
 
   const handlePaisChange = (paisValue) => {
     if (!selectedExpediente) return;
+    const defaultPrice = getPriceForCountry(paisValue);
+    const defaultReason = getPriceReason(paisValue);
     updateExpediente(selectedExpediente.id, (exp) => ({
       ...exp,
       pais: paisValue,
       requisitos: buildRequisitosPorPais(paisValue),
+      precio: defaultPrice,
+      priceReason: defaultReason,
     }));
-    addHistorial(`País de destino actualizado a ${getPaisLabel(paisValue)}. Checklist regenerado.`);
-    setMensaje("Checklist actualizado según país seleccionado.");
+    addHistorial(
+      `País de destino actualizado a ${getPaisLabel(paisValue)}. Checklist regenerado y precio ajustado.`
+    );
+    setMensaje("Checklist y precio estándar actualizados según país seleccionado.");
+    setPrecioDraft(String(defaultPrice));
+    setRazonPrecio(defaultReason);
+  };
+
+  const handleGuardarPrecio = () => {
+    if (!selectedExpediente) return;
+    const parsedPrice = Number(precioDraft);
+    if (Number.isNaN(parsedPrice) || parsedPrice <= 0) {
+      setMensaje("Ingresa un precio válido mayor a cero.");
+      return;
+    }
+    if (!razonPrecio.trim()) {
+      setMensaje("Debes indicar la razón del ajuste manual.");
+      return;
+    }
+    updateExpediente(selectedExpediente.id, (exp) => ({
+      ...exp,
+      precio: parsedPrice,
+      priceReason: razonPrecio.trim(),
+    }));
+    addHistorial(`Precio ajustado a USD ${parsedPrice} (${razonPrecio.trim()}).`);
+    setMensaje(`Precio actualizado a USD ${parsedPrice}.`);
+    setPrecioDraft(String(parsedPrice));
+    setRazonPrecio(razonPrecio.trim());
+  };
+
+  const handleDownloadCotizacion = () => {
+    if (!selectedExpediente) return;
+    if (typeof document === "undefined") {
+      setMensaje("La descarga solo está disponible desde el navegador.");
+      return;
+    }
+    const rows = [
+      ["Campo", "Valor"],
+      ["Expediente", selectedExpediente.codigo],
+      ["Cliente", selectedExpediente.owner_name],
+      ["Mascota", `${selectedExpediente.mascota_name} (${selectedExpediente.raza})`],
+      ["Destino", selectedExpediente.destino],
+      ["País", getPaisLabel(selectedExpediente.pais || DEFAULT_COUNTRY)],
+      ["Precio (USD)", selectedExpediente.precio],
+      ["Motivo precio", selectedExpediente.priceReason || "Estándar"],
+      ["", ""],
+      ["Requisito", "Estado"],
+      ...selectedExpediente.requisitos.map((req) => [req.nombre, req.estado]),
+    ];
+    const csvContent = rows
+      .map((row) => row.map((value) => `"${String(value).replace(/"/g, '""')}"`).join(","))
+      .join("\r\n");
+    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+    const anchor = document.createElement("a");
+    anchor.href = url;
+    anchor.download = `cotizacion-${selectedExpediente.codigo}.csv`;
+    document.body.appendChild(anchor);
+    anchor.click();
+    document.body.removeChild(anchor);
+    URL.revokeObjectURL(url);
+    setMensaje(`Cotización ${selectedExpediente.codigo} descargada.`);
   };
 
   const handlePago = (tipo) => {
@@ -739,7 +813,7 @@ export default function TrackingPage() {
                         <label className="form-label small fw-semibold">Contacto</label>
                         <input className="form-control" value={`${selectedExpediente.phone}`} readOnly />
                       </div>
-                      <div className="col-md-6">
+                      <div className="col-md-4">
                         <label className="form-label small fw-semibold">Mascota</label>
                         <input
                           className="form-control"
@@ -747,11 +821,11 @@ export default function TrackingPage() {
                           readOnly
                         />
                       </div>
-                      <div className="col-md-6">
+                      <div className="col-md-4">
                         <label className="form-label small fw-semibold">Destino (ciudad)</label>
                         <input className="form-control" value={selectedExpediente.destino} readOnly />
                       </div>
-                      <div className="col-md-6">
+                      <div className="col-md-4">
                         <label className="form-label small fw-semibold">País destino</label>
                         <select
                           className="form-select"
@@ -765,7 +839,7 @@ export default function TrackingPage() {
                           ))}
                         </select>
                         <small className="text-muted small">
-                          Al cambiar país se recarga el checklist con sus requisitos.
+                          Al cambiar país se recarga el checklist, ajusta el precio y obliga a justificar manualmente.
                         </small>
                       </div>
                       <div className="col-md-4">
@@ -774,7 +848,17 @@ export default function TrackingPage() {
                       </div>
                       <div className="col-md-4">
                         <label className="form-label small fw-semibold">Precio del servicio</label>
-                        <input className="form-control" value={`USD ${selectedExpediente.precio}`} readOnly />
+                        <div className="input-group">
+                          <span className="input-group-text">USD</span>
+                          <input
+                            type="number"
+                            min="0"
+                            step="10"
+                            className="form-control"
+                            value={precioDraft}
+                            onChange={(e) => setPrecioDraft(e.target.value)}
+                          />
+                        </div>
                       </div>
                       <div className="col-md-4">
                         <label className="form-label small fw-semibold">Estado</label>
@@ -792,6 +876,40 @@ export default function TrackingPage() {
                             </select>
                           )}
                         </div>
+                      </div>
+                    </div>
+                    <div className="row g-3 mb-3">
+                      <div className="col-12">
+                        <label className="form-label small fw-semibold">Razón del ajuste</label>
+                        <textarea
+                          className="form-control"
+                          placeholder="Describe por qué modificas el precio"
+                          value={razonPrecio}
+                          onChange={(e) => setRazonPrecio(e.target.value)}
+                          rows={2}
+                        />
+                        <div className="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center mt-2 gap-2">
+                          <small className="text-muted">
+                            Completar esta razón cada vez que modifiques el precio manualmente.
+                          </small>
+                          <div className="d-flex flex-wrap gap-2">
+                            <button className="btn btn-primary btn-sm" type="button" onClick={handleGuardarPrecio}>
+                              Guardar precio
+                            </button>
+                            <button
+                              className="btn btn-outline-secondary btn-sm"
+                              type="button"
+                              onClick={handleDownloadCotizacion}
+                            >
+                              Descargar cotización
+                            </button>
+                          </div>
+                        </div>
+                        {selectedExpediente.priceReason ? (
+                          <small className="text-muted d-block mt-2">
+                            Último motivo guardado: {selectedExpediente.priceReason}
+                          </small>
+                        ) : null}
                       </div>
                     </div>
                     <div className="alert alert-secondary d-flex justify-content-between align-items-center">
