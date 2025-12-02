@@ -703,7 +703,7 @@ export default function TrackingPage() {
           ) : null}
 
           <div className="row g-4 mb-4">
-            <div className="col-lg-4">
+            <div className="col-12">
               <div className="card border-0 shadow-sm mb-4">
                 <div className="card-body">
                   <SectionTitle
@@ -779,7 +779,11 @@ export default function TrackingPage() {
                   </div>
                 </div>
               </div>
+            </div>
+          </div>
 
+          <div className="row g-4 mb-4">
+            <div className="col-lg-4">
               <div className="card border-0 shadow-sm">
                 <div className="card-body">
                   <SectionTitle title="Tablero de Expedientes" subtitle="Pipeline CREADO → CERRADO" badge="Kanban" />
