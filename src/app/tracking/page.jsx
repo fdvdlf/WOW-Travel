@@ -359,12 +359,12 @@ export default function TrackingPage() {
     if (!selectedExpediente) return;
     setPrecioDraft(String(selectedExpediente.precio ?? 0));
     setRazonPrecio(selectedExpediente.priceReason || "");
-  }, [selectedExpediente?.id, selectedExpediente?.precio, selectedExpediente?.priceReason]);
+  }, [selectedExpediente, selectedExpediente?.id, selectedExpediente?.precio, selectedExpediente?.priceReason]);
 
   useEffect(() => {
     setChecklistFilter("TODOS");
     setNotesExpanded(false);
-  }, [selectedExpediente?.id]);
+  }, [selectedExpediente, selectedExpediente?.id]);
 
   const updateExpediente = (id, updater) => {
     setExpedientes((prev) => prev.map((exp) => (exp.id === id ? updater(exp) : exp)));
