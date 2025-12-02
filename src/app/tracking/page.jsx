@@ -848,7 +848,7 @@ export default function TrackingPage() {
             </div>
 
             <div className="row g-4">
-              <div className="col-lg-7 d-flex flex-column gap-3">
+              <div className="col-lg-4 d-flex flex-column gap-3">
                 <div className="card bg-white border border-secondary-subtle shadow-sm">
                   <div className="card-body">
                     <SectionTitle title="Datos generales" badge="Expediente" />
@@ -887,7 +887,7 @@ export default function TrackingPage() {
                 </div>
               </div>
 
-              <div className="col-lg-5 d-flex flex-column gap-3">
+              <div className="col-lg-8 d-flex flex-column gap-3">
                 {selectedExpediente ? (
                   <div className="card bg-white border border-secondary-subtle shadow-sm">
                     <div className="card-body">
