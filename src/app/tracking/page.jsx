@@ -728,7 +728,7 @@ export default function TrackingPage() {
           ) : null}
 
           <div className="row g-4">
-            <div className="col-lg-4 d-flex flex-column gap-4">
+            <div className="col-12">
               <div className="card bg-white border border-secondary-subtle shadow-sm">
                 <div className="card-body">
                   <SectionTitle title="Leads" subtitle="Captura, filtros y conversión" badge="ETAPA 0" />
@@ -926,6 +926,10 @@ export default function TrackingPage() {
                   </div>
                 </div>
               </div>
+            </div>
+          </div>
+          <div className="row g-4 mt-4">
+            <div className="col-12">
               <div className="card bg-white border border-secondary-subtle shadow-sm">
                 <div className="card-body">
                   <SectionTitle title="Datos generales" subtitle="Resumen del expediente" badge="Expediente" />
