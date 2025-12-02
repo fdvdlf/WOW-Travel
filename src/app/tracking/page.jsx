@@ -905,16 +905,21 @@ export default function TrackingPage() {
                         </div>
                       </div>
                       <div className="d-flex flex-wrap gap-2 mt-3">
-                        <button className="btn btn-primary btn-sm" type="button" disabled={!selectedExpediente && !selectedLead} onClick={() => { if (selectedExpediente) { setCurrentTab("datos"); } else if (selectedLead) { handleConvertLead(selectedLead); } }}>
-                          {selectedExpediente ? "Ir al expediente" : "Abrir expediente"}
-                        </button>
                         <a className={`btn btn-outline-secondary btn-sm ${!whatsappNumber ? "disabled" : ""}`} href={whatsappHref} target="_blank" rel="noreferrer noopener">
                           WhatsApp
                         </a>
+                        <button className="btn btn-primary btn-sm" type="button" disabled={!selectedExpediente && !selectedLead} onClick={() => { if (selectedExpediente) { setCurrentTab("datos"); } else if (selectedLead) { handleConvertLead(selectedLead); } }}>
+                          {selectedExpediente ? "Ver expediente" : "Abrir expediente"}
+                        </button>
                       </div>
-                      <div className="d-flex flex-wrap gap-2 mt-3">
+                      <div className="nav nav-pills nav-underline small mt-3 gap-2 flex-wrap">
                         {TAB_DEFINITIONS.map((tab) => (
-                          <button key={tab.key} className={`btn btn-sm ${currentTab === tab.key ? "btn-primary" : "btn-outline-secondary"}`} type="button" onClick={() => setCurrentTab(tab.key)}>
+                          <button
+                            key={tab.key}
+                            className={`nav-link py-1 px-2 ${currentTab === tab.key ? "active" : ""}`}
+                            type="button"
+                            onClick={() => setCurrentTab(tab.key)}
+                          >
                             {tab.label}
                           </button>
                         ))}
@@ -942,12 +947,16 @@ export default function TrackingPage() {
                                 <div className="input-group">
                                   <span className="input-group-text">USD</span>
                                   <input type="number" min="0" step="10" className="form-control" value={precioDraft} onChange={(e) => setPrecioDraft(e.target.value)} />
+                                  <button className="btn btn-outline-primary btn-sm" type="button" onClick={handleGuardarPrecio} title="Guardar precio">
+                                    <i className="bi bi-check2" aria-hidden="true"></i>
+                                  </button>
                                 </div>
                                 <small className="text-muted d-block mt-2">Precio actual: USD {selectedExpediente.precio}</small>
                                 <small className="text-muted d-block">Motivo: {selectedExpediente.priceReason || "Est?ndar"}</small>
-                                <div className="mt-3 d-flex flex-wrap gap-2">
-                                  <button className="btn btn-primary btn-sm" type="button" onClick={handleGuardarPrecio}>Guardar precio</button>
-                                  <button className="btn btn-outline-secondary btn-sm" type="button" onClick={handleDownloadCotizacion}>Descargar cotizaci?n</button>
+                                <div className="mt-2">
+                                  <button className="btn btn-link btn-sm p-0" type="button" onClick={handleDownloadCotizacion}>
+                                    <i className="bi bi-download me-1" aria-hidden="true"></i>Descargar cotizaci?n
+                                  </button>
                                 </div>
                               </div>
                             </div>
@@ -960,10 +969,20 @@ export default function TrackingPage() {
                                   </div>
                                   <EstadoPill value={selectedExpediente.pagos.pago70.aprobado ? "DOCUMENTACION_COMPLETA" : "EN_PROCESO"} />
                                 </div>
-                                <div className="d-flex flex-wrap gap-2">
-                                  <button className="btn btn-outline-secondary btn-sm" onClick={() => handlePago(70)}>Registrar 70%</button>
-                                  <button className="btn btn-outline-secondary btn-sm" onClick={() => handleAprobarPago(70)}>Aprobar 70%</button>
-                                </div>
+                                <ul className="list-unstyled small mb-0">
+                                  <li className="d-flex justify-content-between align-items-center">
+                                    <span>Voucher cargado</span>
+                                    <button className="btn btn-link btn-sm p-0" onClick={() => handlePago(70)}>Cargar</button>
+                                  </li>
+                                  <li className="d-flex justify-content-between align-items-center">
+                                    <span>Pago registrado</span>
+                                    <button className="btn btn-link btn-sm p-0" onClick={() => handlePago(70)}>Registrar</button>
+                                  </li>
+                                  <li className="d-flex justify-content-between align-items-center">
+                                    <span>Pago aprobado</span>
+                                    <button className="btn btn-link btn-sm p-0" onClick={() => handleAprobarPago(70)}>Aprobar</button>
+                                  </li>
+                                </ul>
                                 <small className="text-muted d-block mt-2">Comprobante: {selectedExpediente.pagos.pago70.comprobante_url || "No cargado"}</small>
                               </div>
                               <div className="bg-light border border-secondary-subtle rounded-3 p-3 mt-3">
@@ -974,10 +993,20 @@ export default function TrackingPage() {
                                   </div>
                                   <EstadoPill value={selectedExpediente.pagos.pago30.aprobado ? "DOCUMENTACION_COMPLETA" : "EN_PROCESO"} />
                                 </div>
-                                <div className="d-flex flex-wrap gap-2">
-                                  <button className="btn btn-outline-secondary btn-sm" onClick={() => handlePago(30)}>Registrar 30%</button>
-                                  <button className="btn btn-outline-secondary btn-sm" onClick={() => handleAprobarPago(30)}>Validar 30%</button>
-                                </div>
+                                <ul className="list-unstyled small mb-0">
+                                  <li className="d-flex justify-content-between align-items-center">
+                                    <span>Voucher cargado</span>
+                                    <button className="btn btn-link btn-sm p-0" onClick={() => handlePago(30)}>Cargar</button>
+                                  </li>
+                                  <li className="d-flex justify-content-between align-items-center">
+                                    <span>Pago registrado</span>
+                                    <button className="btn btn-link btn-sm p-0" onClick={() => handlePago(30)}>Registrar</button>
+                                  </li>
+                                  <li className="d-flex justify-content-between align-items-center">
+                                    <span>Pago aprobado</span>
+                                    <button className="btn btn-link btn-sm p-0" onClick={() => handleAprobarPago(30)}>Aprobar</button>
+                                  </li>
+                                </ul>
                                 <small className="text-muted d-block mt-2">Comprobante: {selectedExpediente.pagos.pago30.comprobante_url || "No cargado"}</small>
                               </div>
                             </div>
@@ -1006,8 +1035,8 @@ export default function TrackingPage() {
                               </table>
                             </div>
                             <div className="d-flex flex-wrap gap-2 justify-content-end mt-3">
-                              <button className="btn btn-primary btn-sm" onClick={handleDocumentacionCompleta} type="button">Marcar documentaci?n completa</button>
-                              <button className="btn btn-outline-secondary btn-sm" type="button" onClick={() => setCurrentTab("archivos")}>Ver archivos</button>
+                              <button className="btn btn-link btn-sm p-0" onClick={handleDocumentacionCompleta} type="button">Marcar documentación completa</button>
+                              <button className="btn btn-link btn-sm p-0" type="button" onClick={() => setCurrentTab("archivos")}>Ver archivos</button>
                             </div>
                           </div>
                         )}
