@@ -1090,7 +1090,8 @@ export default function TrackingPage() {
               </div>
             </div>
             <div className="col-lg-8 d-flex flex-column gap-3">
-              <div className="card bg-white border border-secondary-subtle shadow-sm">
+              {selectedExpediente ? (
+                <div className="card bg-white border border-secondary-subtle shadow-sm">
                 <div className="card-body">
                   <div className="d-flex justify-content-between align-items-start flex-wrap gap-3">
                     <div>
