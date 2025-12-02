@@ -1028,17 +1028,20 @@ export default function TrackingPage() {
                         <small className="text-muted">Requisitos pendientes: {requisitosPendientes}</small>
                       </div>
                       <div className="col-12">
-                        <label className="form-label small fw-semibold mb-2">Tipo</label>
-                        <div className="btn-group" role="group" aria-label="Tipo de mascota">
+                        <label className="form-label small fw-semibold mb-2">Tipo de mascota</label>
+                        <div className="d-flex gap-3">
                           {["Perro", "Gato"].map((tipo) => (
-                            <button
-                              key={tipo}
-                              type="button"
-                              className={`btn btn-sm px-3 ${selectedExpediente.tipo_mascota === tipo ? "btn-primary" : "btn-outline-secondary"}`}
-                              onClick={() => handleTipoMascotaChange(tipo)}
-                            >
-                              {tipo}
-                            </button>
+                            <label key={tipo} className="form-check form-check-inline mb-0">
+                              <input
+                                className="form-check-input"
+                                type="radio"
+                                name="tipoMascota"
+                                value={tipo}
+                                checked={selectedExpediente.tipo_mascota === tipo}
+                                onChange={() => handleTipoMascotaChange(tipo)}
+                              />
+                              <span className="form-check-label">{tipo}</span>
+                            </label>
                           ))}
                         </div>
                       </div>
