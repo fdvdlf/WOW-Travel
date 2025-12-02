@@ -342,25 +342,14 @@ function RequisitoRow({ requisito, onUpdate }) {
         <td className="fw-semibold">{requisito.nombre}</td>
         <td>
           <div className="d-flex align-items-center gap-2">
-            <span className="small">{STATUS_ICONS[requisito.estado] || "??"}</span>
-            <select
-              className="form-select form-select-sm"
-              value={requisito.estado}
-              onChange={(e) => onUpdate({ ...requisito, estado: e.target.value })}
-            >
-              {ESTADOS_REQUISITO.map((estado) => (
-                <option key={estado} value={estado}>
-                  {STATUS_ICONS[estado] || estado}
-                </option>
-              ))}
-            </select>
+            <span className="small">{STATUS_ICONS[requisito.estado] || requisito.estado}</span>
           </div>
         </td>
         <td className="text-muted small">{requisito.evidencia_url || "Sin evidencia"}</td>
         <td className="text-muted small">{requisito.fecha || "Sin fecha"}</td>
         <td className="text-end">
-          <button className="btn btn-link btn-sm p-0" type="button" onClick={() => setExpanded((prev) => !prev)}>
-            {expanded ? "Ocultar detalle" : "Ver detalle"}
+          <button className="btn btn-link btn-sm p-0" type="button" onClick={() => setExpanded((prev) => !prev)} aria-label="Expandir requisito">
+            <i className={`bi ${expanded ? "bi-chevron-up" : "bi-chevron-down"}`} aria-hidden="true"></i>
           </button>
         </td>
       </tr>
@@ -368,6 +357,20 @@ function RequisitoRow({ requisito, onUpdate }) {
         <tr className="table-light">
           <td colSpan="5">
             <div className="row g-2">
+              <div className="col-md-4">
+                <label className="form-label small text-muted">Estado</label>
+                <select
+                  className="form-select form-select-sm"
+                  value={requisito.estado}
+                  onChange={(e) => onUpdate({ ...requisito, estado: e.target.value })}
+                >
+                  {ESTADOS_REQUISITO.map((estado) => (
+                    <option key={estado} value={estado}>
+                      {STATUS_ICONS[estado] || estado}
+                    </option>
+                  ))}
+                </select>
+              </div>
               <div className="col-md-4">
                 <label className="form-label small text-muted">Evidencia</label>
                 <div className="d-flex align-items-center gap-2">
