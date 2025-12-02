@@ -926,6 +926,24 @@ export default function TrackingPage() {
         .tracking-page-wrapper .text-primary {
           color: #894b8d !important;
         }
+        .tracking-page-wrapper .btn-primary-subtle {
+          background-color: #f3e5f5 !important;
+          color: #894b8d !important;
+          border: none !important;
+        }
+        .tracking-page-wrapper .btn-primary-subtle:hover {
+          background-color: #e1bee7 !important;
+          color: #6d3b70 !important;
+        }
+        .tracking-page-wrapper .btn-secondary {
+          background-color: #6c757d !important;
+          color: white !important;
+          border-color: #6c757d !important;
+        }
+        .tracking-page-wrapper .btn-secondary:hover {
+          background-color: #5a6268 !important;
+          border-color: #545b62 !important;
+        }
       `}</style>
       <section className="py-5 bg-light tracking-page-wrapper">
         <div className="container">
