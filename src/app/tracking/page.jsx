@@ -1005,9 +1005,19 @@ export default function TrackingPage() {
                       <div className="col-12">
                         <small className="text-muted">Requisitos pendientes: {requisitosPendientes}</small>
                       </div>
-                      <div className="col-md-4">
-                        <label className="form-label small fw-semibold">Tipo</label>
-                        <input className="form-control" value={selectedExpediente.tipo_mascota || "Perro"} readOnly />
+                      <div className="col-12">
+                        <label className="form-label small fw-semibold mb-2">Tipo</label>
+                        <div className="btn-group" role="group" aria-label="Tipo de mascota">
+                          {["Perro", "Gato"].map((tipo) => (
+                            <button
+                              key={tipo}
+                              type="button"
+                              className={`btn btn-sm ${selectedExpediente.tipo_mascota === tipo ? "btn-primary" : "btn-outline-secondary"}`}
+                            >
+                              {tipo}
+                            </button>
+                          ))}
+                        </div>
                       </div>
                       <div className="col-md-4">
                         <label className="form-label small fw-semibold">Edad</label>
