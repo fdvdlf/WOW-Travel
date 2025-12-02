@@ -335,66 +335,87 @@ function CountryFlag({ pais }) {
 
 function RequisitoRow({ requisito, onUpdate }) {
   const fileInputRef = useRef(null);
+  const [expanded, setExpanded] = useState(false);
   return (
-    <tr>
-      <td className="fw-semibold">{requisito.nombre}</td>
-      <td>
-        <div className="d-flex align-items-center gap-2">
-          <span className="fs-5">{STATUS_ICONS[requisito.estado] || "ℹ️"}</span>
-          <select
-            className="form-select form-select-sm flex-grow-1"
-            value={requisito.estado}
-            onChange={(e) => onUpdate({ ...requisito, estado: e.target.value })}
-          >
-            {ESTADOS_REQUISITO.map((estado) => (
-              <option key={estado} value={estado}>
-                {STATUS_ICONS[estado] || estado}
-              </option>
-            ))}
-          </select>
-        </div>
-      </td>
-      <td>
-        <div className="d-flex align-items-center gap-2">
-          <input
-            className="form-control form-control-sm"
-            placeholder="URL o nombre"
-            value={requisito.evidencia_url}
-            onChange={(e) => onUpdate({ ...requisito, evidencia_url: e.target.value })}
-          />
-          <input
-            ref={fileInputRef}
-            type="file"
-            className="d-none"
-            onChange={(e) => {
-              const file = e.target.files?.[0];
-              if (file) {
-                onUpdate({ ...requisito, evidencia_url: file.name });
-              }
-            }}
-          />
-          <button className="btn btn-link btn-sm p-0" type="button" onClick={() => fileInputRef.current?.click()}>
-            Adjuntar
+    <>
+      <tr className="align-middle">
+        <td className="fw-semibold">{requisito.nombre}</td>
+        <td>
+          <div className="d-flex align-items-center gap-2">
+            <span className="small">{STATUS_ICONS[requisito.estado] || "??"}</span>
+            <select
+              className="form-select form-select-sm"
+              value={requisito.estado}
+              onChange={(e) => onUpdate({ ...requisito, estado: e.target.value })}
+            >
+              {ESTADOS_REQUISITO.map((estado) => (
+                <option key={estado} value={estado}>
+                  {STATUS_ICONS[estado] || estado}
+                </option>
+              ))}
+            </select>
+          </div>
+        </td>
+        <td className="text-muted small">{requisito.evidencia_url || "Sin evidencia"}</td>
+        <td className="text-muted small">{requisito.fecha || "Sin fecha"}</td>
+        <td className="text-end">
+          <button className="btn btn-link btn-sm p-0" type="button" onClick={() => setExpanded((prev) => !prev)}>
+            {expanded ? "Ocultar detalle" : "Ver detalle"}
           </button>
-        </div>
-      </td>
-      <td>
-        <input
-          type="date"
-          className="form-control form-control-sm"
-          value={requisito.fecha}
-          onChange={(e) => onUpdate({ ...requisito, fecha: e.target.value })}
-        />
-      </td>
-      <td>
-        <input
-          className="form-control form-control-sm"
-          placeholder="Notas internas"
-          value={requisito.notas}
-          onChange={(e) => onUpdate({ ...requisito, notas: e.target.value })}
-        />
-      </td>
-    </tr>
+        </td>
+      </tr>
+      {expanded ? (
+        <tr className="table-light">
+          <td colSpan="5">
+            <div className="row g-2">
+              <div className="col-md-4">
+                <label className="form-label small text-muted">Evidencia</label>
+                <div className="d-flex align-items-center gap-2">
+                  <input
+                    className="form-control form-control-sm"
+                    placeholder="URL o nombre"
+                    value={requisito.evidencia_url}
+                    onChange={(e) => onUpdate({ ...requisito, evidencia_url: e.target.value })}
+                  />
+                  <input
+                    ref={fileInputRef}
+                    type="file"
+                    className="d-none"
+                    onChange={(e) => {
+                      const file = e.target.files?.[0];
+                      if (file) {
+                        onUpdate({ ...requisito, evidencia_url: file.name });
+                      }
+                    }}
+                  />
+                  <button className="btn btn-link btn-sm p-0" type="button" onClick={() => fileInputRef.current?.click()}>
+                    Adjuntar
+                  </button>
+                </div>
+              </div>
+              <div className="col-md-3">
+                <label className="form-label small text-muted">Fecha</label>
+                <input
+                  type="date"
+                  className="form-control form-control-sm"
+                  value={requisito.fecha}
+                  onChange={(e) => onUpdate({ ...requisito, fecha: e.target.value })}
+                />
+              </div>
+              <div className="col-md-5">
+                <label className="form-label small text-muted">Notas</label>
+                <input
+                  className="form-control form-control-sm"
+                  placeholder="Notas internas"
+                  value={requisito.notas}
+                  onChange={(e) => onUpdate({ ...requisito, notas: e.target.value })}
+                />
+              </div>
+            </div>
+          </td>
+        </tr>
+      ) : null}
+    </>
   );
 }
 export default function TrackingPage() {
