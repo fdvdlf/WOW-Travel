@@ -446,8 +446,8 @@ export default function TrackingPage() {
   };
 
   const handleConvertLead = (lead) => {
-    if (role !== "COMERCIAL") {
-      setMensaje("Solo Comercial convierte leads a expedientes.");
+    if (role !== ROLE) {
+      setMensaje("Solo el rol administrador convierte leads a expedientes.");
       return;
     }
     const paisInicial = PAISES.find((p) => p.value === DEFAULT_COUNTRY)?.value || DEFAULT_COUNTRY;
@@ -738,7 +738,7 @@ export default function TrackingPage() {
 
           <div className="row g-4">
             <div className="col-12">
-              <div className="card bg-white border border-secondary-subtle shadow-sm">
+              <div className="card bg-white border border-secondary-subtle shadow-sm w-100">
                 <div className="card-body">
                   <SectionTitle title="Leads" subtitle="Captura, filtros y conversión" badge="ETAPA 0" />
                   <div className="d-flex flex-wrap gap-2 justify-content-between align-items-center mb-3">
@@ -955,7 +955,7 @@ export default function TrackingPage() {
               </div>
             </div>
           </div>
-          <div className="row g-4 mt-4">
+          <div className="row g-4 mt-4 w-100">
             <div className="col-12">
               <div className="card bg-white border border-secondary-subtle shadow-sm">
                 <div className="card-body">
