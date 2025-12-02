@@ -473,7 +473,6 @@ export default function TrackingPage() {
     }
     const paisInicial = PAISES.find((p) => p.value === DEFAULT_COUNTRY)?.value || DEFAULT_COUNTRY;
     const destinoInicial = getDestinosPorPais(paisInicial)[0] || "Destino por definir";
-    const destinoInicial = getDestinosPorPais(paisInicial)[0] || "Destino por definir";
     const nuevo = {
       id: `exp-${Date.now()}`,
       codigo: `EXP-${String(expedientes.length + 1).padStart(3, "0")}`,
