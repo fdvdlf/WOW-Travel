@@ -2,6 +2,7 @@
 
 import { useMemo, useRef, useState } from "react";
 import { Layout } from "@/layouts/Layout";
+import { APP_VERSION, TRACKING_CODE } from "@/lib/appVersion";
 
 const ROLES = ["COMERCIAL", "OPERACIONES", "GERENCIA"];
 
@@ -489,6 +490,9 @@ export default function TrackingPage() {
                     <option key={r}>{r}</option>
                   ))}
                 </select>
+              </div>
+              <div className="text-muted small mt-2">
+                Tracking versión {APP_VERSION} <span className="text-uppercase">({TRACKING_CODE})</span>
               </div>
             </div>
           </div>
