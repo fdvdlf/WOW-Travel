@@ -824,6 +824,7 @@ export default function TrackingPage() {
           letter-spacing: normal !important;
           position: static !important;
           overflow: visible !important;
+          box-shadow: none !important;
         }
         .tracking-page-wrapper .btn::before {
           display: none !important;
@@ -886,9 +887,30 @@ export default function TrackingPage() {
           border-radius: 0.375rem !important;
           padding: 0.375rem 0.75rem !important;
           font-size: 0.875rem !important;
+          border-color: #dee2e6 !important;
         }
         .tracking-page-wrapper .input-group-text {
           border-radius: 0.375rem !important;
+        }
+        .tracking-page-wrapper .card {
+          border: 1px solid #e9ecef !important;
+          box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075) !important;
+          border-radius: 0.5rem !important;
+        }
+        .tracking-page-wrapper .nav-pills .nav-link.active {
+          background-color: #0d6efd !important;
+          color: white !important;
+        }
+        .tracking-page-wrapper .nav-pills .nav-link {
+          color: #495057 !important;
+          border-radius: 0.375rem !important;
+        }
+        .tracking-page-wrapper .list-group-item {
+          border-color: #e9ecef !important;
+        }
+        .tracking-page-wrapper .list-group-item.bg-primary-subtle {
+          background-color: #cfe2ff !important;
+          border-color: #b6d4fe !important;
         }
       `}</style>
       <section className="py-5 bg-light tracking-page-wrapper">
@@ -924,12 +946,12 @@ export default function TrackingPage() {
             <div className="col-12">
               <div className="card bg-white border border-secondary-subtle shadow-sm w-100">
                 <div className="card-body">
-                  <SectionTitle title="Leads y b?squeda" badge="ETAPA 0" />
+                  <SectionTitle title="Leads y búsqueda" badge="ETAPA 0" />
                   <div className="d-flex flex-wrap gap-2 align-items-center justify-content-between">
                     <div className="d-flex flex-wrap gap-2 align-items-center flex-grow-1">
                       <div className="input-group flex-grow-1 min-w-0">
                         <span className="input-group-text">Buscar</span>
-                        <input className="form-control" placeholder="Nombre, tel?fono o nota" value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} />
+                        <input className="form-control" placeholder="Nombre, teléfono o nota" value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} />
                       </div>
                       <select className="form-select w-auto" value={sourceFilter} onChange={(e) => setSourceFilter(e.target.value)}>
                         <option value="TODOS">Todas las fuentes</option>
@@ -973,8 +995,8 @@ export default function TrackingPage() {
                   ) : null}
                   <div className="mt-3">
                     <div className="d-flex justify-content-between align-items-center mb-2">
-                      <span className="fw-semibold">{isSearching ? "Resultados de b?squeda" : "Expedientes activos"}</span>
-                      <small className="text-muted">{isSearching ? `${displayedLeads.length} resultados` : "M?ximo 5 recientes"}</small>
+                      <span className="fw-semibold">{isSearching ? "Resultados de búsqueda" : "Expedientes activos"}</span>
+                      <small className="text-muted">{isSearching ? `${displayedLeads.length} resultados` : "Máximo 5 recientes"}</small>
                     </div>
                     <div className="list-group list-group-flush">
                       {(isSearching ? displayedLeads : activeExpedientes).slice(0, 10).map((item) => {
@@ -1101,12 +1123,12 @@ export default function TrackingPage() {
                           <div className="row g-3">
                             <div className="col-md-6"><p className="small text-muted mb-1">Propietario</p><p className="fw-semibold mb-0">{selectedExpediente.owner_name}</p></div>
                             <div className="col-md-6"><p className="small text-muted mb-1">Contacto</p><p className="fw-semibold mb-0">{selectedExpediente.phone}</p></div>
-                            <div className="col-md-6"><p className="small text-muted mb-1">Mascota</p><p className="fw-semibold mb-0">{selectedExpediente.mascota_name} ? {selectedExpediente.raza}</p></div>
+                            <div className="col-md-6"><p className="small text-muted mb-1">Mascota</p><p className="fw-semibold mb-0">{selectedExpediente.mascota_name} · {selectedExpediente.raza}</p></div>
                             <div className="col-md-6"><p className="small text-muted mb-1">Destino</p><p className="fw-semibold mb-0">{selectedExpediente.destino}</p></div>
-                            <div className="col-md-6"><p className="small text-muted mb-1">Pa?s</p><CountryFlag pais={selectedExpediente.pais || DEFAULT_COUNTRY} /></div>
+                            <div className="col-md-6"><p className="small text-muted mb-1">País</p><CountryFlag pais={selectedExpediente.pais || DEFAULT_COUNTRY} /></div>
                             <div className="col-md-6"><p className="small text-muted mb-1">Fecha probable</p><p className="fw-semibold mb-0">{selectedExpediente.fecha_probable || "Pendiente"}</p></div>
                             <div className="col-md-6"><p className="small text-muted mb-1">Precio actual</p><p className="fw-semibold mb-0">USD {selectedExpediente.precio}</p></div>
-                            <div className="col-md-6"><p className="small text-muted mb-1">Motivo del precio</p><p className="fw-semibold mb-0">{selectedExpediente.priceReason || "Est?ndar"}</p></div>
+                            <div className="col-md-6"><p className="small text-muted mb-1">Motivo del precio</p><p className="fw-semibold mb-0">{selectedExpediente.priceReason || "Estándar"}</p></div>
                           </div>
                         </div>
                       </div>
@@ -1124,10 +1146,10 @@ export default function TrackingPage() {
                                   </button>
                                 </div>
                                 <small className="text-muted d-block mt-2">Precio actual: USD {selectedExpediente.precio}</small>
-                                <small className="text-muted d-block">Motivo: {selectedExpediente.priceReason || "Est?ndar"}</small>
+                                <small className="text-muted d-block">Motivo: {selectedExpediente.priceReason || "Estándar"}</small>
                                 <div className="mt-2">
                                   <button className="btn btn-link btn-sm p-0" type="button" onClick={handleDownloadCotizacion}>
-                                    <i className="bi bi-download me-1" aria-hidden="true"></i>Descargar cotizaci?n
+                                    <i className="bi bi-download me-1" aria-hidden="true"></i>Descargar cotización
                                   </button>
                                 </div>
                               </div>
@@ -1192,7 +1214,7 @@ export default function TrackingPage() {
                               <select className="form-select form-select-sm w-auto" value={checklistFilter} onChange={(e) => setChecklistFilter(e.target.value)}>
                                 {["TODOS", ...ESTADOS_REQUISITO].map((estado) => (<option key={estado} value={estado}>{STATUS_ICONS[estado] || estado}</option>))}
                               </select>
-                              <span className="small text-muted">Obligatorios arriba ? opcionales abajo</span>
+                              <span className="small text-muted">Obligatorios arriba ↓ opcionales abajo</span>
                             </div>
                             <div className="table-responsive">
                               <table className="table table-borderless mb-0">
@@ -1242,7 +1264,7 @@ export default function TrackingPage() {
                         )}
                         {currentTab === "archivos" && (
                           <div className="border border-secondary-subtle rounded-3 p-4 text-center text-muted">
-                            <p className="mb-2">Aqu? podr?s ver los archivos cargados al expediente.</p>
+                            <p className="mb-2">Aquí podrás ver los archivos cargados al expediente.</p>
                             <button className="btn btn-outline-secondary btn-sm" type="button">Adjuntar archivo</button>
                           </div>
                         )}
