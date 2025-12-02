@@ -830,22 +830,22 @@ export default function TrackingPage() {
           display: none !important;
         }
         .tracking-page-wrapper .btn-primary {
-          background-color: #0d6efd !important;
+          background-color: #894b8d !important;
           color: white !important;
-          border-color: #0d6efd !important;
+          border-color: #894b8d !important;
         }
         .tracking-page-wrapper .btn-primary:hover {
-          background-color: #0b5ed7 !important;
-          border-color: #0a58ca !important;
+          background-color: #6d3b70 !important;
+          border-color: #6d3b70 !important;
         }
         .tracking-page-wrapper .btn-outline-primary {
-          color: #0d6efd !important;
-          border-color: #0d6efd !important;
+          color: #894b8d !important;
+          border-color: #894b8d !important;
           background-color: transparent !important;
         }
         .tracking-page-wrapper .btn-outline-primary:hover {
           color: white !important;
-          background-color: #0d6efd !important;
+          background-color: #894b8d !important;
         }
         .tracking-page-wrapper .btn-outline-secondary {
           color: #6c757d !important;
@@ -860,18 +860,22 @@ export default function TrackingPage() {
           background: transparent !important;
           border: none !important;
           padding: 0 !important;
-          color: #0d6efd !important;
+          color: #894b8d !important;
           text-decoration: none !important;
           width: auto !important;
           height: auto !important;
         }
         .tracking-page-wrapper .btn-link:hover {
           text-decoration: underline !important;
-          color: #0a58ca !important;
+          color: #6d3b70 !important;
         }
         .tracking-page-wrapper .btn-sm {
           padding: 0.25rem 0.5rem !important;
           font-size: 0.75rem !important;
+        }
+        .tracking-page-wrapper .btn-lg {
+          padding: 0.5rem 1rem !important;
+          font-size: 1.1rem !important;
         }
         .tracking-page-wrapper .rounded-circle {
           border-radius: 50% !important;
@@ -898,7 +902,7 @@ export default function TrackingPage() {
           border-radius: 0.5rem !important;
         }
         .tracking-page-wrapper .nav-pills .nav-link.active {
-          background-color: #0d6efd !important;
+          background-color: #894b8d !important;
           color: white !important;
         }
         .tracking-page-wrapper .nav-pills .nav-link {
@@ -909,8 +913,8 @@ export default function TrackingPage() {
           border-color: #e9ecef !important;
         }
         .tracking-page-wrapper .list-group-item.bg-primary-subtle {
-          background-color: #cfe2ff !important;
-          border-color: #b6d4fe !important;
+          background-color: #f3e5f5 !important;
+          border-color: #e1bee7 !important;
         }
         .tracking-page-wrapper .bg-purple-subtle {
           background-color: #e0cffc !important;
@@ -918,6 +922,9 @@ export default function TrackingPage() {
         }
         .tracking-page-wrapper .text-purple {
           color: #6f42c1 !important;
+        }
+        .tracking-page-wrapper .text-primary {
+          color: #894b8d !important;
         }
       `}</style>
       <section className="py-5 bg-light tracking-page-wrapper">
@@ -980,8 +987,8 @@ export default function TrackingPage() {
                       </select>
                     </div>
                     <div className="d-flex gap-2">
-                      <button className="btn btn-primary" type="button" onClick={() => setShowLeadForm((prev) => !prev)}>{showLeadForm ? "Cerrar" : "+ Nuevo lead"}</button>
-                      <button className="btn btn-outline-secondary" type="button" onClick={handleImportClick}>Importar</button>
+                      <button className="btn btn-primary btn-lg" type="button" onClick={() => setShowLeadForm((prev) => !prev)}>{showLeadForm ? "Cerrar" : "+ Nuevo lead"}</button>
+                      <button className="btn btn-primary btn-lg" type="button" onClick={handleImportClick}>Importar</button>
                       <input ref={importRef} type="file" accept="application/json" className="d-none" onChange={handleImportLeads} />
                     </div>
                   </div>
@@ -1106,10 +1113,10 @@ export default function TrackingPage() {
                         </div>
                       </div>
                       <div className="d-flex flex-wrap gap-2 mt-3">
-                        <a className={`btn btn-outline-secondary ${!whatsappNumber ? "disabled" : ""}`} href={whatsappHref} target="_blank" rel="noreferrer noopener">
+                        <a className={`btn btn-primary btn-lg ${!whatsappNumber ? "disabled" : ""}`} href={whatsappHref} target="_blank" rel="noreferrer noopener">
                           WhatsApp
                         </a>
-                        <button className="btn btn-primary" type="button" disabled={!selectedExpediente && !selectedLead} onClick={() => { if (selectedExpediente) { setCurrentTab("datos"); } else if (selectedLead) { handleConvertLead(selectedLead); } }}>
+                        <button className="btn btn-primary btn-lg" type="button" disabled={!selectedExpediente && !selectedLead} onClick={() => { if (selectedExpediente) { setCurrentTab("datos"); } else if (selectedLead) { handleConvertLead(selectedLead); } }}>
                           {selectedExpediente ? "Ver expediente" : "Abrir expediente"}
                         </button>
                       </div>
