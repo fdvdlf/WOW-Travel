@@ -336,83 +336,114 @@ function CountryFlag({ pais }) {
 function RequisitoRow({ requisito, onUpdate }) {
   const fileInputRef = useRef(null);
   const [expanded, setExpanded] = useState(false);
+
+  const handleDownload = () => {
+    if (!requisito.evidencia_url) return;
+    window.open(requisito.evidencia_url, "_blank");
+  };
+
   return (
     <>
-      <tr className="align-middle">
-        <td className="fw-semibold">{requisito.nombre}</td>
+      <tr className={`align-middle ${expanded ? "table-active" : ""}`}>
+        <td className="fw-semibold text-dark">{requisito.nombre}</td>
         <td>
           <div className="d-flex align-items-center gap-2">
             <span className="small">{STATUS_ICONS[requisito.estado] || requisito.estado}</span>
           </div>
         </td>
-        <td className="text-muted small">{requisito.evidencia_url || "Sin evidencia"}</td>
-        <td className="text-muted small">{requisito.fecha || "Sin fecha"}</td>
         <td className="text-end">
-          <button className="btn btn-link btn-sm p-0" type="button" onClick={() => setExpanded((prev) => !prev)} aria-label="Expandir requisito">
-            <i className={`bi ${expanded ? "bi-chevron-up" : "bi-chevron-down"}`} aria-hidden="true"></i>
+          <button
+            className={`btn btn-sm rounded-circle ${expanded ? "btn-secondary" : "btn-primary-subtle text-primary"}`}
+            type="button"
+            onClick={() => setExpanded((prev) => !prev)}
+            aria-label={expanded ? "Contraer" : "Expandir"}
+            style={{ width: "32px", height: "32px", display: "inline-flex", alignItems: "center", justifyContent: "center" }}
+          >
+            <i className={`bi ${expanded ? "bi-dash" : "bi-plus-lg"}`} aria-hidden="true"></i>
           </button>
         </td>
       </tr>
       {expanded ? (
-        <tr className="table-light">
-          <td colSpan="5">
-            <div className="row g-2">
-              <div className="col-md-4">
-                <label className="form-label small text-muted">Estado</label>
-                <select
-                  className="form-select form-select-sm"
-                  value={requisito.estado}
-                  onChange={(e) => onUpdate({ ...requisito, estado: e.target.value })}
-                >
-                  {ESTADOS_REQUISITO.map((estado) => (
-                    <option key={estado} value={estado}>
-                      {STATUS_ICONS[estado] || estado}
-                    </option>
-                  ))}
-                </select>
-              </div>
-              <div className="col-md-4">
-                <label className="form-label small text-muted">Evidencia</label>
-                <div className="d-flex align-items-center gap-2">
-                  <input
-                    className="form-control form-control-sm"
-                    placeholder="URL o nombre"
-                    value={requisito.evidencia_url}
-                    onChange={(e) => onUpdate({ ...requisito, evidencia_url: e.target.value })}
-                  />
-                  <input
-                    ref={fileInputRef}
-                    type="file"
-                    className="d-none"
-                    onChange={(e) => {
-                      const file = e.target.files?.[0];
-                      if (file) {
-                        onUpdate({ ...requisito, evidencia_url: file.name });
-                      }
-                    }}
-                  />
-                  <button className="btn btn-link btn-sm p-0" type="button" onClick={() => fileInputRef.current?.click()}>
-                    Adjuntar
-                  </button>
+        <tr>
+          <td colSpan="3" className="p-0 border-0">
+            <div className="p-3 bg-light border-bottom">
+              <div className="card border-0 shadow-sm rounded-3">
+                <div className="card-body">
+                  <div className="row g-3">
+                    <div className="col-md-6 col-lg-3">
+                      <label className="form-label small text-muted fw-bold">Estado</label>
+                      <select
+                        className="form-select form-select-sm"
+                        value={requisito.estado}
+                        onChange={(e) => onUpdate({ ...requisito, estado: e.target.value })}
+                      >
+                        {ESTADOS_REQUISITO.map((estado) => (
+                          <option key={estado} value={estado}>
+                            {STATUS_ICONS[estado] || estado}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                    <div className="col-md-6 col-lg-3">
+                      <label className="form-label small text-muted fw-bold">Fecha</label>
+                      <input
+                        type="date"
+                        className="form-control form-control-sm"
+                        value={requisito.fecha}
+                        onChange={(e) => onUpdate({ ...requisito, fecha: e.target.value })}
+                      />
+                    </div>
+                    <div className="col-md-12 col-lg-6">
+                      <label className="form-label small text-muted fw-bold">Evidencia</label>
+                      <div className="input-group input-group-sm">
+                        <input
+                          className="form-control"
+                          placeholder="URL o nombre de archivo"
+                          value={requisito.evidencia_url}
+                          onChange={(e) => onUpdate({ ...requisito, evidencia_url: e.target.value })}
+                        />
+                        <input
+                          ref={fileInputRef}
+                          type="file"
+                          className="d-none"
+                          onChange={(e) => {
+                            const file = e.target.files?.[0];
+                            if (file) {
+                              onUpdate({ ...requisito, evidencia_url: file.name });
+                            }
+                          }}
+                        />
+                        <button
+                          className="btn btn-outline-secondary"
+                          type="button"
+                          onClick={() => fileInputRef.current?.click()}
+                        >
+                          <i className="bi bi-upload me-1"></i> Cargar
+                        </button>
+                        {requisito.evidencia_url && (
+                          <button
+                            className="btn btn-outline-primary"
+                            type="button"
+                            onClick={handleDownload}
+                            title="Descargar evidencia"
+                          >
+                            <i className="bi bi-download"></i>
+                          </button>
+                        )}
+                      </div>
+                    </div>
+                    <div className="col-12">
+                      <label className="form-label small text-muted fw-bold">Notas</label>
+                      <textarea
+                        className="form-control form-control-sm"
+                        placeholder="Notas internas..."
+                        rows="2"
+                        value={requisito.notas}
+                        onChange={(e) => onUpdate({ ...requisito, notas: e.target.value })}
+                      />
+                    </div>
+                  </div>
                 </div>
-              </div>
-              <div className="col-md-3">
-                <label className="form-label small text-muted">Fecha</label>
-                <input
-                  type="date"
-                  className="form-control form-control-sm"
-                  value={requisito.fecha}
-                  onChange={(e) => onUpdate({ ...requisito, fecha: e.target.value })}
-                />
-              </div>
-              <div className="col-md-5">
-                <label className="form-label small text-muted">Notas</label>
-                <input
-                  className="form-control form-control-sm"
-                  placeholder="Notas internas"
-                  value={requisito.notas}
-                  onChange={(e) => onUpdate({ ...requisito, notas: e.target.value })}
-                />
               </div>
             </div>
           </td>
@@ -1086,12 +1117,16 @@ export default function TrackingPage() {
                             <div className="table-responsive">
                               <table className="table table-borderless mb-0">
                                 <thead className="table-light">
-                                  <tr><th>Requisito</th><th>Estado</th><th>Evidencia</th><th>Fecha (plan/real)</th><th>Notas</th></tr>
+                                  <tr>
+                                    <th>Requisito</th>
+                                    <th>Estado</th>
+                                    <th className="text-end" style={{ width: "60px" }}></th>
+                                  </tr>
                                 </thead>
                                 <tbody>
-                                  {filteredRequired.length ? (<><tr className="table-secondary small text-uppercase"><td colSpan="5">Requisitos obligatorios</td></tr>{filteredRequired.map((req) => (<RequisitoRow key={req.id} requisito={req} onUpdate={handleRequisitoUpdate} />))}</>) : null}
-                                  {filteredOptional.length ? (<><tr className="table-secondary small text-uppercase"><td colSpan="5">Requisitos opcionales</td></tr>{filteredOptional.map((req) => (<RequisitoRow key={req.id} requisito={req} onUpdate={handleRequisitoUpdate} />))}</>) : null}
-                                  {!filteredRequired.length && !filteredOptional.length ? (<tr><td colSpan="5" className="text-center text-muted">No hay requisitos para este filtro.</td></tr>) : null}
+                                  {filteredRequired.length ? (<><tr className="table-secondary small text-uppercase"><td colSpan="3">Requisitos obligatorios</td></tr>{filteredRequired.map((req) => (<RequisitoRow key={req.id} requisito={req} onUpdate={handleRequisitoUpdate} />))}</>) : null}
+                                  {filteredOptional.length ? (<><tr className="table-secondary small text-uppercase"><td colSpan="3">Requisitos opcionales</td></tr>{filteredOptional.map((req) => (<RequisitoRow key={req.id} requisito={req} onUpdate={handleRequisitoUpdate} />))}</>) : null}
+                                  {!filteredRequired.length && !filteredOptional.length ? (<tr><td colSpan="3" className="text-center text-muted">No hay requisitos para este filtro.</td></tr>) : null}
                                 </tbody>
                               </table>
                             </div>
