@@ -811,7 +811,87 @@ export default function TrackingPage() {
   const whatsappHref = whatsappNumber ? `https://wa.me/${whatsappNumber}` : "#";
   return (
     <Layout header={3} footer={1} breadcrumbTitle="WOW Tracking" breadcrumbSubtitle="Sistema interno MVP">
-      <section className="py-5 bg-light">
+      <style>{`
+        .tracking-page-wrapper .btn {
+          background: initial !important;
+          border-radius: 0.375rem !important;
+          padding: 0.375rem 0.75rem !important;
+          font-size: 0.875rem !important;
+          font-weight: 500 !important;
+          line-height: 1.5 !important;
+          border: 1px solid transparent !important;
+          text-transform: none !important;
+          letter-spacing: normal !important;
+          position: static !important;
+          overflow: visible !important;
+        }
+        .tracking-page-wrapper .btn::before {
+          display: none !important;
+        }
+        .tracking-page-wrapper .btn-primary {
+          background-color: #0d6efd !important;
+          color: white !important;
+          border-color: #0d6efd !important;
+        }
+        .tracking-page-wrapper .btn-primary:hover {
+          background-color: #0b5ed7 !important;
+          border-color: #0a58ca !important;
+        }
+        .tracking-page-wrapper .btn-outline-primary {
+          color: #0d6efd !important;
+          border-color: #0d6efd !important;
+          background-color: transparent !important;
+        }
+        .tracking-page-wrapper .btn-outline-primary:hover {
+          color: white !important;
+          background-color: #0d6efd !important;
+        }
+        .tracking-page-wrapper .btn-outline-secondary {
+          color: #6c757d !important;
+          border-color: #6c757d !important;
+          background-color: transparent !important;
+        }
+        .tracking-page-wrapper .btn-outline-secondary:hover {
+          color: white !important;
+          background-color: #6c757d !important;
+        }
+        .tracking-page-wrapper .btn-link {
+          background: transparent !important;
+          border: none !important;
+          padding: 0 !important;
+          color: #0d6efd !important;
+          text-decoration: none !important;
+          width: auto !important;
+          height: auto !important;
+        }
+        .tracking-page-wrapper .btn-link:hover {
+          text-decoration: underline !important;
+          color: #0a58ca !important;
+        }
+        .tracking-page-wrapper .btn-sm {
+          padding: 0.25rem 0.5rem !important;
+          font-size: 0.75rem !important;
+        }
+        .tracking-page-wrapper .rounded-circle {
+          border-radius: 50% !important;
+          padding: 0 !important;
+          width: 32px !important;
+          height: 32px !important;
+          display: inline-flex !important;
+          align-items: center !important;
+          justify-content: center !important;
+        }
+        .tracking-page-wrapper .form-control, 
+        .tracking-page-wrapper .form-select {
+          border-radius: 0.375rem !important;
+          padding: 0.375rem 0.75rem !important;
+          font-size: 0.875rem !important;
+        }
+        .tracking-page-wrapper .input-group-text {
+          border-radius: 0.375rem !important;
+        }
+      `}</style>
+      <section className="py-5 bg-light tracking-page-wrapper">
         <div className="container">
           <div className="card bg-white border border-secondary-subtle shadow-sm mb-4">
             <div className="card-body d-flex flex-wrap justify-content-between align-items-start gap-3">
