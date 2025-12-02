@@ -501,6 +501,12 @@ export default function TrackingPage() {
     setRazonPrecio(getPriceReason(paisValue));
   };
 
+  const handleTipoMascotaChange = (tipo) => {
+    if (!selectedExpediente) return;
+    updateExpediente(selectedExpediente.id, (exp) => ({ ...exp, tipo_mascota: tipo }));
+    addHistorial(`Tipo de mascota actualizado a ${tipo}.`);
+  };
+
   const handleGuardarPrecio = () => {
     if (!selectedExpediente) return;
     const parsedPrice = Number(precioDraft);
@@ -1012,7 +1018,8 @@ export default function TrackingPage() {
                             <button
                               key={tipo}
                               type="button"
-                              className={`btn btn-sm ${selectedExpediente.tipo_mascota === tipo ? "btn-primary" : "btn-outline-secondary"}`}
+                              className={`btn btn-sm px-3 ${selectedExpediente.tipo_mascota === tipo ? "btn-primary" : "btn-outline-secondary"}`}
+                              onClick={() => handleTipoMascotaChange(tipo)}
                             >
                               {tipo}
                             </button>
