@@ -11,10 +11,10 @@ const ESTADOS_EXPEDIENTE = ["CREADO", "EN_PROCESO", "DOCUMENTACION_COMPLETA", "C
 const ESTADOS_REQUISITO = ["PENDIENTE", "ENTREGADO", "OBSERVADO", "VALIDADO"];
 
 const STATUS_ICONS = {
-  PENDIENTE: "Pendiente",
-  ENTREGADO: "Entregado",
-  OBSERVADO: "Observado",
-  VALIDADO: "Validado",
+  PENDIENTE: "⏳ Pendiente",
+  ENTREGADO: "📤 Entregado",
+  OBSERVADO: "⚠️ Observado",
+  VALIDADO: "✅ Validado",
 };
 
 const CHECKLIST_STATUS_COLORS = {
@@ -288,7 +288,7 @@ function SectionTitle({ title, subtitle, badge }) {
 
 function EstadoPill({ value }) {
   const colors = {
-    CREADO: "bg-info-subtle text-info border",
+    CREADO: "bg-primary-subtle text-primary border",
     EN_PROCESO: "bg-warning-subtle text-warning border",
     VALIDADO: "bg-success-subtle text-success border",
     OBSERVADO: "bg-warning-subtle text-warning border",
@@ -327,7 +327,7 @@ function RequisitoRow({ requisito, onUpdate }) {
           >
             {ESTADOS_REQUISITO.map((estado) => (
               <option key={estado} value={estado}>
-                {estado}
+                {STATUS_ICONS[estado] || estado}
               </option>
             ))}
           </select>
@@ -723,16 +723,23 @@ export default function TrackingPage() {
     <Layout header={3} footer={1} breadcrumbTitle="WOW Tracking" breadcrumbSubtitle="Sistema interno MVP">
       <section className="py-5 bg-light">
         <div className="container">
-          <div className="row align-items-center mb-4">
-            <div className="col-lg-8">
-              <p className="text-uppercase text-primary fw-semibold mb-2">MVP interno · Roles protegidos</p>
-              <h1 className="mb-2">Gestión de Leads, Expedientes y Documentos</h1>
-            </div>
-            <div className="col-lg-4 text-lg-end mt-3 mt-lg-0">
-              <div className="text-uppercase fs-7 fw-semibold text-muted">Rol: {ROLE}</div>
-                <div className="text-muted small mt-2">
-                  Versión actual {APP_VERSION} <span className="text-uppercase">({TRACKING_CODE})</span>
+          <div className="card bg-white border border-secondary-subtle shadow-sm mb-4">
+            <div className="card-body d-flex flex-wrap justify-content-between align-items-start gap-3">
+              <div>
+                <p className="text-uppercase text-primary fw-semibold mb-2">Panel interno · WOW Tracking</p>
+                <h1 className="mb-1">
+                  Expediente {selectedExpediente ? selectedExpediente.codigo : "sin seleccionar"}
+                </h1>
+                <div className="d-flex flex-wrap align-items-center gap-2 text-muted small">
+                  <EstadoPill value={selectedExpediente?.estado || "CREADO"} />
+                  <CountryFlag pais={selectedExpediente?.pais || DEFAULT_COUNTRY} />
+                  <span>Rol activo: {role}</span>
                 </div>
+              </div>
+              <div className="text-end">
+                <div className="text-muted small">Versión {APP_VERSION}</div>
+                <div className="text-uppercase text-muted fs-7">{TRACKING_CODE}</div>
+              </div>
             </div>
           </div>
 
@@ -744,7 +751,7 @@ export default function TrackingPage() {
           ) : null}
 
           <div className="row g-4">
-            <div className="col-12">
+            <div className="col-lg-4 d-flex flex-column gap-3">
               <div className="card bg-white border border-secondary-subtle shadow-sm w-100">
                 <div className="card-body">
                   <SectionTitle title="Leads" badge="ETAPA 0" />
@@ -802,7 +809,7 @@ export default function TrackingPage() {
                         type="button"
                         onClick={() => setShowLeadForm((prev) => !prev)}
                       >
-                        {showLeadForm ? "Ocultar formulario" : "Nuevo lead"}
+                        {showLeadForm ? "Cerrar" : "+ Nuevo lead"}
                       </button>
                       <button
                         className="btn btn-outline-secondary btn-sm"
@@ -921,7 +928,7 @@ export default function TrackingPage() {
                           <div>
                             <h6 className="mb-1">{lead.name}</h6>
                             <small className="text-muted">
-                              {lead.phone} ? {lead.source}
+                              {lead.phone} · {lead.source}
                             </small>
                           </div>
                           <div className="d-flex flex-wrap gap-2">
@@ -934,7 +941,7 @@ export default function TrackingPage() {
                               WhatsApp
                             </a>
                             <button
-                              className="btn btn-primary btn-sm"
+                              className="btn btn-outline-primary btn-sm"
                               type="button"
                               onClick={(event) => {
                                 event.stopPropagation();
@@ -961,9 +968,7 @@ export default function TrackingPage() {
                 </div>
               </div>
             </div>
-          </div>
-          <div className="row g-4 mt-4 w-100">
-            <div className="col-12">
+
               <div className="card bg-white border border-secondary-subtle shadow-sm">
                 <div className="card-body">
                   <SectionTitle title="Datos generales" badge="Expediente" />
@@ -1084,36 +1089,35 @@ export default function TrackingPage() {
                 </div>
               </div>
             </div>
-            <div className="col-lg-8">
-              {selectedExpediente ? (
-                <div className="card bg-white border border-secondary-subtle shadow-sm">
-                  <div className="card-body">
-                    <div className="d-flex justify-content-between align-items-start flex-wrap gap-3">
-                      <div>
-                        <h2 className="h5 mb-1">Expediente {selectedExpediente.codigo}</h2>
-                        <p className="text-muted mb-0">{selectedExpediente.destino}</p>
-                        <div className="d-flex align-items-center gap-2 small text-muted">
-                          <CountryFlag pais={selectedExpediente.pais || DEFAULT_COUNTRY} />
-                        </div>
-                      </div>
-                      <div className="text-end">
-                        <EstadoPill value={selectedExpediente.estado} />
-                        <p className="text-muted small mb-0">Rol activo: {role}</p>
+            <div className="col-lg-8 d-flex flex-column gap-3">
+              <div className="card bg-white border border-secondary-subtle shadow-sm">
+                <div className="card-body">
+                  <div className="d-flex justify-content-between align-items-start flex-wrap gap-3">
+                    <div>
+                      <h2 className="h5 mb-1">Expediente {selectedExpediente.codigo}</h2>
+                      <p className="text-muted mb-0">{selectedExpediente.destino}</p>
+                      <div className="d-flex align-items-center gap-2 small text-muted">
+                        <CountryFlag pais={selectedExpediente.pais || DEFAULT_COUNTRY} />
                       </div>
                     </div>
-                    <div className="d-flex flex-wrap gap-2 mt-3">
-                      {TAB_DEFINITIONS.map((tab) => (
-                        <button
-                          key={tab.key}
-                          className={`btn btn-sm ${currentTab === tab.key ? "btn-primary" : "btn-outline-secondary"}`}
-                          type="button"
-                          onClick={() => setCurrentTab(tab.key)}
-                        >
-                          {tab.label}
-                        </button>
-                      ))}
+                    <div className="text-end">
+                      <EstadoPill value={selectedExpediente.estado} />
+                      <p className="text-muted small mb-0">Rol activo: {role}</p>
                     </div>
-                    <div className="mt-4">
+                  </div>
+                  <div className="d-flex flex-wrap gap-2 mt-3">
+                    {TAB_DEFINITIONS.map((tab) => (
+                      <button
+                        key={tab.key}
+                        className={`btn btn-sm ${currentTab === tab.key ? "btn-primary" : "btn-outline-secondary"}`}
+                        type="button"
+                        onClick={() => setCurrentTab(tab.key)}
+                      >
+                        {tab.label}
+                      </button>
+                    ))}
+                  </div>
+                  <div className="mt-4">
                       {currentTab === "datos" && (
                         <div className="bg-light border border-secondary-subtle rounded-3 p-3">
                           <div className="row g-3">
@@ -1245,7 +1249,7 @@ export default function TrackingPage() {
                             <select className="form-select form-select-sm w-auto" value={checklistFilter} onChange={(e) => setChecklistFilter(e.target.value)}>
                               {["TODOS", ...ESTADOS_REQUISITO].map((estado) => (
                                 <option key={estado} value={estado}>
-                                  {estado}
+                                  {STATUS_ICONS[estado] || estado}
                                 </option>
                               ))}
                             </select>
