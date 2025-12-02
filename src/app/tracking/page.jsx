@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Layout } from "@/layouts/Layout";
@@ -6,25 +6,16 @@ import { APP_VERSION, TRACKING_CODE } from "@/lib/appVersion";
 
 const ROLES = ["COMERCIAL", "OPERACIONES", "GERENCIA"];
 
-const ESTADOS_EXPEDIENTE = [
-  "CREADO",
-  "EN_PROCESO",
-  "DOCUMENTACION_COMPLETA",
-  "CERRADO",
-];
+const ESTADOS_EXPEDIENTE = ["CREADO", "EN_PROCESO", "DOCUMENTACION_COMPLETA", "CERRADO"];
 
 const ESTADOS_REQUISITO = ["PENDIENTE", "ENTREGADO", "OBSERVADO", "VALIDADO"];
 
-const REQUISITOS_BASE = [
-  "Microchip",
-  "Vacuna antirrábica",
-  "Certificado de salud veterinario",
-  "Certificado de SENASA",
-  "Tratamiento antiparasitario",
-  "Documento país destino",
-  "Permisos adicionales",
-  "Ticket de vuelo (opcional)",
-];
+const STATUS_ICONS = {
+  PENDIENTE: "Pendiente",
+  ENTREGADO: "Entregado",
+  OBSERVADO: "Observado",
+  VALIDADO: "Validado",
+};
 
 const COUNTRY_NAMES = [
   "ALEMANIA",
@@ -107,7 +98,7 @@ const COUNTRY_NAMES = [
 
 const DEFAULT_COUNTRY = "CANADA";
 
-const COUNTRY_PRETTY_LABELS = {
+const COUNTRY_PRETTY = {
   CANADA: "Canadá",
   ESPAÑA: "España",
   MEXICO: "México",
@@ -129,15 +120,25 @@ const formatCountryLabel = (value) =>
 
 const PAISES = COUNTRY_NAMES.map((name) => ({
   value: name,
-  label: COUNTRY_PRETTY_LABELS[name] || formatCountryLabel(name),
+  label: COUNTRY_PRETTY[name] || formatCountryLabel(name),
 }));
+const REQUISITOS_BASE = [
+  "Microchip",
+  "Vacuna antirrábica",
+  "Certificado de salud veterinario",
+  "Certificado de SENASA",
+  "Tratamiento antiparasitario",
+  "Documento país destino",
+  "Permisos adicionales",
+  "Ticket de vuelo (opcional)",
+];
 
 const REQUISITOS_POR_PAIS = {
   CANADA: [
     "Microchip ISO",
     "Vacuna antirrábica vigente",
     "Certificado veterinario bilingüe",
-    "Permiso de importación CFIA/SFIA",
+    "Permiso de importación CFIA / SFIA",
     "Tratamiento antiparasitario",
     "Formato aduana / aerolínea",
     "Ticket de vuelo (opcional)",
@@ -156,45 +157,26 @@ const REQUISITOS_POR_PAIS = {
     "Vacuna antirrábica vigente",
     "Certificado zoosanitario",
     "Tratamiento antiparasitario",
-    "Constancia libre de enfermedades",
+    "Constancia sanitaria",
     "Formato SENASICA",
-    "Ticket de vuelo (opcional)",
-  ],
-  UE: [
-    "Microchip ISO",
-    "Vacuna antirrábica con espera",
-    "Pasaporte o certificado UE",
-    "Títulos de anticuerpos",
-    "Tratamiento antiparasitario",
-    "Notificación TRACES/ADNS",
     "Ticket de vuelo (opcional)",
   ],
 };
 
 const buildRequisitosPorPais = (pais, seed = {}) => {
   const source = REQUISITOS_POR_PAIS[pais] || REQUISITOS_BASE;
-  return source.map((nombre, index) => {
-    const preset = seed[index] || {};
-    return {
-      id: `req-${pais}-${index + 1}`,
-      nombre,
-      estado: "PENDIENTE",
-      evidencia_url: "",
-      fecha: "",
-      notas: "",
-      ...preset,
-    };
-  });
+  return source.map((nombre, index) => ({
+    id: `req-${pais}-${index + 1}`,
+    nombre,
+    estado: "PENDIENTE",
+    evidencia_url: "",
+    fecha: "",
+    notas: "",
+    ...seed[index],
+  }));
 };
 
 const getPaisLabel = (value) => PAISES.find((p) => p.value === value)?.label || value;
-
-const STATUS_ICONS = {
-  PENDIENTE: "⏱️",
-  ENTREGADO: "📦",
-  OBSERVADO: "⚠️",
-  VALIDADO: "✅",
-};
 
 const TAB_DEFINITIONS = [
   { key: "datos", label: "Datos generales" },
@@ -204,8 +186,6 @@ const TAB_DEFINITIONS = [
   { key: "archivos", label: "Archivos" },
 ];
 
-const REQUIRED_THRESHOLD = 5;
-
 const BASE_PRICE = 1500;
 const PRICE_STEP = 30;
 const COUNTRY_PRICING = COUNTRY_NAMES.reduce((acc, name, index) => {
@@ -214,7 +194,6 @@ const COUNTRY_PRICING = COUNTRY_NAMES.reduce((acc, name, index) => {
 }, {});
 
 const getPriceForCountry = (pais) => COUNTRY_PRICING[pais] ?? BASE_PRICE;
-
 const getPriceReason = (pais) => `Precio estándar ${getPaisLabel(pais)}`;
 
 const SAMPLE_LEADS = [
@@ -234,22 +213,6 @@ const SAMPLE_LEADS = [
     notes: "Consulta puerta a puerta Madrid",
     created_at: "2024-06-03",
   },
-  {
-    id: "lead-3",
-    name: "Lucía Rojas",
-    phone: "+51 977 111 333",
-    source: "Referido",
-    notes: "Traslado VIP a Buenos Aires con visado al día",
-    created_at: "2024-06-04",
-  },
-  {
-    id: "lead-4",
-    name: "Santiago Paredes",
-    phone: "+51 955 000 121",
-    source: "Landing campaña",
-    notes: "Ruta combinada Lima → Miami → Toronto, requiere crate especial",
-    created_at: "2024-06-05",
-  },
 ];
 
 const SAMPLE_EXPEDIENTES = [
@@ -258,23 +221,16 @@ const SAMPLE_EXPEDIENTES = [
     codigo: "EXP-001",
     lead_id: "lead-1",
     owner_name: "Carolina Vega",
-    owner_doc: "DNI 70521458",
     phone: "+51 999 888 777",
-    email: "carolina.vega@mail.com",
     mascota_name: "Kira",
-    especie: "Perro",
     raza: "Border Collie",
-    peso: "16.3 kg",
-    color: "Blanco y negro",
     destino: "Toronto, Canadá",
     pais: DEFAULT_COUNTRY,
-    origen: "Lima, Perú",
     fecha_probable: "2024-09-15",
     precio: getPriceForCountry(DEFAULT_COUNTRY),
     priceReason: getPriceReason(DEFAULT_COUNTRY),
     estado: "EN_PROCESO",
     responsable: { comercial: "Fernando", operaciones: "Gabriel" },
-    riesgo: "En control",
     pagos: {
       pago70: { tipo: 70, comprobante_url: "voucher_70.pdf", fecha: "2024-06-02", aprobado: true },
       pago30: { tipo: 30, comprobante_url: "", fecha: "", aprobado: false },
@@ -292,22 +248,353 @@ const SAMPLE_EXPEDIENTES = [
 ];
 
 function SectionTitle({ title, subtitle, badge }) {
-﻿  return (
+  return (
+    <div className="d-flex justify-content-between align-items-center mb-3">
+      <div>
+        <h3 className="h5 mb-1">{title}</h3>
+        {subtitle ? <p className="text-muted small mb-0">{subtitle}</p> : null}
+      </div>
+      {badge ? <span className="badge bg-secondary-subtle text-secondary">{badge}</span> : null}
+    </div>
+  );
+}
+
+function EstadoPill({ value }) {
+  const colors = {
+    CREADO: "bg-info-subtle text-info border",
+    EN_PROCESO: "bg-warning-subtle text-warning border",
+    VALIDADO: "bg-success-subtle text-success border",
+    OBSERVADO: "bg-warning-subtle text-warning border",
+    DOCUMENTACION_COMPLETA: "bg-purple-subtle text-purple border",
+    CERRADO: "bg-secondary-subtle text-secondary border",
+  };
+  return (
+    <span className={`badge rounded-pill px-3 py-2 fw-semibold ${colors[value] || "bg-light text-muted"}`}>
+      {value}
+    </span>
+  );
+}
+
+function RequisitoRow({ requisito, onUpdate }) {
+  const fileInputRef = useRef(null);
+  return (
+    <tr>
+      <td className="fw-semibold">{requisito.nombre}</td>
+      <td>
+        <div className="d-flex align-items-center gap-2">
+          <span className="fs-5">{STATUS_ICONS[requisito.estado] || "ℹ️"}</span>
+          <select
+            className="form-select form-select-sm flex-grow-1"
+            value={requisito.estado}
+            onChange={(e) => onUpdate({ ...requisito, estado: e.target.value })}
+          >
+            {ESTADOS_REQUISITO.map((estado) => (
+              <option key={estado} value={estado}>
+                {estado}
+              </option>
+            ))}
+          </select>
+        </div>
+      </td>
+      <td>
+        <div className="d-flex align-items-center gap-2">
+          <input
+            className="form-control form-control-sm"
+            placeholder="URL o nombre"
+            value={requisito.evidencia_url}
+            onChange={(e) => onUpdate({ ...requisito, evidencia_url: e.target.value })}
+          />
+          <input
+            ref={fileInputRef}
+            type="file"
+            className="d-none"
+            onChange={(e) => {
+              const file = e.target.files?.[0];
+              if (file) {
+                onUpdate({ ...requisito, evidencia_url: file.name });
+              }
+            }}
+          />
+          <button className="btn btn-link btn-sm p-0" type="button" onClick={() => fileInputRef.current?.click()}>
+            Adjuntar
+          </button>
+        </div>
+      </td>
+      <td>
+        <input
+          type="date"
+          className="form-control form-control-sm"
+          value={requisito.fecha}
+          onChange={(e) => onUpdate({ ...requisito, fecha: e.target.value })}
+        />
+      </td>
+      <td>
+        <input
+          className="form-control form-control-sm"
+          placeholder="Notas internas"
+          value={requisito.notas}
+          onChange={(e) => onUpdate({ ...requisito, notas: e.target.value })}
+        />
+      </td>
+    </tr>
+  );
+}
+export default function TrackingPage() {
+  const [role, setRole] = useState("COMERCIAL");
+  const [leads, setLeads] = useState(SAMPLE_LEADS);
+  const [expedientes, setExpedientes] = useState(SAMPLE_EXPEDIENTES);
+  const [selectedExpedienteId, setSelectedExpedienteId] = useState(SAMPLE_EXPEDIENTES[0]?.id);
+  const [leadForm, setLeadForm] = useState({ name: "", phone: "", source: "", notes: "" });
+  const [notaInterna, setNotaInterna] = useState("");
+  const [mensaje, setMensaje] = useState("");
+  const [precioDraft, setPrecioDraft] = useState("0");
+  const [razonPrecio, setRazonPrecio] = useState("");
+  const [currentTab, setCurrentTab] = useState("pagos");
+  const [checklistFilter, setChecklistFilter] = useState("TODOS");
+  const [notesExpanded, setNotesExpanded] = useState(false);
+
+  const selectedExpediente = useMemo(() => expedientes.find((exp) => exp.id === selectedExpedienteId), [expedientes, selectedExpedienteId]);
+
+  useEffect(() => {
+    if (!selectedExpediente) return;
+    setPrecioDraft(String(selectedExpediente.precio ?? 0));
+    setRazonPrecio(selectedExpediente.priceReason || "");
+  }, [selectedExpediente?.id, selectedExpediente?.precio, selectedExpediente?.priceReason]);
+
+  useEffect(() => {
+    setChecklistFilter("TODOS");
+    setNotesExpanded(false);
+  }, [selectedExpediente?.id]);
+
+  const updateExpediente = (id, updater) => {
+    setExpedientes((prev) => prev.map((exp) => (exp.id === id ? updater(exp) : exp)));
+  };
+
+  const addHistorial = (descripcion) => {
+    if (!selectedExpediente) return;
+    updateExpediente(selectedExpediente.id, (exp) => ({
+      ...exp,
+      historial: [
+        {
+          id: `h-${Date.now()}`,
+          usuario: role,
+          fecha: new Date().toISOString().slice(0, 10),
+          descripcion,
+        },
+        ...exp.historial,
+      ],
+    }));
+  };
+
+  const handleLeadSubmit = (e) => {
+    e.preventDefault();
+    const newLead = { id: `lead-${Date.now()}`, ...leadForm, created_at: new Date().toISOString().slice(0, 10) };
+    setLeads((prev) => [newLead, ...prev]);
+    setLeadForm({ name: "", phone: "", source: "", notes: "" });
+    setMensaje("Lead creado y listo para calificación.");
+  };
+
+  const handleConvertLead = (lead) => {
+    if (role !== "COMERCIAL") {
+      setMensaje("Solo Comercial convierte leads a expedientes.");
+      return;
+    }
+    const paisInicial = PAISES.find((p) => p.value === DEFAULT_COUNTRY)?.value || DEFAULT_COUNTRY;
+    const nuevo = {
+      id: `exp-${Date.now()}`,
+      codigo: `EXP-${String(expedientes.length + 1).padStart(3, "0")}`,
+      lead_id: lead.id,
+      owner_name: lead.name,
+      phone: lead.phone,
+      mascota_name: "Mascota sin nombre",
+      raza: "Por definir",
+      destino: lead.notes || "Destino por definir",
+      pais: paisInicial,
+      fecha_probable: "",
+      precio: getPriceForCountry(paisInicial),
+      priceReason: getPriceReason(paisInicial),
+      estado: "CREADO",
+      pagos: {
+        pago70: { tipo: 70, comprobante_url: "", fecha: "", aprobado: false },
+        pago30: { tipo: 30, comprobante_url: "", fecha: "", aprobado: false },
+      },
+      requisitos: buildRequisitosPorPais(paisInicial),
+      historial: [
+        {
+          id: `h-${Date.now()}`,
+          usuario: "COMERCIAL",
+          fecha: new Date().toISOString().slice(0, 10),
+          descripcion: "Lead convertido a expediente",
+        },
+      ],
+    };
+    setExpedientes((prev) => [nuevo, ...prev]);
+    setSelectedExpedienteId(nuevo.id);
+    setMensaje("Expediente creado desde el lead.");
+  };
+
+  const handlePaisChange = (paisValue) => {
+    if (!selectedExpediente) return;
+    updateExpediente(selectedExpediente.id, (exp) => ({
+      ...exp,
+      pais: paisValue,
+      requisitos: buildRequisitosPorPais(paisValue),
+      precio: getPriceForCountry(paisValue),
+      priceReason: getPriceReason(paisValue),
+    }));
+    addHistorial(`País actualizado a ${getPaisLabel(paisValue)} y checklist regenerado.`);
+    setMensaje("Checklist y precio estándar actualizados.");
+    setPrecioDraft(String(getPriceForCountry(paisValue)));
+    setRazonPrecio(getPriceReason(paisValue));
+  };
+
+  const handleGuardarPrecio = () => {
+    if (!selectedExpediente) return;
+    const parsedPrice = Number(precioDraft);
+    if (Number.isNaN(parsedPrice) || parsedPrice <= 0) {
+      setMensaje("Ingresa un precio válido mayor a cero.");
+      return;
+    }
+    if (!razonPrecio.trim()) {
+      setMensaje("Debes indicar la razón del ajuste manual.");
+      return;
+    }
+    updateExpediente(selectedExpediente.id, (exp) => ({
+      ...exp,
+      precio: parsedPrice,
+      priceReason: razonPrecio.trim(),
+    }));
+    addHistorial(`Precio ajustado a USD ${parsedPrice} (${razonPrecio.trim()}).`);
+    setMensaje(`Precio actualizado a USD ${parsedPrice}.`);
+    setPrecioDraft(String(parsedPrice));
+  };
+
+  const handleDownloadCotizacion = () => {
+    if (!selectedExpediente) return;
+    const rows = [
+      ["Campo", "Valor"],
+      ["Expediente", selectedExpediente.codigo],
+      ["Cliente", selectedExpediente.owner_name],
+      ["Mascota", `${selectedExpediente.mascota_name} (${selectedExpediente.raza})`],
+      ["Destino", selectedExpediente.destino],
+      ["País", getPaisLabel(selectedExpediente.pais || DEFAULT_COUNTRY)],
+      ["Precio (USD)", selectedExpediente.precio],
+      ["Motivo precio", selectedExpediente.priceReason || "Estándar"],
+      ["", ""],
+      ["Requisito", "Estado"],
+      ...selectedExpediente.requisitos.map((req) => [req.nombre, req.estado]),
+    ];
+    const csvContent = rows
+      .map((row) => row.map((value) => `"${String(value).replace(/"/g, '""')}"`).join(","))
+      .join("\r\n");
+    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+    const anchor = document.createElement("a");
+    anchor.href = url;
+    anchor.download = `cotizacion-${selectedExpediente.codigo}.csv`;
+    document.body.appendChild(anchor);
+    anchor.click();
+    document.body.removeChild(anchor);
+    URL.revokeObjectURL(url);
+    setMensaje(`Cotización ${selectedExpediente.codigo} descargada.`);
+  };
+
+  const handlePago = (tipo) => {
+    if (!selectedExpediente) return;
+    if (role !== "COMERCIAL") {
+      setMensaje("Solo Comercial registra pagos.");
+      return;
+    }
+    updateExpediente(selectedExpediente.id, (exp) => ({
+      ...exp,
+      pagos: {
+        ...exp.pagos,
+        [`pago${tipo}`]: {
+          ...exp.pagos[`pago${tipo}`],
+          comprobante_url: `voucher_${tipo}.pdf`,
+          fecha: new Date().toISOString().slice(0, 10),
+        },
+      },
+    }));
+    addHistorial(`Pago ${tipo}% registrado.`);
+  };
+
+  const handleAprobarPago = (tipo) => {
+    if (!selectedExpediente) return;
+    if (role !== "GERENCIA") {
+      setMensaje("Solo Gerencia aprueba pagos.");
+      return;
+    }
+    updateExpediente(selectedExpediente.id, (exp) => ({
+      ...exp,
+      pagos: {
+        ...exp.pagos,
+        [`pago${tipo}`]: { ...exp.pagos[`pago${tipo}`], aprobado: true },
+      },
+    }));
+    addHistorial(`Gerencia aprueba pago ${tipo}%.`);
+  };
+
+  const handleRequisitoUpdate = (reqActualizado) => {
+    if (!selectedExpediente) return;
+    updateExpediente(selectedExpediente.id, (exp) => ({
+      ...exp,
+      requisitos: exp.requisitos.map((req) => (req.id === reqActualizado.id ? reqActualizado : req)),
+    }));
+  };
+
+  const handleDocumentacionCompleta = () => {
+    if (!selectedExpediente) return;
+    if (role !== "OPERACIONES") {
+      setMensaje("Solo Operaciones marca documentación completa.");
+      return;
+    }
+    if (selectedExpediente.requisitos.some((req) => req.estado !== "VALIDADO")) {
+      setMensaje("Todos los requisitos deben estar validados.");
+      return;
+    }
+    updateExpediente(selectedExpediente.id, (exp) => ({ ...exp, estado: "DOCUMENTACION_COMPLETA" }));
+    addHistorial("Operaciones marca documentación completa.");
+    setMensaje("Documentación completa. Listo para cierre.");
+  };
+
+  const handleEstadoChange = (nextEstado) => {
+    if (!selectedExpediente) return;
+    updateExpediente(selectedExpediente.id, (exp) => ({ ...exp, estado: nextEstado }));
+    addHistorial(`Estado cambiado a ${nextEstado}.`);
+  };
+
+  const handleAgregarNota = () => {
+    if (!notaInterna.trim()) return;
+    addHistorial(notaInterna.trim());
+    setNotaInterna("");
+    setMensaje("Nota interna registrada.");
+  };
+
+  const requisitosPendientes =
+    selectedExpediente?.requisitos.filter((req) => req.estado !== "VALIDADO").length ?? 0;
+  const requiredRequisitos = selectedExpediente?.requisitos.slice(0, 5) ?? [];
+  const optionalRequisitos = selectedExpediente?.requisitos.slice(5) ?? [];
+  const filterRequisitos = (items) => (checklistFilter === "TODOS" ? items : items.filter((req) => req.estado === checklistFilter));
+  const filteredRequired = filterRequisitos(requiredRequisitos);
+  const filteredOptional = filterRequisitos(optionalRequisitos);
+  const completedCount = selectedExpediente?.requisitos.filter((req) => req.estado === "VALIDADO").length ?? 0;
+  const checklistProgressText = `${completedCount}/${selectedExpediente?.requisitos.length ?? 0} completados`;
+  return (
     <Layout header={3} footer={1} breadcrumbTitle="WOW Tracking" breadcrumbSubtitle="Sistema interno MVP">
-      <section className="py-5" style={{ background: "#f7f8fb" }}>
+      <section className="py-5 bg-light">
         <div className="container">
           <div className="row align-items-center mb-4">
             <div className="col-lg-8">
               <p className="text-uppercase text-primary fw-semibold mb-2">MVP interno · Roles protegidos</p>
               <h1 className="mb-2">Gestión de Leads, Expedientes y Documentos</h1>
               <p className="text-muted mb-0">
-                Flujo completo de WOW Travel: captura de lead, creación de expediente, pagos 70/30, checklist de
-                requisitos y cierre con control de roles COMERCIAL, OPERACIONES y GERENCIA.
+                Flujo completo WOW Travel: captura de lead, expediente, pagos 70/30, checklist y cierre con control de roles.
               </p>
             </div>
             <div className="col-lg-4 text-lg-end mt-3 mt-lg-0">
               <div className="d-inline-flex align-items-center gap-2">
-                <label className="small fw-semibold text-muted mb-0">Rol activo</label>
+                <label className="small fw-semibold text-muted mb-0">Rol</label>
                 <select className="form-select" value={role} onChange={(e) => setRole(e.target.value)}>
                   {ROLES.map((r) => (
                     <option key={r}>{r}</option>
@@ -370,7 +657,7 @@ function SectionTitle({ title, subtitle, badge }) {
                         />
                       </div>
                     </div>
-                    <button className="btn btn-primary mt-3 w-100" type="submit">
+                    <button className="btn btn-primary w-100 mt-3" type="submit">
                       Crear lead
                     </button>
                   </form>
@@ -385,11 +672,7 @@ function SectionTitle({ title, subtitle, badge }) {
                               {lead.phone} · {lead.source}
                             </small>
                           </div>
-                          <button
-                            className="btn btn-sm btn-outline-secondary"
-                            onClick={() => handleConvertLead(lead)}
-                            type="button"
-                          >
+                          <button className="btn btn-sm btn-outline-secondary" onClick={() => handleConvertLead(lead)} type="button">
                             Convertir
                           </button>
                         </div>
@@ -402,7 +685,7 @@ function SectionTitle({ title, subtitle, badge }) {
               </div>
               <div className="card bg-white border border-secondary-subtle shadow-sm">
                 <div className="card-body">
-                  <h3 className="h5 fw-semibold mb-3">Datos generales del expediente</h3>
+                  <SectionTitle title="Datos generales" subtitle="Resumen del expediente" badge="Expediente" />
                   {selectedExpediente ? (
                     <div className="row g-3">
                       <div className="col-md-6">
@@ -429,7 +712,7 @@ function SectionTitle({ title, subtitle, badge }) {
                         <label className="form-label small fw-semibold">País destino</label>
                         <select
                           className="form-select"
-                          value={selectedExpediente.pais || PAISES[0]?.value}
+                          value={selectedExpediente.pais || DEFAULT_COUNTRY}
                           onChange={(e) => {
                             setCurrentTab("datos");
                             handlePaisChange(e.target.value);
@@ -460,17 +743,12 @@ function SectionTitle({ title, subtitle, badge }) {
                         </div>
                       </div>
                       <div className="col-12">
-                        <small className="text-muted d-block">Requisitos pendientes: {requisitosPendientes}</small>
+                        <small className="text-muted">Requisitos pendientes: {requisitosPendientes}</small>
                       </div>
                     </div>
                   ) : (
                     <p className="text-muted small mb-0">Selecciona un expediente para ver sus datos.</p>
                   )}
-                  <div className="d-flex justify-content-end mt-3">
-                    <button className="btn btn-outline-secondary btn-sm" type="button" onClick={() => setCurrentTab("datos")}>
-                      Ver pestaña de datos
-                    </button>
-                  </div>
                 </div>
               </div>
             </div>
@@ -480,13 +758,12 @@ function SectionTitle({ title, subtitle, badge }) {
                   <div className="card-body">
                     <div className="d-flex justify-content-between align-items-start flex-wrap gap-3">
                       <div>
-                        <p className="text-uppercase text-muted small mb-1">Expediente</p>
-                        <h3 className="mb-1">Expediente {selectedExpediente.codigo}</h3>
+                        <h2 className="h5 mb-1">Expediente {selectedExpediente.codigo}</h2>
                         <p className="text-muted mb-0">{selectedExpediente.destino}</p>
                       </div>
                       <div className="text-end">
                         <EstadoPill value={selectedExpediente.estado} />
-                        <p className="text-muted small mt-2 mb-0">Rol activo: {role}</p>
+                        <p className="text-muted small mb-0">Rol activo: {role}</p>
                       </div>
                     </div>
                     <div className="d-flex flex-wrap gap-2 mt-3">
@@ -503,7 +780,7 @@ function SectionTitle({ title, subtitle, badge }) {
                     </div>
                     <div className="mt-4">
                       {currentTab === "datos" && (
-                        <div className="bg-light border border-1 border-secondary-subtle rounded-3 p-3">
+                        <div className="bg-light border border-secondary-subtle rounded-3 p-3">
                           <div className="row g-3">
                             <div className="col-md-6">
                               <p className="small text-muted mb-1">Propietario</p>
@@ -544,8 +821,8 @@ function SectionTitle({ title, subtitle, badge }) {
                       )}
                       {currentTab === "pagos" && (
                         <div className="row g-4">
-                          <div className="col-12 col-lg-6">
-                            <div className="bg-light border border-1 border-secondary-subtle rounded-3 p-3 h-100">
+                          <div className="col-lg-6">
+                            <div className="bg-light border border-secondary-subtle rounded-3 p-3 h-100">
                               <p className="fw-semibold mb-2">Ajuste de precios</p>
                               <div className="input-group">
                                 <span className="input-group-text">USD</span>
@@ -566,18 +843,14 @@ function SectionTitle({ title, subtitle, badge }) {
                                 <button className="btn btn-primary btn-sm" type="button" onClick={handleGuardarPrecio}>
                                   Guardar precio
                                 </button>
-                                <button
-                                  className="btn btn-outline-secondary btn-sm"
-                                  type="button"
-                                  onClick={handleDownloadCotizacion}
-                                >
+                                <button className="btn btn-outline-secondary btn-sm" type="button" onClick={handleDownloadCotizacion}>
                                   Descargar cotización
                                 </button>
                               </div>
                             </div>
                           </div>
-                          <div className="col-12 col-lg-6">
-                            <div className="bg-light border border-1 border-secondary-subtle rounded-3 p-3">
+                          <div className="col-lg-6">
+                            <div className="bg-light border border-secondary-subtle rounded-3 p-3">
                               <div className="d-flex justify-content-between align-items-center mb-2">
                                 <div>
                                   <p className="small text-muted mb-1">Pago 70%</p>
@@ -585,9 +858,7 @@ function SectionTitle({ title, subtitle, badge }) {
                                     {selectedExpediente.pagos.pago70.comprobante_url ? "Voucher cargado" : "Pendiente"}
                                   </p>
                                 </div>
-                                <EstadoPill
-                                  value={selectedExpediente.pagos.pago70.aprobado ? "DOCUMENTACION_COMPLETA" : "EN_PROCESO"}
-                                />
+                                <EstadoPill value={selectedExpediente.pagos.pago70.aprobado ? "DOCUMENTACION_COMPLETA" : "EN_PROCESO"} />
                               </div>
                               <div className="d-flex flex-wrap gap-2">
                                 <button className="btn btn-outline-secondary btn-sm" onClick={() => handlePago(70)}>
@@ -601,7 +872,7 @@ function SectionTitle({ title, subtitle, badge }) {
                                 Comprobante: {selectedExpediente.pagos.pago70.comprobante_url || "No cargado"}
                               </small>
                             </div>
-                            <div className="bg-light border border-1 border-secondary-subtle rounded-3 p-3 mt-3">
+                            <div className="bg-light border border-secondary-subtle rounded-3 p-3 mt-3">
                               <div className="d-flex justify-content-between align-items-center mb-2">
                                 <div>
                                   <p className="small text-muted mb-1">Pago 30%</p>
@@ -609,9 +880,7 @@ function SectionTitle({ title, subtitle, badge }) {
                                     {selectedExpediente.pagos.pago30.comprobante_url ? "Voucher cargado" : "Pendiente"}
                                   </p>
                                 </div>
-                                <EstadoPill
-                                  value={selectedExpediente.pagos.pago30.aprobado ? "DOCUMENTACION_COMPLETA" : "EN_PROCESO"}
-                                />
+                                <EstadoPill value={selectedExpediente.pagos.pago30.aprobado ? "DOCUMENTACION_COMPLETA" : "EN_PROCESO"} />
                               </div>
                               <div className="d-flex flex-wrap gap-2">
                                 <button className="btn btn-outline-secondary btn-sm" onClick={() => handlePago(30)}>
@@ -629,19 +898,15 @@ function SectionTitle({ title, subtitle, badge }) {
                         </div>
                       )}
                       {currentTab === "checklist" && (
-                        <div className="border border-1 border-secondary-subtle rounded-3 p-3">
+                        <div className="border border-secondary-subtle rounded-3 p-3">
                           <div className="d-flex justify-content-between align-items-center mb-3">
                             <div className="fw-semibold">Checklist documentario</div>
                             <span className="badge bg-primary-subtle text-primary">{checklistProgressText}</span>
                           </div>
                           <div className="d-flex flex-wrap gap-2 align-items-center mb-3">
                             <span className="small text-muted">Filtrar por estado:</span>
-                            <select
-                              className="form-select form-select-sm w-auto"
-                              value={checklistFilter}
-                              onChange={(e) => setChecklistFilter(e.target.value)}
-                            >
-                              {['TODOS', ...ESTADOS_REQUISITO].map((estado) => (
+                            <select className="form-select form-select-sm w-auto" value={checklistFilter} onChange={(e) => setChecklistFilter(e.target.value)}>
+                              {["TODOS", ...ESTADOS_REQUISITO].map((estado) => (
                                 <option key={estado} value={estado}>
                                   {estado}
                                 </option>
@@ -692,12 +957,10 @@ function SectionTitle({ title, subtitle, badge }) {
                             </table>
                           </div>
                           <div className="d-flex flex-wrap gap-2 justify-content-end mt-3">
-                            <button className="btn btn-primary btn-sm" type="button" onClick={handleDocumentacionCompleta}>
+                            <button className="btn btn-primary btn-sm" onClick={handleDocumentacionCompleta} type="button">
                               Marcar documentación completa
                             </button>
-                            <button className="btn btn-outline-secondary btn-sm" type="button" onClick={() => setCurrentTab("archivos")}>
-                              Ver archivos
-                            </button>
+                            <button className="btn btn-outline-secondary btn-sm" type="button" onClick={() => setCurrentTab("archivos")}>Ver archivos</button>
                           </div>
                         </div>
                       )}
@@ -705,11 +968,7 @@ function SectionTitle({ title, subtitle, badge }) {
                         <div>
                           <div className="d-flex justify-content-between align-items-center">
                             <h5 className="h6 mb-0">Notas internas</h5>
-                            <button
-                              className="btn btn-link btn-sm"
-                              type="button"
-                              onClick={() => setNotesExpanded((prev) => !prev)}
-                            >
+                            <button className="btn btn-link btn-sm" type="button" onClick={() => setNotesExpanded((prev) => !prev)}>
                               {notesExpanded ? "Contraer notas" : "Mostrar notas"}
                             </button>
                           </div>
@@ -747,11 +1006,9 @@ function SectionTitle({ title, subtitle, badge }) {
                         </div>
                       )}
                       {currentTab === "archivos" && (
-                        <div className="border border-1 border-secondary-subtle rounded-3 p-4 text-center text-muted">
-                          <p className="mb-2">Aquí podrás ver los archivos vinculados al expediente.</p>
-                          <button className="btn btn-outline-secondary btn-sm" type="button">
-                            Adjuntar archivo
-                          </button>
+                        <div className="border border-secondary-subtle rounded-3 p-4 text-center text-muted">
+                          <p className="mb-2">Aquí podrás ver los archivos cargados al expediente.</p>
+                          <button className="btn btn-outline-secondary btn-sm" type="button">Adjuntar archivo</button>
                         </div>
                       )}
                     </div>
@@ -770,5 +1027,4 @@ function SectionTitle({ title, subtitle, badge }) {
       </section>
     </Layout>
   );
-;
 }
