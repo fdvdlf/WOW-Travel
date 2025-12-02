@@ -912,6 +912,13 @@ export default function TrackingPage() {
           background-color: #cfe2ff !important;
           border-color: #b6d4fe !important;
         }
+        .tracking-page-wrapper .bg-purple-subtle {
+          background-color: #e0cffc !important;
+          border-color: #d6bcfa !important;
+        }
+        .tracking-page-wrapper .text-purple {
+          color: #6f42c1 !important;
+        }
       `}</style>
       <section className="py-5 bg-light tracking-page-wrapper">
         <div className="container">
@@ -973,8 +980,8 @@ export default function TrackingPage() {
                       </select>
                     </div>
                     <div className="d-flex gap-2">
-                      <button className="btn btn-primary btn-sm" type="button" onClick={() => setShowLeadForm((prev) => !prev)}>{showLeadForm ? "Cerrar" : "+ Nuevo lead"}</button>
-                      <button className="btn btn-outline-secondary btn-sm" type="button" onClick={handleImportClick}>Importar</button>
+                      <button className="btn btn-primary" type="button" onClick={() => setShowLeadForm((prev) => !prev)}>{showLeadForm ? "Cerrar" : "+ Nuevo lead"}</button>
+                      <button className="btn btn-outline-secondary" type="button" onClick={handleImportClick}>Importar</button>
                       <input ref={importRef} type="file" accept="application/json" className="d-none" onChange={handleImportLeads} />
                     </div>
                   </div>
@@ -1099,10 +1106,10 @@ export default function TrackingPage() {
                         </div>
                       </div>
                       <div className="d-flex flex-wrap gap-2 mt-3">
-                        <a className={`btn btn-outline-secondary btn-sm ${!whatsappNumber ? "disabled" : ""}`} href={whatsappHref} target="_blank" rel="noreferrer noopener">
+                        <a className={`btn btn-outline-secondary ${!whatsappNumber ? "disabled" : ""}`} href={whatsappHref} target="_blank" rel="noreferrer noopener">
                           WhatsApp
                         </a>
-                        <button className="btn btn-primary btn-sm" type="button" disabled={!selectedExpediente && !selectedLead} onClick={() => { if (selectedExpediente) { setCurrentTab("datos"); } else if (selectedLead) { handleConvertLead(selectedLead); } }}>
+                        <button className="btn btn-primary" type="button" disabled={!selectedExpediente && !selectedLead} onClick={() => { if (selectedExpediente) { setCurrentTab("datos"); } else if (selectedLead) { handleConvertLead(selectedLead); } }}>
                           {selectedExpediente ? "Ver expediente" : "Abrir expediente"}
                         </button>
                       </div>
