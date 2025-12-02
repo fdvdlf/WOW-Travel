@@ -17,6 +17,13 @@ const STATUS_ICONS = {
   VALIDADO: "Validado",
 };
 
+const CHECKLIST_STATUS_COLORS = {
+  VALIDADO: "bg-success",
+  OBSERVADO: "bg-warning",
+  ENTREGADO: "bg-info",
+  PENDIENTE: "bg-secondary",
+};
+
 const COUNTRY_NAMES = [
   "ALEMANIA",
   "ARGENTINA",
@@ -227,6 +234,9 @@ const SAMPLE_EXPEDIENTES = [
     destino: "Toronto, Canadá",
     pais: DEFAULT_COUNTRY,
     fecha_probable: "2024-09-15",
+    tipo_mascota: "Perro",
+    edad: "3 años",
+    peso: "16.3 kg",
     precio: getPriceForCountry(DEFAULT_COUNTRY),
     priceReason: getPriceReason(DEFAULT_COUNTRY),
     estado: "EN_PROCESO",
@@ -408,6 +418,9 @@ export default function TrackingPage() {
       phone: lead.phone,
       mascota_name: "Mascota sin nombre",
       raza: "Por definir",
+      tipo_mascota: "Perro",
+      edad: "",
+      peso: "",
       destino: lead.notes || "Destino por definir",
       pais: paisInicial,
       fecha_probable: "",
@@ -580,6 +593,16 @@ export default function TrackingPage() {
   const filteredOptional = filterRequisitos(optionalRequisitos);
   const completedCount = selectedExpediente?.requisitos.filter((req) => req.estado === "VALIDADO").length ?? 0;
   const checklistProgressText = `${completedCount}/${selectedExpediente?.requisitos.length ?? 0} completados`;
+  const checklistStatusCounts = (selectedExpediente?.requisitos ?? []).reduce((acc, req) => {
+    acc[req.estado] = (acc[req.estado] || 0) + 1;
+    return acc;
+  }, {});
+  const totalChecklist = selectedExpediente?.requisitos.length ?? 0;
+  const progressSegments = Object.entries(checklistStatusCounts).map(([estado, valor]) => ({
+    estado,
+    valor,
+    porcentaje: totalChecklist ? (valor / totalChecklist) * 100 : 0,
+  }));
   return (
     <Layout header={3} footer={1} breadcrumbTitle="WOW Tracking" breadcrumbSubtitle="Sistema interno MVP">
       <section className="py-5 bg-light">
@@ -687,7 +710,8 @@ export default function TrackingPage() {
                 <div className="card-body">
                   <SectionTitle title="Datos generales" subtitle="Resumen del expediente" badge="Expediente" />
                   {selectedExpediente ? (
-                    <div className="row g-3">
+                    <>
+                      <div className="row g-3">
                       <div className="col-md-6">
                         <label className="form-label small fw-semibold">Propietario</label>
                         <input className="form-control" value={selectedExpediente.owner_name} readOnly />
@@ -745,7 +769,40 @@ export default function TrackingPage() {
                       <div className="col-12">
                         <small className="text-muted">Requisitos pendientes: {requisitosPendientes}</small>
                       </div>
+                      <div className="col-md-4">
+                        <label className="form-label small fw-semibold">Tipo</label>
+                        <input className="form-control" value={selectedExpediente.tipo_mascota || "Perro"} readOnly />
+                      </div>
+                      <div className="col-md-4">
+                        <label className="form-label small fw-semibold">Edad</label>
+                        <input className="form-control" value={selectedExpediente.edad || "Por definir"} readOnly />
+                      </div>
+                      <div className="col-md-4">
+                        <label className="form-label small fw-semibold">Peso</label>
+                        <input className="form-control" value={selectedExpediente.peso || "Pendiente"} readOnly />
+                      </div>
                     </div>
+                      <div className="mt-3">
+                        <p className="small text-muted mb-1">Progreso del checklist</p>
+                        <div className="progress" style={{ height: 12 }}>
+                          {progressSegments.map((segment) => (
+                            <div
+                              key={segment.estado}
+                              className={`progress-bar ${CHECKLIST_STATUS_COLORS[segment.estado] || "bg-secondary"}`}
+                              role="progressbar"
+                              style={{ width: `${segment.porcentaje}%` }}
+                            />
+                          ))}
+                        </div>
+                        <div className="d-flex justify-content-between mt-2 small text-muted">
+                          {Object.entries(checklistStatusCounts).map(([estado, valor]) => (
+                            <span key={estado}>
+                              {estado}: {valor}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+                    </>
                   ) : (
                     <p className="text-muted small mb-0">Selecciona un expediente para ver sus datos.</p>
                   )}
@@ -921,16 +978,16 @@ export default function TrackingPage() {
                                   <th>Requisito</th>
                                   <th>Estado</th>
                                   <th>Evidencia</th>
-                                  <th>Fecha</th>
+                                  <th>Fecha (plan/real)</th>
                                   <th>Notas</th>
                                 </tr>
                               </thead>
                               <tbody>
                                 {filteredRequired.length ? (
                                   <>
-                                    <tr className="table-secondary small text-uppercase">
-                                      <td colSpan="5">Requisitos obligatorios</td>
-                                    </tr>
+                                <tr className="table-secondary small text-uppercase">
+                                  <td colSpan="5">Requisitos obligatorios</td>
+                                </tr>
                                     {filteredRequired.map((req) => (
                                       <RequisitoRow key={req.id} requisito={req} onUpdate={handleRequisitoUpdate} />
                                     ))}
