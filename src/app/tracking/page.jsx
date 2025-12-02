@@ -391,6 +391,7 @@ export default function TrackingPage() {
   const [sourceFilter, setSourceFilter] = useState("TODOS");
   const [speciesFilter, setSpeciesFilter] = useState("TODOS");
   const importRef = useRef(null);
+  const [showLeadForm, setShowLeadForm] = useState(false);
 
   const selectedExpediente = useMemo(
     () => expedientes.find((exp) => exp.id === selectedExpedienteId),
@@ -438,6 +439,7 @@ export default function TrackingPage() {
     setLeads((prev) => [newLead, ...prev]);
     setLeadForm({ name: "", phone: "", source: "", notes: "", species: "Perro", breed: "", age: "", weight: "" });
     setMensaje("Lead creado y listo para calificación.");
+    setShowLeadForm(false);
   };
 
   const handleConvertLead = (lead) => {
@@ -683,6 +685,10 @@ export default function TrackingPage() {
     });
   }, [leads, searchTerm, sourceFilter, speciesFilter]);
 
+  const displayedLeads = useMemo(() => {
+    return [...filteredLeads].sort((a, b) => (a.created_at < b.created_at ? 1 : -1));
+  }, [filteredLeads]);
+
   const checklistStatusCounts = (selectedExpediente?.requisitos ?? []).reduce((acc, req) => {
     acc[req.estado] = (acc[req.estado] || 0) + 1;
     return acc;
@@ -732,138 +738,55 @@ export default function TrackingPage() {
               <div className="card bg-white border border-secondary-subtle shadow-sm">
                 <div className="card-body">
                   <SectionTitle title="Leads" subtitle="Captura, filtros y conversión" badge="ETAPA 0" />
-                  <form className="mb-3" onSubmit={handleLeadSubmit}>
-                    <div className="row g-2">
-                      <div className="col-12">
+                  <div className="d-flex flex-wrap gap-2 justify-content-between align-items-center mb-3">
+                    <div className="d-flex flex-wrap gap-2 align-items-center">
+                      <div className="input-group flex-grow-1 min-w-0">
+                        <span className="input-group-text">Buscar</span>
                         <input
                           className="form-control"
-                          placeholder="Nombre del cliente"
-                          value={leadForm.name}
-                          onChange={(e) => setLeadForm((prev) => ({ ...prev, name: e.target.value }))}
-                          required
+                          placeholder="Nombre, teléfono o nota"
+                          value={searchTerm}
+                          onChange={(e) => setSearchTerm(e.target.value)}
                         />
                       </div>
-                      <div className="col-6">
-                        <input
-                          className="form-control"
-                          placeholder="Teléfono / WhatsApp"
-                          value={leadForm.phone}
-                          onChange={(e) => setLeadForm((prev) => ({ ...prev, phone: e.target.value }))}
-                          required
-                        />
-                      </div>
-                      <div className="col-6">
-                        <select
-                          className="form-select"
-                          value={leadForm.source}
-                          onChange={(e) => setLeadForm((prev) => ({ ...prev, source: e.target.value }))}
-                          required
-                        >
-                          <option value="">Canal de origen</option>
-                          {LEAD_SOURCES.map((source) => (
-                            <option key={source} value={source}>
-                              {source}
-                            </option>
-                          ))}
-                        </select>
-                      </div>
-                      <div className="col-6">
-                        <select
-                          className="form-select"
-                          value={leadForm.species}
-                          onChange={(e) => setLeadForm((prev) => ({ ...prev, species: e.target.value }))}
-                        >
-                          {LEAD_SPECIES.map((species) => (
-                            <option key={species} value={species}>
-                              {species}
-                            </option>
-                          ))}
-                        </select>
-                      </div>
-                      <div className="col-6">
-                        <input
-                          className="form-control"
-                          placeholder="Raza (opcional)"
-                          value={leadForm.breed}
-                          onChange={(e) => setLeadForm((prev) => ({ ...prev, breed: e.target.value }))}
-                        />
-                      </div>
-                      <div className="col-6">
-                        <input
-                          className="form-control"
-                          placeholder="Edad"
-                          value={leadForm.age}
-                          onChange={(e) => setLeadForm((prev) => ({ ...prev, age: e.target.value }))}
-                        />
-                      </div>
-                      <div className="col-6">
-                        <input
-                          className="form-control"
-                          placeholder="Peso"
-                          value={leadForm.weight}
-                          onChange={(e) => setLeadForm((prev) => ({ ...prev, weight: e.target.value }))}
-                        />
-                      </div>
-                      <div className="col-12">
-                        <textarea
-                          className="form-control"
-                          placeholder="Notas o destino"
-                          value={leadForm.notes}
-                          onChange={(e) => setLeadForm((prev) => ({ ...prev, notes: e.target.value }))}
-                        />
-                      </div>
+                      <select
+                        className="form-select w-auto"
+                        value={sourceFilter}
+                        onChange={(e) => setSourceFilter(e.target.value)}
+                      >
+                        <option value="TODOS">Todas las fuentes</option>
+                        {LEAD_SOURCES.map((source) => (
+                          <option key={source} value={source}>
+                            {source}
+                          </option>
+                        ))}
+                      </select>
+                      <select
+                        className="form-select w-auto"
+                        value={speciesFilter}
+                        onChange={(e) => setSpeciesFilter(e.target.value)}
+                      >
+                        <option value="TODOS">Todas las especies</option>
+                        {LEAD_SPECIES.map((species) => (
+                          <option key={species} value={species}>
+                            {species}
+                          </option>
+                        ))}
+                      </select>
                     </div>
-                    <button className="btn btn-primary w-100 mt-3" type="submit">
-                      Crear lead
-                    </button>
-                  </form>
-                  <div className="mb-3">
-                    <div className="row g-2">
-                      <div className="col-12">
-                        <div className="input-group">
-                          <span className="input-group-text">Buscar</span>
-                          <input
-                            className="form-control"
-                            placeholder="Nombre, teléfono o nota"
-                            value={searchTerm}
-                            onChange={(e) => setSearchTerm(e.target.value)}
-                          />
-                        </div>
-                      </div>
-                      <div className="col-6">
-                        <select
-                          className="form-select"
-                          value={sourceFilter}
-                          onChange={(e) => setSourceFilter(e.target.value)}
-                        >
-                          <option value="TODOS">Todas las fuentes</option>
-                          {LEAD_SOURCES.map((source) => (
-                            <option key={source} value={source}>
-                              {source}
-                            </option>
-                          ))}
-                        </select>
-                      </div>
-                      <div className="col-6">
-                        <select
-                          className="form-select"
-                          value={speciesFilter}
-                          onChange={(e) => setSpeciesFilter(e.target.value)}
-                        >
-                          <option value="TODOS">Todas las especies</option>
-                          {LEAD_SPECIES.map((species) => (
-                            <option key={species} value={species}>
-                              {species}
-                            </option>
-                          ))}
-                        </select>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="d-flex justify-content-between align-items-center mb-3">
-                    <small className="text-muted">Leads encontrados: {filteredLeads.length}</small>
                     <div className="d-flex gap-2">
-                      <button className="btn btn-outline-secondary btn-sm" type="button" onClick={handleImportClick}>
+                      <button
+                        className="btn btn-primary btn-sm"
+                        type="button"
+                        onClick={() => setShowLeadForm((prev) => !prev)}
+                      >
+                        {showLeadForm ? "Ocultar formulario" : "Nuevo lead"}
+                      </button>
+                      <button
+                        className="btn btn-outline-secondary btn-sm"
+                        type="button"
+                        onClick={handleImportClick}
+                      >
                         Importar datos
                       </button>
                       <input
@@ -875,8 +798,97 @@ export default function TrackingPage() {
                       />
                     </div>
                   </div>
+                  {showLeadForm && (
+                    <form className="mb-3 border rounded-2 p-3 bg-light" onSubmit={handleLeadSubmit}>
+                      <div className="row g-2">
+                        <div className="col-md-6">
+                          <input
+                            className="form-control"
+                            placeholder="Nombre del cliente"
+                            value={leadForm.name}
+                            onChange={(e) => setLeadForm((prev) => ({ ...prev, name: e.target.value }))}
+                            required
+                          />
+                        </div>
+                        <div className="col-md-6">
+                          <input
+                            className="form-control"
+                            placeholder="Teléfono / WhatsApp"
+                            value={leadForm.phone}
+                            onChange={(e) => setLeadForm((prev) => ({ ...prev, phone: e.target.value }))}
+                            required
+                          />
+                        </div>
+                        <div className="col-md-6">
+                          <select
+                            className="form-select"
+                            value={leadForm.source}
+                            onChange={(e) => setLeadForm((prev) => ({ ...prev, source: e.target.value }))}
+                            required
+                          >
+                            <option value="">Canal de origen</option>
+                            {LEAD_SOURCES.map((source) => (
+                              <option key={source} value={source}>
+                                {source}
+                              </option>
+                            ))}
+                          </select>
+                        </div>
+                        <div className="col-md-6">
+                          <select
+                            className="form-select"
+                            value={leadForm.species}
+                            onChange={(e) => setLeadForm((prev) => ({ ...prev, species: e.target.value }))}
+                          >
+                            {LEAD_SPECIES.map((species) => (
+                              <option key={species} value={species}>
+                                {species}
+                              </option>
+                            ))}
+                          </select>
+                        </div>
+                        <div className="col-md-6">
+                          <input
+                            className="form-control"
+                            placeholder="Raza (opcional)"
+                            value={leadForm.breed}
+                            onChange={(e) => setLeadForm((prev) => ({ ...prev, breed: e.target.value }))}
+                          />
+                        </div>
+                        <div className="col-md-6">
+                          <input
+                            className="form-control"
+                            placeholder="Edad"
+                            value={leadForm.age}
+                            onChange={(e) => setLeadForm((prev) => ({ ...prev, age: e.target.value }))}
+                          />
+                        </div>
+                        <div className="col-md-6">
+                          <input
+                            className="form-control"
+                            placeholder="Peso"
+                            value={leadForm.weight}
+                            onChange={(e) => setLeadForm((prev) => ({ ...prev, weight: e.target.value }))}
+                          />
+                        </div>
+                        <div className="col-12">
+                          <textarea
+                            className="form-control"
+                            placeholder="Notas o destino"
+                            value={leadForm.notes}
+                            onChange={(e) => setLeadForm((prev) => ({ ...prev, notes: e.target.value }))}
+                          />
+                        </div>
+                      </div>
+                      <div className="mt-3 text-end">
+                        <button className="btn btn-primary btn-sm" type="submit">
+                          Guardar lead
+                        </button>
+                      </div>
+                    </form>
+                  )}
                   <div className="list-group list-group-flush">
-                    {filteredLeads.slice(0, 12).map((lead) => (
+                    {displayedLeads.slice(0, 12).map((lead) => (
                       <div
                         key={lead.id}
                         role="button"
