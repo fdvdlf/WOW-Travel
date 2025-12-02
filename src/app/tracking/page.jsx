@@ -217,6 +217,7 @@ const LEAD_NAMES = [
 ];
 const LEAD_SOURCES = ["Whatsapp", "Meta Ads", "Web", "Referido", "Email", "Evento"];
 const LEAD_SPECIES = ["Perro", "Gato"];
+const LEAD_STATUSES = ["NUEVO", "CONTACTADO", "CONVERTIDO"];
 const LEAD_BREEDS = ["Border Collie", "Labrador", "Golden", "Sphynx", "Persa", "Bulldog", "Beagle", "Husky"];
 
 const SAMPLE_LEADS = Array.from({ length: 50 }, (_, index) => {
@@ -234,6 +235,7 @@ const SAMPLE_LEADS = Array.from({ length: 50 }, (_, index) => {
     breed: LEAD_BREEDS[index % LEAD_BREEDS.length],
     age: `${2 + (index % 7)} años`,
     weight: `${6 + (index % 15)} kg`,
+    status: LEAD_STATUSES[index % LEAD_STATUSES.length],
   };
 });
 
@@ -390,6 +392,7 @@ export default function TrackingPage() {
   const [searchTerm, setSearchTerm] = useState("");
   const [sourceFilter, setSourceFilter] = useState("TODOS");
   const [speciesFilter, setSpeciesFilter] = useState("TODOS");
+  const [statusFilter, setStatusFilter] = useState("TODOS");
   const importRef = useRef(null);
   const [showLeadForm, setShowLeadForm] = useState(false);
 
@@ -687,9 +690,10 @@ export default function TrackingPage() {
         lead.phone.includes(searchTerm);
       const matchesSource = sourceFilter === "TODOS" || lead.source === sourceFilter;
       const matchesSpecies = speciesFilter === "TODOS" || lead.species === speciesFilter;
-      return matchesSearch && matchesSource && matchesSpecies;
+      const matchesStatus = statusFilter === "TODOS" || lead.status === statusFilter;
+      return matchesSearch && matchesSource && matchesSpecies && matchesStatus;
     });
-  }, [leads, searchTerm, sourceFilter, speciesFilter]);
+  }, [leads, searchTerm, sourceFilter, speciesFilter, statusFilter]);
 
   const displayedLeads = useMemo(() => {
     return [...filteredLeads].sort((a, b) => (a.created_at < b.created_at ? 1 : -1));
@@ -776,6 +780,18 @@ export default function TrackingPage() {
                         {LEAD_SPECIES.map((species) => (
                           <option key={species} value={species}>
                             {species}
+                          </option>
+                        ))}
+                      </select>
+                      <select
+                        className="form-select w-auto"
+                        value={statusFilter}
+                        onChange={(e) => setStatusFilter(e.target.value)}
+                      >
+                        <option value="TODOS">Todos los estados</option>
+                        {LEAD_STATUSES.map((status) => (
+                          <option key={status} value={status}>
+                            {status}
                           </option>
                         ))}
                       </select>
