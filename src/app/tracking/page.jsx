@@ -944,10 +944,27 @@ export default function TrackingPage() {
           background-color: #5a6268 !important;
           border-color: #545b62 !important;
         }
+        .tracking-page-wrapper .btn-whatsapp {
+          background-color: #25D366 !important;
+          color: white !important;
+          border-color: #25D366 !important;
+        }
+        .tracking-page-wrapper .btn-whatsapp:hover {
+          background-color: #128C7E !important;
+          border-color: #128C7E !important;
+        }
+        .tracking-page-wrapper .glass-card {
+          background: rgba(255, 255, 255, 0.7) !important;
+          backdrop-filter: blur(10px) !important;
+          -webkit-backdrop-filter: blur(10px) !important;
+          border: 1px solid rgba(255, 255, 255, 0.5) !important;
+          box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.1) !important;
+          border-radius: 1rem !important;
+        }
       `}</style>
       <section className="py-5 bg-light tracking-page-wrapper">
         <div className="container">
-          <div className="card bg-white border border-secondary-subtle shadow-sm mb-4">
+          <div className="card glass-card mb-4">
             <div className="card-body d-flex flex-wrap justify-content-between align-items-start gap-3">
               <div>
                 <p className="text-uppercase text-primary fw-semibold mb-2">Panel interno · WOW Tracking</p>
@@ -976,7 +993,7 @@ export default function TrackingPage() {
 
           <div className="row g-4">
             <div className="col-12">
-              <div className="card bg-white border border-secondary-subtle shadow-sm w-100">
+              <div className="card glass-card w-100">
                 <div className="card-body">
                   <SectionTitle title="Leads y búsqueda" badge="ETAPA 0" />
                   <div className="d-flex flex-wrap gap-2 align-items-center justify-content-between">
@@ -1115,7 +1132,7 @@ export default function TrackingPage() {
 
               <div className="col-lg-8 d-flex flex-column gap-3">
                 {selectedExpediente ? (
-                  <div className="card bg-white border border-secondary-subtle shadow-sm">
+                  <div className="card glass-card">
                     <div className="card-body">
                       <div className="d-flex justify-content-between align-items-start flex-wrap gap-3">
                         <div>
@@ -1131,7 +1148,7 @@ export default function TrackingPage() {
                         </div>
                       </div>
                       <div className="d-flex flex-wrap gap-2 mt-3">
-                        <a className={`btn btn-primary btn-lg ${!whatsappNumber ? "disabled" : ""}`} href={whatsappHref} target="_blank" rel="noreferrer noopener">
+                        <a className={`btn btn-whatsapp btn-lg ${!whatsappNumber ? "disabled" : ""}`} href={whatsappHref} target="_blank" rel="noreferrer noopener">
                           WhatsApp
                         </a>
                         <button className="btn btn-primary btn-lg" type="button" disabled={!selectedExpediente && !selectedLead} onClick={() => { if (selectedExpediente) { setCurrentTab("datos"); } else if (selectedLead) { handleConvertLead(selectedLead); } }}>
