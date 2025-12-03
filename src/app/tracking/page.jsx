@@ -886,12 +886,18 @@ export default function TrackingPage() {
           align-items: center !important;
           justify-content: center !important;
         }
-        .tracking-page-wrapper .form-control, 
-        .tracking-page-wrapper .form-select {
+        .tracking-page-wrapper .form-control {
           border-radius: 0.375rem !important;
           padding: 0.375rem 0.75rem !important;
           font-size: 0.875rem !important;
           border-color: #dee2e6 !important;
+        }
+        .tracking-page-wrapper .form-select {
+          border-radius: 0.375rem !important;
+          padding: 0.375rem 2.25rem 0.375rem 0.75rem !important; /* Extra padding-right for arrow */
+          font-size: 0.875rem !important;
+          border-color: #dee2e6 !important;
+          background-position: right 0.75rem center !important;
         }
         .tracking-page-wrapper .input-group-text {
           border-radius: 0.375rem !important;
