@@ -13,22 +13,22 @@ export const TeamOne = () => {
     {
       src: teamImg01,
       name: "Felipe Padolfi",
-      designation: "Gerente General",
-    },
-    {
-      src: teamImg02,
-      name: "Angie Parra",
-      designation: "Directora Comercial",
-    },
-    {
-      src: teamImg03,
-      name: "Gabriel Larrea",
-      designation: "Director de Operaciones",
+      designation: "Dirección General",
     },
     {
       src: teamImg04,
       name: "Dr. Víctor Quispe",
-      designation: "Médico Veterinario",
+      designation: "Médico Veterinario – Especialista en Bienestar Animal para Viajes",
+    },
+    {
+      src: teamImg02,
+      name: "Lic. Sebastián Velásquez",
+      designation: "Psicólogo – Evaluación para Apoyo Emocional en Viajes",
+    },
+    {
+      src: teamImg03,
+      name: "Gabriel Larrea",
+      designation: "Responsable de Operaciones",
     },
   ];
 
@@ -46,7 +46,7 @@ export const TeamOne = () => {
                 </strong>
               </span>
               <h2 className="title">
-                Conoce al equipo <br />
+                Conoce a parte del equipo <br />
                 detrás de WOW Travel
               </h2>
             </div>

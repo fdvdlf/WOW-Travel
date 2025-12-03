@@ -21,7 +21,7 @@ export const RegistrationOne = () => {
               {/* formulario */}
               <form action="#">
                 <div className="row gutter-15">
-                  {/* Nombre */}
+                  {/* 1. Nombre */}
                   <div className="col-lg-4 col-md-6">
                     <div className="form-grp">
                       <label htmlFor="name">Nombre</label>
@@ -33,7 +33,7 @@ export const RegistrationOne = () => {
                     </div>
                   </div>
 
-                  {/* Tipo de mascota */}
+                  {/* 2. Tipo de mascota */}
                   <div className="col-lg-4 col-md-6">
                     <div className="form-grp select-grp">
                       <label>Tipo de mascota</label>
@@ -48,58 +48,57 @@ export const RegistrationOne = () => {
                     </div>
                   </div>
 
-                  {/* Servicio de interés */}
+                  {/* 3. País de destino */}
                   <div className="col-lg-4 col-md-6">
                     <div className="form-grp select-grp">
-                      <label>Servicio de interés</label>
-                      <select name="interest" className="orderby" defaultValue="">
+                      <label htmlFor="destination">País de destino</label>
+                      <select name="destination" id="destination" className="orderby" defaultValue="">
                         <option value="" disabled>
-                          Selecciona servicio
+                          ¿A qué país viaja tu mascota?
                         </option>
-                        <option value="tramites">Trámites sanitarios</option>
-                        <option value="documentos">
-                          Documentación y pasaporte
-                        </option>
-                        <option value="vuelo">Reserva de vuelo</option>
-                        <option value="asesoria">Asesoría completa</option>
+                        {[
+                          "ALEMANIA", "ARGENTINA", "AUSTRALIA", "AUSTRIA", "BELGICA", "BOLIVIA", "BRASIL", "BULGARIA", "CANADA", "CHILE",
+                          "CHINA", "CHIPRE", "COLOMBIA", "COREA DEL SUR", "COSTA RICA", "CROACIA", "CUBA", "DINAMARCA", "ECUADOR", "EEUU",
+                          "EGIPTO", "EL SALVADOR", "EMIRATOS ARABES UNIDOS", "ESLOVAQUIA", "ESLOVENIA", "ESPAÑA", "ESTONIA", "FILIPINAS",
+                          "FINLANDIA", "FRANCIA", "GRECIA", "GUATEMALA", "HONDURAS", "HUNGRIA", "INDIA", "INDONESIA", "IRLANDA", "ISRAEL",
+                          "ITALIA", "JAPON", "LETONIA", "LITUANIA", "LUXEMBURGO", "MALASIA", "MALTA", "MARRUECOS", "MEXICO", "NICARAGUA",
+                          "NORUEGA", "PAISES BAJOS", "PANAMA", "PARAGUAY", "POLONIA", "PORTUGAL", "QATAR", "REINO DE ARABIA SAUDITA",
+                          "REINO UNIDO", "REPUBLICA CHECA", "REPUBLICA DOMINICANA", "RUMANIA", "RUSIA", "SERBIA", "SUDAFRICA", "SUECIA",
+                          "SUIZA", "TAILANDIA", "TAIWAN", "TRINIDAD Y TOBAGO", "URUGUAY", "VENEZUELA", "VIETNAM", "ZAMBIA"
+                        ].map((pais) => (
+                          <option key={pais} value={pais}>
+                            {pais
+                              .toLowerCase()
+                              .split(" ")
+                              .map((word) => (word ? word[0].toUpperCase() + word.slice(1) : word))
+                              .join(" ")}
+                          </option>
+                        ))}
                       </select>
                     </div>
                   </div>
 
-                  {/* Fecha */}
-                  <div className="col-lg-4 col-md-6">
-                    <div className="form-grp">
-                      <label htmlFor="date">Fecha</label>
-                      <input
-                        id="date"
-                        className="textbox-n"
-                        type="date"
-                        placeholder="dd/mm/aaaa"
-                      />
-                    </div>
-                  </div>
-
-                  {/* Hora */}
-                  <div className="col-lg-4 col-md-6">
-                    <div className="form-grp">
-                      <label htmlFor="time">Hora</label>
-                      <input
-                        id="time"
-                        placeholder="08:00"
-                        type="time"
-                      />
-                      <i className="flaticon-three-o-clock-clock"></i>
-                    </div>
-                  </div>
-
-                  {/* Teléfono */}
-                  <div className="col-lg-4 col-md-6">
+                  {/* 4. Teléfono */}
+                  <div className="col-lg-6 col-md-6">
                     <div className="form-grp">
                       <label htmlFor="phone">Teléfono</label>
                       <input
                         id="phone"
                         type="tel"
-                        placeholder="+51 9 123 456 78"
+                        placeholder="+51 912 345 678"
+                      />
+                    </div>
+                  </div>
+
+                  {/* 5. Fecha aproximada de viaje */}
+                  <div className="col-lg-6 col-md-6">
+                    <div className="form-grp">
+                      <label htmlFor="approx_date">Fecha aproximada de viaje</label>
+                      <input
+                        id="approx_date"
+                        type="month"
+                        defaultValue="2026-01"
+                        placeholder="mm/aaaa"
                       />
                     </div>
                   </div>
