@@ -8,7 +8,6 @@ const titleImg01 = "/banner/banner_title_img01.png";
 const titleImg02 = "/banner/banner_title_img02.png";
 const rightArrow = "/icon/right_arrow.svg";
 const bannerImg01 = "/banner/banner_img01.png";
-const petIcon01 = "/icon/pet_icon01.svg";
 const bannerShape01 = "/banner/banner_shape01.png";
 const bannerShape02 = "/banner/banner_shape02.png";
 const bannerShape03 = "/banner/banner_shape03.png";
@@ -54,20 +53,6 @@ export const BannerOne = () => {
                 data-aos="fade-left"
                 data-aos-delay="800"
               />
-              <div
-                className="healthy-pets"
-                data-aos="zoom-in"
-                data-aos-delay="1000"
-              >
-                <div className="icon">
-                  <img src={petIcon01} alt="" className="injectable" />
-                </div>
-                <div className="content">
-                  <h6 className="circle rotateme">
-                  - CUIDAMOS - SU VIAJE - CON AMOR -
-                  </h6>
-                </div>
-              </div>
             </div>
           </div>
         </div>

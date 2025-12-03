@@ -20,10 +20,10 @@ export const TestimonialOne = () => {
     loop: true,
     breakpoints: {
       1200: { slidesPerView: 1 },
-      992:  { slidesPerView: 1 },
-      768:  { slidesPerView: 1 },
-      576:  { slidesPerView: 1 },
-      0:    { slidesPerView: 1 },
+      992: { slidesPerView: 1 },
+      768: { slidesPerView: 1 },
+      576: { slidesPerView: 1 },
+      0: { slidesPerView: 1 },
     },
   };
 
@@ -42,11 +42,7 @@ export const TestimonialOne = () => {
                   <img src={testimonialImgShape} alt="" className="injectable" />
                 </div>
                 <div className="shape-two">
-                  <img
-                    src={testimonialShape03}
-                    alt="img"
-                    className="alltuchtopdown"
-                  />
+                  <img src={testimonialShape03} alt="img" className="alltuchtopdown" />
                 </div>
               </div>
               <div className="review__box">
@@ -55,8 +51,6 @@ export const TestimonialOne = () => {
                 </div>
                 <div className="review__box-content">
                   <img src={starIcon} alt="" className="injectable" />
-                  <h2 className="title">1500+</h2>
-                  <span>Opiniones</span>
                 </div>
               </div>
             </div>
@@ -73,19 +67,19 @@ export const TestimonialOne = () => {
                       <img src={quoteIcon} alt="" className="injectable" />
                     </div>
                     <div className="testimonial__content">
-                      <h2 className="title">Un viaje impecable a Madrid</h2>
+                      <h2 className="title">Estuvieron pendientes de nosotros</h2>
                       <p>
-                        “Cuando decidí mudarme a Madrid con mi gato, no sabía por dónde empezar. WOW Travel se encargó del
-                        microchip, certificados, trámites y asesoría completa. Me acompañaron con cariño y profesionalismo. ¡Mi
-                        gato llegó feliz y yo totalmente tranquila!”
+                        Tenía miedo de cometer un error con los papeles y arruinar el viaje, pero WOW Travel me guió paso a paso con
+                        una claridad increíble. Me explicaron todo, revisaron cada documento y estuvieron pendientes de Lucas y de mí
+                        todo el tiempo.
                       </p>
                       <div className="testimonial__author">
                         <div className="testimonial__author-thumb">
                           <img src={testiAuthor} alt="" />
                         </div>
                         <div className="testimonial__author-content">
-                          <h4 className="title">Natalia de la Flor</h4>
-                          <span>Cliente – Viaje Lima → Madrid</span>
+                          <h4 className="title">Maria Gomez</h4>
+                          <span>Cliente — Viaje Lima a Madrid</span>
                         </div>
                       </div>
                     </div>
@@ -101,17 +95,16 @@ export const TestimonialOne = () => {
                     <div className="testimonial__content">
                       <h2 className="title">Servicio confiable y humano</h2>
                       <p>
-                        “WOW Travel hizo que viajar con mi perro fuera sencillo.
-                        Gestionaron cada documento y estuvieron disponibles para
-                        todas mis dudas. Recomiendo su servicio al 100 %.”
+                        Viajar sola con mi perro parecía complicado… pero gracias a ellos fue una experiencia hermosa y cero estrés.
+                        Gracias a Felipe por recomendarme WOW Travel. Lo recomiendo con los ojos cerrados.
                       </p>
                       <div className="testimonial__author">
                         <div className="testimonial__author-thumb">
                           <img src={testiAuthor} alt="" />
                         </div>
                         <div className="testimonial__author-content">
-                          <h4 className="title">Roberto Montalvo</h4>
-                          <span>Cliente – Viaje a Ciudad de México</span>
+                          <h4 className="title">Carolina de la Torre</h4>
+                          <span>Cliente — Viaje a Ciudad de México</span>
                         </div>
                       </div>
                     </div>
@@ -125,18 +118,8 @@ export const TestimonialOne = () => {
 
       {/* formas decorativas */}
       <div className="testimonial__shape-wrap">
-        <img
-          src={testimonialShape01}
-          alt="img"
-          data-aos="fade-down-right"
-          data-aos-delay="400"
-        />
-        <img
-          src={testimonialShape02}
-          alt="img"
-          data-aos="fade-right"
-          data-aos-delay="400"
-        />
+        <img src={testimonialShape01} alt="img" data-aos="fade-down-right" data-aos-delay="400" />
+        <img src={testimonialShape02} alt="img" data-aos="fade-right" data-aos-delay="400" />
       </div>
     </section>
   );

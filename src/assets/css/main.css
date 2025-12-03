@@ -3913,8 +3913,8 @@ textarea {
 }
 
 .healthy-pets {
-  width: 180px;
-  height: 180px;
+  width: 200px;
+  height: 200px;
   display: -webkit-box;
   display: -moz-box;
   display: -ms-flexbox;
@@ -3922,13 +3922,8 @@ textarea {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: var(--tg-color-yellow-default);
-  border: 8px solid var(--tg-color-white-default);
-  -webkit-border-radius: 50%;
-  -moz-border-radius: 50%;
-  -o-border-radius: 50%;
-  -ms-border-radius: 50%;
-  border-radius: 50%;
+  background: transparent;
+  border: none;
   position: absolute;
   right: -90px;
   bottom: 33%;
@@ -3947,45 +3942,9 @@ textarea {
   }
 }
 
-.healthy-pets .icon {
-  display: -webkit-box;
-  display: -moz-box;
-  display: -ms-flexbox;
-  display: -webkit-flex;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--tg-color-dark);
-  line-height: 0;
-  width: 40px;
-  -webkit-border-radius: 50%;
-  -moz-border-radius: 50%;
-  -o-border-radius: 50%;
-  -ms-border-radius: 50%;
-  border-radius: 50%;
-}
-
-.healthy-pets .content .circle {
-  position: absolute;
-  margin-bottom: 0;
-  font-size: 17px;
-  text-transform: uppercase;
-  left: 50%;
-  top: 50%;
-  font-weight: 700;
-  -webkit-transform: translate(-50%, -50%);
-  -moz-transform: translate(-50%, -50%);
-  -ms-transform: translate(-50%, -50%);
-  -o-transform: translate(-50%, -50%);
-  transform: translate(-50%, -50%);
-  color: var(--tg-color-dark);
-}
-
-.healthy-pets .content .circle span {
-  position: absolute;
-  top: -70px;
-  display: inline-block;
-  transform-origin: 0 70px;
+.healthy-pets__badge {
+  width: 100%;
+  height: auto;
 }
 
 .healthy-pets-two {
@@ -10845,7 +10804,8 @@ textarea {
   margin-bottom: 10px;
 }
 
-.registration__inner-wrap .form-grp input {
+.registration__inner-wrap .form-grp input,
+.registration__inner-wrap .form-grp select {
   width: 100%;
   border: none;
   background: #113179;
@@ -10861,14 +10821,38 @@ textarea {
   height: 50px;
 }
 
+.registration__inner-wrap .form-grp select {
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%23ffffff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 16px center;
+  background-size: 14px;
+  padding-right: 48px;
+  cursor: pointer;
+}
+
+.registration__inner-wrap .form-grp select option {
+  background: #0c2b6d;
+  color: var(--tg-color-white-default);
+}
+
 .registration__inner-wrap .form-grp input::placeholder {
   bottom: 14px;
-  font-family: "flaticon_pet_care";
-  font-weight: 700;
+  font-family: var(--tg-body-font-family);
+  font-weight: 600;
   right: 20px;
-  font-size: 20px;
+  font-size: 14px;
   color: var(--tg-color-white-default);
   line-height: 1;
+}
+
+.registration__inner-wrap input[type="month"] {
+  color-scheme: dark;
+}
+
+.registration__inner-wrap input[type="month"]::-webkit-calendar-picker-indicator {
+  filter: invert(1) brightness(2.2);
+  opacity: 1;
 }
 
 .registration__inner-wrap .submit__btn .btn::before {

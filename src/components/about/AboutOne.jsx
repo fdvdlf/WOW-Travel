@@ -47,8 +47,7 @@ export const AboutOne = () => {
                   </strong>
                 </span>
                 <h2 className="title">
-                  Nuestra pasión es que tu <br />
-                  mascota viaje segura y feliz
+                  Trabajamos por tu tranquilidad
                 </h2>
               </div>
               <div className="about__content-inner">
@@ -64,14 +63,12 @@ export const AboutOne = () => {
                   </div>
                 </div>
                 <p>
-                  En WOW Travel asesoramos a las familias en cada parte del proceso: requisitos sanitarios,
-                  certificados, preparación del viaje y orientación personalizada. Acompañamos cada caso con
-                  responsabilidad, empatía y compromiso, asegurándonos de que tu mascota viaje protegida y sin
-                  estrés.
+                  Te guiamos en cada etapa del viaje de tu mascota. Trabajamos con cariño, responsabilidad y enfoque profesional
+                  para que tú tengas tranquilidad y tu mascota viaje protegida y sin estrés.
                 </p>
               </div>
               <p>
-                Nuestro médico veterinario, Dr. Víctor Quispe, supervisa los protocolos de bienestar animal y brinda
+                El Dr. Víctor Quispe, nuestro médico veterinario, supervisa todos los protocolos de bienestar animal y asegura una
                 orientación especializada en cada viaje.
               </p>
               <div className="about__content-bottom">
@@ -80,24 +77,14 @@ export const AboutOne = () => {
                 </div>
               </div>
               <div className="shape">
-                <img
-                  src={aboutShape2}
-                  alt="img"
-                  data-aos="fade-down-left"
-                  data-aos-delay="400"
-                />
+                <img src={aboutShape2} alt="img" data-aos="fade-down-left" data-aos-delay="400" />
               </div>
             </div>
           </div>
         </div>
       </div>
       <div className="about__shape-wrap">
-        <img
-          src={aboutShape1}
-          alt="img"
-          data-aos="fade-up-right"
-          data-aos-delay="800"
-        />
+        <img src={aboutShape1} alt="img" data-aos="fade-up-right" data-aos-delay="800" />
         <img src={aboutShape3} alt="img" className="ribbonRotate" />
       </div>
     </section>

@@ -11,7 +11,7 @@ export const RegistrationOne = () => {
           <div className="col-lg-12">
             <div className="registration__inner-wrap">
               {/* título */}
-              <h2 className="title">¡Agenda tu asesoría hoy mismo!</h2>
+              <h2 className="title">Empecemos tu proceso de viaje</h2>
 
               {/* forma decorativa */}
               <div className="shape">
@@ -54,7 +54,7 @@ export const RegistrationOne = () => {
                       <label htmlFor="destination">País de destino</label>
                       <select name="destination" id="destination" className="orderby" defaultValue="">
                         <option value="" disabled>
-                          ¿A qué país viaja tu mascota?
+                          Selecciona
                         </option>
                         {[
                           "ALEMANIA", "ARGENTINA", "AUSTRALIA", "AUSTRIA", "BELGICA", "BOLIVIA", "BRASIL", "BULGARIA", "CANADA", "CHILE",
@@ -97,6 +97,7 @@ export const RegistrationOne = () => {
                       <input
                         id="approx_date"
                         type="month"
+                        min="2026-01"
                         defaultValue="2026-01"
                         placeholder="mm/aaaa"
                       />
@@ -107,7 +108,7 @@ export const RegistrationOne = () => {
                 {/* botón */}
                 <div className="submit__btn text-center mt-25">
                   <button type="submit" className="btn">
-                    Comenzar reserva
+                    Iniciar
                     <img src={rightArrow} alt="" className="injectable" />
                   </button>
                 </div>
@@ -119,4 +120,3 @@ export const RegistrationOne = () => {
     </section>
   );
 };
-

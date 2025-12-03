@@ -17,25 +17,13 @@ export const WhyWeAreOne = () => {
           <div className="col-lg-6 col-md-8 col-sm-10">
             <div className="why__we-are-img">
               <img src={whyWeAreImg} alt="" />
-              <div
-                className="shape shape-one"
-                data-aos="fade-down-right"
-                data-aos-delay="500"
-              >
+              <div className="shape shape-one" data-aos="fade-down-right" data-aos-delay="500">
                 <img src={whyShape1} alt="" className="injectable" />
               </div>
-              <div
-                className="shape shape-two"
-                data-aos="fade-up-right"
-                data-aos-delay="500"
-              >
+              <div className="shape shape-two" data-aos="fade-up-right" data-aos-delay="500">
                 <img src={whyShape2} alt="" className="injectable" />
               </div>
-              <div
-                className="shape shape-three"
-                data-aos="fade-up-left"
-                data-aos-delay="500"
-              >
+              <div className="shape shape-three" data-aos="fade-up-left" data-aos-delay="500">
                 <img src={whyShape3} alt="" className="injectable" />
               </div>
               <div className="shape shape-four ribbonRotate">
@@ -48,19 +36,16 @@ export const WhyWeAreOne = () => {
             <div className="why__we-are-content">
               <div className="section__title mb-10">
                 <span className="sub-title">
-                  Por qué somos los mejores
+                  ACOMPAÑAMIENTO PERSONALIZADO
                   <strong className="shake">
                     <img src={petIcon} alt="" className="injectable" />
                   </strong>
                 </span>
-                <h2 className="title">
-                  Viajes para mascotas: <br />
-                  lo que debes saber
-                </h2>
+                <h2 className="title">Te acompañamos siempre</h2>
               </div>
               <p>
-                Viajar con una mascota implica trámites, tiempos y requisitos específicos. Nuestra misión es hacer
-                este proceso más claro, seguro y acompañado.
+                Viajar con una mascota implica documentos, tiempos, validaciones y requisitos que pueden ser confusos. Nuestra labor
+                es hacer que todo este proceso sea simple, seguro y sin estrés, tanto para ti como para tu mascota.
               </p>
 
               <div className="why__list-box">
@@ -71,7 +56,7 @@ export const WhyWeAreOne = () => {
                         <div className="icon">
                           <img src={checkIcon} alt="" className="injectable" />
                         </div>
-                        <h4 className="title">Experiencia comprobada</h4>
+                        <h4 className="title">Experiencia real en viajes internacionales</h4>
                       </div>
                     </div>
                   </li>
@@ -81,7 +66,7 @@ export const WhyWeAreOne = () => {
                         <div className="icon">
                           <img src={checkIcon} alt="" className="injectable" />
                         </div>
-                        <h4 className="title">Asesoría personalizada</h4>
+                        <h4 className="title">Acompañamiento y asesoría personalizada</h4>
                       </div>
                     </div>
                   </li>
@@ -91,7 +76,7 @@ export const WhyWeAreOne = () => {
                         <div className="icon">
                           <img src={checkIcon} alt="" className="injectable" />
                         </div>
-                        <h4 className="title">Precios transparentes</h4>
+                        <h4 className="title">Precios claros y sin sorpresas</h4>
                       </div>
                     </div>
                   </li>
@@ -101,7 +86,7 @@ export const WhyWeAreOne = () => {
                         <div className="icon">
                           <img src={checkIcon} alt="" className="injectable" />
                         </div>
-                        <h4 className="title">Proceso sin estrés</h4>
+                        <h4 className="title">Un proceso tranquilo y guiado paso a paso</h4>
                       </div>
                     </div>
                   </li>

@@ -9,20 +9,20 @@ const servicesShapeImg03 = "/images/services_shape03.png";
 export const ServiceOne = () => {
   const list = [
     {
+      icon: "flaticon-animals",
+      title: "Microchip y Validación RFID",
+    },
+    {
       icon: "flaticon-vaccine",
-      title: "Trámite sanitario",
+      title: "Vacuna Antirrábica y Control Sanitario",
     },
     {
-      icon: "flaticon-beauty-saloon",
-      title: "Gestión documental",
+      icon: "flaticon-loupe",
+      title: "Certificados y Documentos Oficiales",
     },
     {
-      icon: "flaticon-vet",
-      title: "Preparación de viaje",
-    },
-    {
-      icon: "flaticon-spay",
-      title: "Asesoría personalizada",
+      icon: "flaticon-love",
+      title: "Acompañamiento Psicológico para Viajes",
     },
   ];
 
@@ -39,11 +39,9 @@ export const ServiceOne = () => {
                   <img src={petIcon} alt="" className="injectable" />
                 </strong>
               </span>
-              <h2 className="title">
-                Servicios integrales para viajes seguros y certificados
-              </h2>
+              <h2 className="title">Servicios que necesita tu mascota para viajar sin problemas</h2>
               <p className="mb-0">
-                Todo lo necesario para preparar el viaje de tu mascota de manera clara, ordenada y sin estrés.
+                Todo lo que tu mascota requiere para un viaje seguro, ordenado y sin estrés.
               </p>
             </div>
           </div>
@@ -52,11 +50,7 @@ export const ServiceOne = () => {
         {/* list */}
         <div className="row justify-content-center">
           {list.map((el) => (
-            <ServiceOneItem
-              key={el.icon}
-              icon={el.icon}
-              title={el.title}
-            />
+            <ServiceOneItem key={el.icon} icon={el.icon} title={el.title} />
           ))}
         </div>
       </div>
@@ -64,18 +58,8 @@ export const ServiceOne = () => {
       {/* shapes */}
       <div className="services__shape-wrap">
         <img src={servicesShapeImg01} alt="img" className="ribbonRotate" />
-        <img
-          src={servicesShapeImg02}
-          alt="img"
-          data-aos="fade-up-right"
-          data-aos-delay="800"
-        />
-        <img
-          src={servicesShapeImg03}
-          alt="img"
-          data-aos="fade-down-left"
-          data-aos-delay="400"
-        />
+        <img src={servicesShapeImg02} alt="img" data-aos="fade-up-right" data-aos-delay="800" />
+        <img src={servicesShapeImg03} alt="img" data-aos="fade-down-left" data-aos-delay="400" />
       </div>
     </section>
   );

@@ -38,12 +38,12 @@ export const CounterOne = () => {
                   </strong>
                 </span>
                 <h2 className="title">
-                  Servicio profesional y asesoría garantizada
+                  Tu tranquilidad y la seguridad de tu mascota son lo primero
                 </h2>
               </div>
               <p>
-                En WOW Travel te orientamos en cada etapa: requisitos, certificados, validaciones y preparación del viaje.
-                Verificamos toda la documentación antes del vuelo y te acompañamos para que el proceso sea seguro y sin contratiempos.
+                Nos encargamos de todos los trámites y documentos necesarios para el viaje para que vivas un proceso simple, claro y
+                sin estrés.
               </p>
               <Link href="/about" className="btn border-btn white-btn">
                 Saber más
@@ -79,12 +79,7 @@ export const CounterOne = () => {
       </div>
 
       <div className="counter__shape">
-        <img
-          src={counterShape02}
-          alt="img"
-          data-aos="fade-up-left"
-          data-aos-delay="400"
-        />
+        <img src={counterShape02} alt="img" data-aos="fade-up-left" data-aos-delay="400" />
       </div>
     </section>
   );

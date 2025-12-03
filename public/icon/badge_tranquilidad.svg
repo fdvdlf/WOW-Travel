@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 200 200">
+  <defs>
+    <path id="text-circle" d="M100 15a85 85 0 1 1 0 170a85 85 0 1 1 0-170" />
+  </defs>
+  <circle cx="100" cy="100" r="82" fill="#FFFFFF" stroke="#F7C948" stroke-width="12" />
+  <text font-family="Plus Jakarta Sans, Arial, sans-serif" font-size="12" font-weight="700" fill="#405B97" letter-spacing="1.5">
+    <textPath href="#text-circle" startOffset="50%" text-anchor="middle">
+      TRABAJAMOS POR TU TRANQUILIDAD
+    </textPath>
+  </text>
+  <g fill="none" stroke="#405B97" stroke-width="6" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M100 125c17 0 30-12.5 30-28 0-15.5-13.4-28-30-28s-30 12.5-30 28c0 15.5 13 28 30 28z" />
+    <circle cx="74" cy="84" r="9" />
+    <circle cx="126" cy="84" r="9" />
+    <circle cx="85" cy="70" r="9" />
+    <circle cx="115" cy="70" r="9" />
+  </g>
+</svg>
