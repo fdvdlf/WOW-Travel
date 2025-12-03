@@ -1186,17 +1186,28 @@ export default function TrackingPage() {
                           <div className="row g-4">
                             <div className="col-lg-6">
                               <div className="bg-light border border-secondary-subtle rounded-3 p-3 h-100">
-                                <p className="fw-semibold mb-2">Ajuste de precios</p>
-                                <div className="input-group">
-                                  <span className="input-group-text">USD</span>
+                                <p className="fw-semibold mb-3">Ajuste de precios</p>
+
+                                <div className="mb-3">
+                                  <label className="form-label small text-muted mb-1">Precio (USD)</label>
                                   <input type="number" min="0" step="10" className="form-control" value={precioDraft} onChange={(e) => setPrecioDraft(e.target.value)} />
-                                  <button className="btn btn-outline-primary btn-sm" type="button" onClick={handleGuardarPrecio} title="Guardar precio">
-                                    <i className="bi bi-check2" aria-hidden="true"></i>
-                                  </button>
                                 </div>
-                                <small className="text-muted d-block mt-2">Precio actual: USD {selectedExpediente.precio}</small>
-                                <small className="text-muted d-block">Motivo: {selectedExpediente.priceReason || "Estándar"}</small>
-                                <div className="mt-2">
+
+                                <div className="mb-3">
+                                  <label className="form-label small text-muted mb-1">Motivo del ajuste</label>
+                                  <input type="text" className="form-control" value={razonPrecio} onChange={(e) => setRazonPrecio(e.target.value)} placeholder="Razón del cambio" />
+                                </div>
+
+                                <button className="btn btn-primary w-100 mb-3" type="button" onClick={handleGuardarPrecio}>
+                                  Confirmar cambio
+                                </button>
+
+                                <div className="border-top pt-2">
+                                  <small className="text-muted d-block">Precio actual: <strong>USD {selectedExpediente.precio}</strong></small>
+                                  <small className="text-muted d-block">Motivo: {selectedExpediente.priceReason || "Estándar"}</small>
+                                </div>
+
+                                <div className="mt-3">
                                   <button className="btn btn-link btn-sm p-0" type="button" onClick={handleDownloadCotizacion}>
                                     <i className="bi bi-download me-1" aria-hidden="true"></i>Descargar cotización
                                   </button>
