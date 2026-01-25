@@ -75,6 +75,9 @@ Sigue estos pasos si quieres validar el sistema sin depender todavía de WhatsAp
 - Columna central: historial completo diferenciado por origen (cliente, bot, agente) y caja de envío manual.
 - Columna derecha: detalles del contacto, estado actual (botones open/pending/closed) y acción para cerrar sesión.
 
+## Registro de actualizaciones
+- Solo las actualizaciones del sistema deben registrarse en `UPDATE_LOG.md`.
+
 ## Consideraciones
 - El webhook mantiene la lógica original del bot; si falla el guardado en DB se registra el error pero se intenta responder al cliente.
 - Todos los mensajes (inbound, bot y agentes) quedan registrados con su payload crudo para auditoría.
