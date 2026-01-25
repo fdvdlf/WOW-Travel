@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Layout } from "@/layouts/Layout";
 import { APP_VERSION, TRACKING_CODE } from "@/lib/appVersion";
+import paisesRequisitos from "@/data/paises_requisitos.json";
 
 const ROLE = "ADMINISTRADOR";
 
@@ -24,103 +25,31 @@ const CHECKLIST_STATUS_COLORS = {
   PENDIENTE: "bg-secondary",
 };
 
-const COUNTRY_NAMES = [
-  "ALEMANIA",
-  "ARGENTINA",
-  "AUSTRALIA",
-  "AUSTRIA",
-  "BELGICA",
-  "BOLIVIA",
-  "BRASIL",
-  "BULGARIA",
-  "CANADA",
-  "CHILE",
-  "CHINA",
-  "CHIPRE",
-  "COLOMBIA",
-  "COREA DEL SUR",
-  "COSTA RICA",
-  "CROACIA",
-  "CUBA",
-  "DINAMARCA",
-  "ECUADOR",
-  "EEUU",
-  "EGIPTO",
-  "EL SALVADOR",
-  "EMIRATOS ARABES UNIDOS",
-  "ESLOVAQUIA",
-  "ESLOVENIA",
-  "ESPAÑA",
-  "ESTONIA",
-  "FILIPINAS",
-  "FINLANDIA",
-  "FRANCIA",
-  "GRECIA",
-  "GUATEMALA",
-  "HONDURAS",
-  "HUNGRIA",
-  "INDIA",
-  "INDONESIA",
-  "IRLANDA",
-  "ISRAEL",
-  "ITALIA",
-  "JAPON",
-  "LETONIA",
-  "LITUANIA",
-  "LUXEMBURGO",
-  "MALASIA",
-  "MALTA",
-  "MARRUECOS",
-  "MEXICO",
-  "NICARAGUA",
-  "NORUEGA",
-  "PAISES BAJOS",
-  "PANAMA",
-  "PARAGUAY",
-  "POLONIA",
-  "PORTUGAL",
-  "QATAR",
-  "REINO DE ARABIA SAUDITA",
-  "REINO UNIDO",
-  "REPUBLICA CHECA",
-  "REPUBLICA DOMINICANA",
-  "RUMANIA",
-  "RUSIA",
-  "SERBIA",
-  "SUDAFRICA",
-  "SUECIA",
-  "SUIZA",
-  "TAILANDIA",
-  "TAIWAN",
-  "TRINIDAD Y TOBAGO",
-  "URUGUAY",
-  "VENEZUELA",
-  "VIETNAM",
-  "ZAMBIA",
-];
+const normalizePais = (value = "") =>
+  value
+    .normalize("NFD")
+    .replace(/\p{Diacritic}/gu, "")
+    .replace(/[^A-Za-z0-9\s]/g, "")
+    .replace(/\s+/g, " ")
+    .trim()
+    .toUpperCase();
 
-const DEFAULT_COUNTRY = "CANADA";
+const REQUISITO_HEADERS = paisesRequisitos.headers;
+const REQUISITOS_POR_PAIS = Object.entries(paisesRequisitos.countries).reduce(
+  (acc, [key, data]) => {
+    acc[normalizePais(key)] = data;
+    return acc;
+  },
+  {}
+);
 
-const COUNTRY_PRETTY = {
-  CANADA: "Canadá",
-  ESPAÑA: "España",
-  MEXICO: "México",
-  "PAISES BAJOS": "Países Bajos",
-  "REINO DE ARABIA SAUDITA": "Reino de Arabia Saudita",
-  "REINO UNIDO": "Reino Unido",
-  "REPUBLICA CHECA": "República Checa",
-  "REPUBLICA DOMINICANA": "República Dominicana",
-  SUDAFRICA: "Sudáfrica",
-  "TRINIDAD Y TOBAGO": "Trinidad y Tobago",
-  "EMIRATOS ARABES UNIDOS": "Emiratos Árabes Unidos",
-  TAIWAN: "Taiwán",
-  JAPON: "Japón",
-  PANAMA: "Panamá",
-  PERU: "Perú",
-  BRASIL: "Brasil",
-  BELGICA: "Bélgica",
-  ALEMANIA: "Alemania",
-};
+const COUNTRY_NAMES = Object.keys(REQUISITOS_POR_PAIS);
+const COUNTRY_PRETTY = Object.entries(REQUISITOS_POR_PAIS).reduce((acc, [key, data]) => {
+  acc[key] = data.nombre;
+  return acc;
+}, {});
+
+const DEFAULT_COUNTRY = normalizePais("CANADA");
 
 const formatCountryLabel = (value) =>
   value
@@ -134,136 +63,128 @@ const PAISES = COUNTRY_NAMES.map((name) => ({
   label: COUNTRY_PRETTY[name] || formatCountryLabel(name),
 }));
 const REQUISITOS_BASE = [
-  "Microchip",
-  "Vacuna antirrábica",
-  "Certificado de salud veterinario",
-  "Certificado de SENASA",
-  "Tratamiento antiparasitario",
-  "Documento país destino",
-  "Permisos adicionales",
-  "Ticket de vuelo (opcional)",
+  ...REQUISITO_HEADERS.map((nombre) => ({ nombre, obligatorio: true })),
+  { nombre: "Ticket de vuelo (opcional)", obligatorio: false },
 ];
 
-const REQUISITOS_POR_PAIS = {
-  CANADA: [
-    "Microchip ISO",
-    "Vacuna antirrábica vigente",
-    "Certificado veterinario bilingüe",
-    "Permiso de importación CFIA / SFIA",
-    "Tratamiento antiparasitario",
-    "Formato aduana / aerolínea",
-    "Ticket de vuelo (opcional)",
-  ],
-  EEUU: [
-    "Microchip ISO",
-    "Vacuna antirrábica (21 días)",
-    "Certificado APHIS 7001",
-    "Formulario CDC (si aplica)",
-    "Certificado de salud",
-    "Serología si país de riesgo",
-    "Ticket de vuelo (opcional)",
-  ],
-  MEXICO: [
-    "Microchip ISO",
-    "Vacuna antirrábica vigente",
-    "Certificado zoosanitario",
-    "Tratamiento antiparasitario",
-    "Constancia sanitaria",
-    "Formato SENASICA",
-    "Ticket de vuelo (opcional)",
-  ],
-};
-
-const DESTINOS_POR_PAIS = {
-  ALEMANIA: ["Frankfurt (FRA)", "Munich (MUC)", "Berlin (BER)"],
-  ARGENTINA: ["Buenos Aires EZE (EZE)", "Córdoba (COR)"],
-  AUSTRALIA: ["Sydney (SYD)", "Melbourne (MEL)", "Brisbane (BNE)"],
-  AUSTRIA: ["Vienna (VIE)"],
-  BELGICA: ["Brussels (BRU)"],
-  BOLIVIA: ["Santa Cruz (VVI)"],
-  BRASIL: ["Sao Paulo GRU (GRU)", "Rio de Janeiro GIG (GIG)"],
-  BULGARIA: ["Sofia (SOF)"],
-  CANADA: ["Toronto (YYZ)", "Vancouver (YVR)", "Montreal (YUL)"],
-  CHILE: ["Santiago (SCL)"],
-  CHINA: ["Beijing (PEK)", "Shanghai (PVG)"],
-  CHIPRE: ["Larnaca (LCA)"],
-  COLOMBIA: ["Bogotá (BOG)", "Medellín (MDE)"],
+const DESTINOS_RAW = {
+  "ALEMANIA": ["Frankfurt (FRA)", "Munich (MUC)", "Berlin (BER)"],
+  "ARGENTINA": ["Buenos Aires EZE (EZE)", "Cordoba (COR)"],
+  "AUSTRALIA": ["Sydney (SYD)", "Melbourne (MEL)", "Brisbane (BNE)"],
+  "AUSTRIA": ["Vienna (VIE)"],
+  "BELGICA": ["Brussels (BRU)"],
+  "BOLIVIA": ["Santa Cruz (VVI)"],
+  "BRASIL": ["Sao Paulo GRU (GRU)", "Rio de Janeiro GIG (GIG)"],
+  "BULGARIA": ["Sofia (SOF)"],
+  "CANADA": ["Toronto (YYZ)", "Vancouver (YVR)", "Montreal (YUL)"],
+  "CHILE": ["Santiago (SCL)"],
+  "CHINA": ["Beijing (PEK)", "Shanghai (PVG)"],
+  "CHIPRE": ["Larnaca (LCA)"],
+  "COLOMBIA": ["Bogota (BOG)", "Medellin (MDE)"],
   "COREA DEL SUR": ["Seoul Incheon (ICN)"],
-  "COSTA RICA": ["San José (SJO)"],
-  CROACIA: ["Zagreb (ZAG)"],
-  CUBA: ["La Habana (HAV)"],
-  DINAMARCA: ["Copenhagen (CPH)"],
-  ECUADOR: ["Quito (UIO)", "Guayaquil (GYE)"],
-  EEUU: ["Miami (MIA)", "New York JFK (JFK)", "Los Angeles (LAX)"],
-  EGIPTO: ["Cairo (CAI)"],
+  "COSTA RICA": ["San Jose (SJO)"],
+  "CROACIA": ["Zagreb (ZAG)"],
+  "CUBA": ["La Habana (HAV)"],
+  "DINAMARCA": ["Copenhagen (CPH)"],
+  "ECUADOR": ["Quito (UIO)", "Guayaquil (GYE)"],
+  "EEUU": ["Miami (MIA)", "New York JFK (JFK)", "Los Angeles (LAX)"],
+  "EGIPTO": ["Cairo (CAI)"],
   "EL SALVADOR": ["San Salvador (SAL)"],
   "EMIRATOS ARABES UNIDOS": ["Dubai (DXB)", "Abu Dhabi (AUH)", "Sharjah (SHJ)"],
-  ESLOVAQUIA: ["Bratislava (BTS)"],
-  ESLOVENIA: ["Ljubljana (LJU)"],
-  ESPAÑA: ["Madrid (MAD)", "Barcelona (BCN)"],
-  ESTONIA: ["Tallinn (TLL)"],
-  FILIPINAS: ["Manila (MNL)"],
-  FINLANDIA: ["Helsinki (HEL)"],
-  FRANCIA: ["Paris CDG (CDG)"],
-  GRECIA: ["Athens (ATH)"],
-  GUATEMALA: ["Guatemala City (GUA)"],
-  HONDURAS: ["Tegucigalpa (TGU)"],
-  HUNGRIA: ["Budapest (BUD)"],
-  INDIA: ["Delhi (DEL)", "Mumbai (BOM)"],
-  INDONESIA: ["Jakarta (CGK)", "Bali (DPS)"],
-  IRLANDA: ["Dublin (DUB)"],
-  ISRAEL: ["Tel Aviv (TLV)"],
-  ITALIA: ["Rome FCO (FCO)", "Milan (MXP)"],
-  JAPON: ["Tokyo Narita (NRT)", "Tokyo Haneda (HND)"],
-  LETONIA: ["Riga (RIX)"],
-  LITUANIA: ["Vilnius (VNO)"],
-  LUXEMBURGO: ["Luxembourg (LUX)"],
-  MALASIA: ["Kuala Lumpur (KUL)"],
-  MALTA: ["Malta (MLA)"],
-  MARRUECOS: ["Casablanca (CMN)", "Marrakech (RAK)"],
-  MEXICO: ["Mexico City (MEX)", "Cancún (CUN)"],
-  NICARAGUA: ["Managua (MGA)"],
-  NORUEGA: ["Oslo (OSL)"],
+  "ESLOVAQUIA": ["Bratislava (BTS)"],
+  "ESLOVENIA": ["Ljubljana (LJU)"],
+  "ESPANA": ["Madrid (MAD)", "Barcelona (BCN)"],
+  "ESTONIA": ["Tallinn (TLL)"],
+  "FILIPINAS": ["Manila (MNL)"],
+  "FINLANDIA": ["Helsinki (HEL)"],
+  "FRANCIA": ["Paris CDG (CDG)"],
+  "GRECIA": ["Athens (ATH)"],
+  "GUATEMALA": ["Guatemala City (GUA)"],
+  "HONDURAS": ["Tegucigalpa (TGU)"],
+  "HUNGRIA": ["Budapest (BUD)"],
+  "INDIA": ["Delhi (DEL)", "Mumbai (BOM)"],
+  "INDONESIA": ["Jakarta (CGK)", "Bali (DPS)"],
+  "IRLANDA": ["Dublin (DUB)"],
+  "ISRAEL": ["Tel Aviv (TLV)"],
+  "ITALIA": ["Rome FCO (FCO)", "Milan (MXP)"],
+  "JAPON": ["Tokyo Narita (NRT)", "Tokyo Haneda (HND)"],
+  "LETONIA": ["Riga (RIX)"],
+  "LITUANIA": ["Vilnius (VNO)"],
+  "LUXEMBURGO": ["Luxembourg (LUX)"],
+  "MALASIA": ["Kuala Lumpur (KUL)"],
+  "MALTA": ["Malta (MLA)"],
+  "MARRUECOS": ["Casablanca (CMN)", "Marrakech (RAK)"],
+  "MEXICO": ["Mexico City (MEX)", "Cancun (CUN)"],
+  "NICARAGUA": ["Managua (MGA)"],
+  "NORUEGA": ["Oslo (OSL)"],
   "PAISES BAJOS": ["Amsterdam (AMS)", "Eindhoven (EIN)", "Aruba (AUA)"],
-  PANAMA: ["Panamá Tocumen (PTY)"],
-  PARAGUAY: ["Asunción (ASU)"],
-  POLONIA: ["Warsaw (WAW)"],
-  PORTUGAL: ["Lisbon (LIS)", "Porto (OPO)"],
-  QATAR: ["Doha (DOH)"],
+  "PANAMA": ["Panama Tocumen (PTY)"],
+  "PARAGUAY": ["Asuncion (ASU)"],
+  "POLONIA": ["Warsaw (WAW)"],
+  "PORTUGAL": ["Lisbon (LIS)", "Porto (OPO)"],
+  "QATAR": ["Doha (DOH)"],
   "REINO DE ARABIA SAUDITA": ["Riyadh (RUH)", "Jeddah (JED)"],
   "REINO UNIDO": ["London Heathrow (LHR)", "Gatwick (LGW)", "Manchester (MAN)", "Edinburgh (EDI)", "Glasgow (GLA)", "Cardiff (CWL)", "Belfast (BFS)"],
   "REPUBLICA CHECA": ["Prague (PRG)"],
   "REPUBLICA DOMINICANA": ["Santo Domingo (SDQ)", "Punta Cana (PUJ)"],
-  RUMANIA: ["Bucharest (OTP)"],
-  RUSIA: ["Moscow SVO (SVO)"],
-  SERBIA: ["Belgrade (BEG)"],
-  SUDAFRICA: ["Johannesburg (JNB)", "Cape Town (CPT)"],
-  SUECIA: ["Stockholm (ARN)"],
-  SUIZA: ["Zurich (ZRH)"],
-  TAILANDIA: ["Bangkok (BKK)"],
-  TAIWAN: ["Taipei Taoyuan (TPE)"],
+  "RUMANIA": ["Bucharest (OTP)"],
+  "RUSIA": ["Moscow SVO (SVO)"],
+  "SERBIA": ["Belgrade (BEG)"],
+  "SUDAFRICA": ["Johannesburg (JNB)", "Cape Town (CPT)"],
+  "SUECIA": ["Stockholm (ARN)"],
+  "SUIZA": ["Zurich (ZRH)"],
+  "TAILANDIA": ["Bangkok (BKK)"],
+  "TAIWAN": ["Taipei Taoyuan (TPE)"],
   "TRINIDAD Y TOBAGO": ["Port of Spain (POS)"],
-  URUGUAY: ["Montevideo (MVD)"],
-  VENEZUELA: ["Caracas (CCS)"],
-  VIETNAM: ["Ho Chi Minh (SGN)", "Hanoi (HAN)"],
-  ZAMBIA: ["Lusaka (LUN)"],
+  "URUGUAY": ["Montevideo (MVD)"],
+  "VENEZUELA": ["Caracas (CCS)"],
+  "VIETNAM": ["Ho Chi Minh (SGN)", "Hanoi (HAN)"],
+  "ZAMBIA": ["Lusaka (LUN)"],
+};
+
+const DESTINOS_POR_PAIS = Object.entries(DESTINOS_RAW).reduce((acc, [key, value]) => {
+  acc[normalizePais(key)] = value;
+  return acc;
+}, {});
+
+const DESTINOS_ALIASES = {
+  "ESTADOS UNIDOS": normalizePais("EEUU"),
+  "PAISES BAJOS HOLANDA": normalizePais("PAISES BAJOS"),
 };
 
 const buildRequisitosPorPais = (pais, seed = {}) => {
-  const source = REQUISITOS_POR_PAIS[pais] || REQUISITOS_BASE;
-  return source.map((nombre, index) => ({
-    id: `req-${pais}-${index + 1}`,
-    nombre,
-    estado: "PENDIENTE",
-    evidencia_url: "",
-    fecha: "",
-    notas: "",
-    ...seed[index],
-  }));
+  const paisKey = normalizePais(pais || DEFAULT_COUNTRY);
+  const data = REQUISITOS_POR_PAIS[paisKey];
+  const source =
+    data?.requisitos?.map((flag, idx) => ({
+      nombre: REQUISITO_HEADERS[idx] || `Requisito ${idx + 1}`,
+      obligatorio: Boolean(flag),
+    })) || REQUISITOS_BASE;
+
+  const requisitos = source.map((req, index) => {
+    const baseReq =
+      typeof req === "string"
+        ? { nombre: req, obligatorio: !req.toLowerCase().includes("opcional") }
+        : req;
+    return {
+      id: `req-${paisKey}-${index + 1}`,
+      nombre: baseReq.nombre,
+      obligatorio: baseReq.obligatorio !== false,
+      estado: "PENDIENTE",
+      evidencia_url: "",
+      fecha: "",
+      notas: "",
+      ...seed[index],
+    };
+  });
+
+  return { requisitos, nota: data?.nota || "" };
 };
 
-const getPaisLabel = (value) => PAISES.find((p) => p.value === value)?.label || value;
-const getDestinosPorPais = (pais) => DESTINOS_POR_PAIS[pais] || ["Aeropuerto principal", "Destino por definir"];
+const getPaisLabel = (value) => COUNTRY_PRETTY[normalizePais(value)] || formatCountryLabel(value);
+const getDestinosPorPais = (pais) =>
+  DESTINOS_POR_PAIS[DESTINOS_ALIASES[normalizePais(pais)] || normalizePais(pais)] ||
+  ["Aeropuerto principal", "Destino por definir"];
 
 const TAB_DEFINITIONS = [
   { key: "datos", label: "Datos generales" },
@@ -280,8 +201,8 @@ const COUNTRY_PRICING = COUNTRY_NAMES.reduce((acc, name, index) => {
   return acc;
 }, {});
 
-const getPriceForCountry = (pais) => COUNTRY_PRICING[pais] ?? BASE_PRICE;
-const getPriceReason = (pais) => `Precio estándar ${getPaisLabel(pais)}`;
+const getPriceForCountry = (pais) => COUNTRY_PRICING[normalizePais(pais)] ?? BASE_PRICE;
+const getPriceReason = (pais) => `Precio estandar ${getPaisLabel(pais)}`;
 
 const LEAD_NAMES = [
   "Carolina Vega",
@@ -319,6 +240,12 @@ const SAMPLE_LEADS = Array.from({ length: 50 }, (_, index) => {
   };
 });
 
+const sampleChecklist = buildRequisitosPorPais(DEFAULT_COUNTRY, {
+  0: { estado: "VALIDADO", evidencia_url: "archivo.pdf", fecha: "2024-06-10" },
+  1: { estado: "VALIDADO", evidencia_url: "archivo.pdf", fecha: "2024-06-10" },
+  2: { estado: "OBSERVADO", notas: "Repetir examen, fecha vencida" },
+});
+
 const SAMPLE_EXPEDIENTES = [
   {
     id: "exp-1",
@@ -328,11 +255,11 @@ const SAMPLE_EXPEDIENTES = [
     phone: "+51 999 888 777",
     mascota_name: "Kira",
     raza: "Border Collie",
-    destino: "Toronto, Canadá",
+    destino: getDestinosPorPais(DEFAULT_COUNTRY)[0] || "Destino por definir",
     pais: DEFAULT_COUNTRY,
     fecha_probable: "2024-09-15",
     tipo_mascota: "Perro",
-    edad: "3 años",
+    edad: "3 anos",
     peso: "16.3 kg",
     precio: getPriceForCountry(DEFAULT_COUNTRY),
     priceReason: getPriceReason(DEFAULT_COUNTRY),
@@ -342,17 +269,15 @@ const SAMPLE_EXPEDIENTES = [
       pago70: { tipo: 70, comprobante_url: "voucher_70.pdf", fecha: "2024-06-02", aprobado: true },
       pago30: { tipo: 30, comprobante_url: "", fecha: "", aprobado: false },
     },
-    requisitos: buildRequisitosPorPais(DEFAULT_COUNTRY, {
-      0: { estado: "VALIDADO", evidencia_url: "archivo.pdf", fecha: "2024-06-10" },
-      1: { estado: "VALIDADO", evidencia_url: "archivo.pdf", fecha: "2024-06-10" },
-      2: { estado: "OBSERVADO", notas: "Repetir examen, fecha vencida" },
-    }),
+    requisitos: sampleChecklist.requisitos,
+    nota_requisitos: sampleChecklist.nota,
     historial: [
       { id: "h1", usuario: "Gabriel", fecha: "2024-06-05", descripcion: "Se cargan vacunas y microchip." },
       { id: "h2", usuario: "Fernando", fecha: "2024-06-08", descripcion: "Pago 70% aprobado por Gerencia." },
     ],
   },
 ];
+
 
 function SectionTitle({ title, subtitle, badge }) {
   return (
@@ -597,8 +522,9 @@ export default function TrackingPage() {
       setMensaje("Solo el rol administrador convierte leads a expedientes.");
       return;
     }
-    const paisInicial = PAISES.find((p) => p.value === DEFAULT_COUNTRY)?.value || DEFAULT_COUNTRY;
+    const paisInicial = DEFAULT_COUNTRY;
     const destinoInicial = getDestinosPorPais(paisInicial)[0] || "Destino por definir";
+    const checklistInicial = buildRequisitosPorPais(paisInicial);
     const nuevo = {
       id: `exp-${Date.now()}`,
       codigo: `EXP-${String(expedientes.length + 1).padStart(3, "0")}`,
@@ -620,7 +546,8 @@ export default function TrackingPage() {
         pago70: { tipo: 70, comprobante_url: "", fecha: "", aprobado: false },
         pago30: { tipo: 30, comprobante_url: "", fecha: "", aprobado: false },
       },
-      requisitos: buildRequisitosPorPais(paisInicial),
+      requisitos: checklistInicial.requisitos,
+      nota_requisitos: checklistInicial.nota,
       historial: [
         {
           id: `h-${Date.now()}`,
@@ -638,23 +565,26 @@ export default function TrackingPage() {
   };
 
   const handlePaisChange = (paisValue) => {
-    if (!selectedExpediente) return;
-    const destinos = getDestinosPorPais(paisValue);
-    updateExpediente(selectedExpediente.id, (exp) => ({
-      ...exp,
-      pais: paisValue,
-      destino: destinos.includes(exp.destino) ? exp.destino : destinos[0] || "Destino por definir",
-      requisitos: buildRequisitosPorPais(paisValue),
-      precio: getPriceForCountry(paisValue),
-      priceReason: getPriceReason(paisValue),
-    }));
-    addHistorial(`País actualizado a ${getPaisLabel(paisValue)} y checklist regenerado.`);
-    setMensaje("Checklist y precio estándar actualizados.");
-    setPrecioDraft(String(getPriceForCountry(paisValue)));
-    setRazonPrecio(getPriceReason(paisValue));
-  };
+  if (!selectedExpediente) return;
+  const paisNormalizado = normalizePais(paisValue);
+  const destinos = getDestinosPorPais(paisNormalizado);
+  const checklist = buildRequisitosPorPais(paisNormalizado);
+  updateExpediente(selectedExpediente.id, (exp) => ({
+    ...exp,
+    pais: paisNormalizado,
+    destino: destinos.includes(exp.destino) ? exp.destino : destinos[0] || "Destino por definir",
+    requisitos: checklist.requisitos,
+    nota_requisitos: checklist.nota,
+    precio: getPriceForCountry(paisNormalizado),
+    priceReason: getPriceReason(paisNormalizado),
+  }));
+  addHistorial(`Pais actualizado a ${getPaisLabel(paisNormalizado)} y checklist regenerado.`);
+  setMensaje("Checklist y precio estandar actualizados.");
+  setPrecioDraft(String(getPriceForCountry(paisNormalizado)));
+  setRazonPrecio(getPriceReason(paisNormalizado));
+};
 
-  const handleDestinoChange = (destino) => {
+const handleDestinoChange = (destino) => {
     if (!selectedExpediente) return;
     updateExpediente(selectedExpediente.id, (exp) => ({ ...exp, destino }));
     addHistorial(`Destino actualizado a ${destino}.`);
@@ -762,21 +692,24 @@ export default function TrackingPage() {
   };
 
   const handleDocumentacionCompleta = () => {
-    if (!selectedExpediente) return;
-    if (role !== "OPERACIONES") {
-      setMensaje("Solo Operaciones marca documentación completa.");
-      return;
-    }
-    if (selectedExpediente.requisitos.some((req) => req.estado !== "VALIDADO")) {
-      setMensaje("Todos los requisitos deben estar validados.");
-      return;
-    }
-    updateExpediente(selectedExpediente.id, (exp) => ({ ...exp, estado: "DOCUMENTACION_COMPLETA" }));
-    addHistorial("Operaciones marca documentación completa.");
-    setMensaje("Documentación completa. Listo para cierre.");
-  };
+  if (!selectedExpediente) return;
+  if (role !== "OPERACIONES") {
+    setMensaje("Solo Operaciones marca documentacion completa.");
+    return;
+  }
+  const pendientesObligatorios = selectedExpediente.requisitos.some(
+    (req) => req.obligatorio !== false && req.estado !== "VALIDADO"
+  );
+  if (pendientesObligatorios) {
+    setMensaje("Todos los requisitos obligatorios deben estar validados.");
+    return;
+  }
+  updateExpediente(selectedExpediente.id, (exp) => ({ ...exp, estado: "DOCUMENTACION_COMPLETA" }));
+  addHistorial("Operaciones marca documentacion completa.");
+  setMensaje("Documentacion completa. Listo para cierre.");
+};
 
-  const handleEstadoChange = (nextEstado) => {
+const handleEstadoChange = (nextEstado) => {
     if (!selectedExpediente) return;
     updateExpediente(selectedExpediente.id, (exp) => ({ ...exp, estado: nextEstado }));
     addHistorial(`Estado cambiado a ${nextEstado}.`);
@@ -827,15 +760,16 @@ export default function TrackingPage() {
   };
 
   const requisitosPendientes =
-    selectedExpediente?.requisitos.filter((req) => req.estado !== "VALIDADO").length ?? 0;
-  const requiredRequisitos = selectedExpediente?.requisitos.slice(0, 5) ?? [];
-  const optionalRequisitos = selectedExpediente?.requisitos.slice(5) ?? [];
+    selectedExpediente?.requisitos.filter((req) => req.obligatorio !== false && req.estado !== "VALIDADO").length ?? 0;
+  const requiredRequisitos = (selectedExpediente?.requisitos ?? []).filter((req) => req.obligatorio !== false);
+  const optionalRequisitos = (selectedExpediente?.requisitos ?? []).filter((req) => req.obligatorio === false);
   const filterRequisitos = (items) =>
     checklistFilter === "TODOS" ? items : items.filter((req) => req.estado === checklistFilter);
   const filteredRequired = filterRequisitos(requiredRequisitos);
   const filteredOptional = filterRequisitos(optionalRequisitos);
   const completedCount = selectedExpediente?.requisitos.filter((req) => req.estado === "VALIDADO").length ?? 0;
-  const checklistProgressText = `${completedCount}/${selectedExpediente?.requisitos.length ?? 0} completados`;
+  const totalRequisitos = selectedExpediente?.requisitos.length ?? 0;
+  const checklistProgressText = `${completedCount}/${totalRequisitos} completados`;
 
 
   const filteredLeads = useMemo(() => {
@@ -1333,13 +1267,16 @@ export default function TrackingPage() {
                         )}
                         {currentTab === "checklist" && (
                           <div className="border border-secondary-subtle rounded-3 p-3">
-                            <div className="d-flex justify-content-between align-items-center mb-3"><div className="fw-semibold">Checklist documentario</div><span className="badge bg-primary-subtle text-primary">{checklistProgressText}</span></div>
+                            <div className="d-flex justify-content-between align-items-center mb-3">
+                              <div className="fw-semibold">Checklist documentario</div>
+                              <span className="badge bg-primary-subtle text-primary">{checklistProgressText}</span>
+                            </div>
                             <div className="d-flex flex-wrap gap-2 align-items-center mb-3">
                               <span className="small text-muted">Filtrar por estado:</span>
                               <select className="form-select form-select-sm w-auto" value={checklistFilter} onChange={(e) => setChecklistFilter(e.target.value)}>
                                 {["TODOS", ...ESTADOS_REQUISITO].map((estado) => (<option key={estado} value={estado}>{STATUS_ICONS[estado] || estado}</option>))}
                               </select>
-                              <span className="small text-muted">Obligatorios arriba ↓ opcionales abajo</span>
+                              <span className="small text-muted">Obligatorios arriba / opcionales abajo</span>
                             </div>
                             <div className="table-responsive">
                               <table className="table table-borderless mb-0">
@@ -1357,8 +1294,13 @@ export default function TrackingPage() {
                                 </tbody>
                               </table>
                             </div>
+                            {selectedExpediente.nota_requisitos ? (
+                              <div className="alert alert-warning bg-warning-subtle border-warning-subtle text-dark small mt-3 mb-0">
+                                <strong>Nota del pais:</strong> {selectedExpediente.nota_requisitos}
+                              </div>
+                            ) : null}
                             <div className="d-flex flex-wrap gap-2 justify-content-end mt-3">
-                              <button className="btn btn-link btn-sm p-0" onClick={handleDocumentacionCompleta} type="button">Marcar documentación completa</button>
+                              <button className="btn btn-link btn-sm p-0" onClick={handleDocumentacionCompleta} type="button">Marcar documentacion completa</button>
                               <button className="btn btn-link btn-sm p-0" type="button" onClick={() => setCurrentTab("archivos")}>Ver archivos</button>
                             </div>
                           </div>

@@ -1,0 +1,741 @@
+{
+  "headers": [
+    "Certificado veterinario de salud",
+    "Declaracion del Propietario",
+    "Microchip",
+    "Vacuna Polivalente",
+    "Dosaje de anticuerpo de rabia",
+    "Tratamiento anti-Echinococus multilocularis",
+    "Certificado SENASA"
+  ],
+  "countries": {
+    "ALEMANIA": {
+      "nombre": "Alemania",
+      "requisitos": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "nota": "Se rige por el Reglamento (UE) N° 576/2013 y 577/2013. Válido para perros, gatos y hurones."
+    },
+    "ARGENTINA": {
+      "nombre": "Argentina",
+      "requisitos": [
+        true,
+        true,
+        true,
+        true,
+        false,
+        true,
+        true
+      ],
+      "nota": "Requisitos de ingreso para perros/gatos. Este certificado es válido para el retorno a Perú si no han transcurrido más de 30 días desde su emisión."
+    },
+    "ARUBA": {
+      "nombre": "Aruba",
+      "requisitos": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "nota": "Los requisitos de importación siguen la norma de la Unión Europea (UE) (Reglamentos 576/2013 y 577/2013)."
+    },
+    "AUSTRIA": {
+      "nombre": "Austria",
+      "requisitos": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "nota": "Se rige por el Reglamento (UE) N° 576/2013 y 577/2013. Válido para perros, gatos y hurones."
+    },
+    "BELGICA": {
+      "nombre": "Belgica",
+      "requisitos": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "nota": "Se rige por el Reglamento (UE) N° 576/2013 y 577/2013. Válido para perros, gatos y hurones."
+    },
+    "BOLIVIA": {
+      "nombre": "Bolivia",
+      "requisitos": [
+        true,
+        true,
+        true,
+        true,
+        false,
+        true,
+        true
+      ],
+      "nota": "Se requiere Certificado Zoosanitario Andino para Exportación. Los requisitos listados son los que deben constar en dicho certificado."
+    },
+    "BRASIL": {
+      "nombre": "Brasil",
+      "requisitos": [
+        true,
+        true,
+        true,
+        true,
+        false,
+        true,
+        true
+      ],
+      "nota": "El certificado es válido para el retorno a Perú si no han transcurrido más de 30 días desde su emisión. Aplica para países fuera de MERCOSUL."
+    },
+    "BULGARIA": {
+      "nombre": "Bulgaria",
+      "requisitos": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "nota": "Se rige por el Reglamento (UE) N° 576/2013 y 577/2013. Válido para perros, gatos y hurones."
+    },
+    "CANADA": {
+      "nombre": "Canada",
+      "requisitos": [
+        true,
+        true,
+        true,
+        true,
+        false,
+        true,
+        true
+      ],
+      "nota": "El foco está en la certificación privada en inglés/francés."
+    },
+    "CHILE": {
+      "nombre": "Chile",
+      "requisitos": [
+        true,
+        true,
+        true,
+        true,
+        false,
+        true,
+        true
+      ],
+      "nota": "Se requiere Certificado Sanitario de Exportación. Aplica a perros, gatos y hurones."
+    },
+    "CHIPRE": {
+      "nombre": "Chipre",
+      "requisitos": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "nota": "Se rige por el Reglamento (UE) N° 576/2013 y 577/2013. Válido para perros, gatos y hurones."
+    },
+    "COLOMBIA": {
+      "nombre": "Colombia",
+      "requisitos": [
+        true,
+        true,
+        true,
+        true,
+        false,
+        true,
+        true
+      ],
+      "nota": "Se requiere Certificado Sanitario de Exportación emitido por SENASA. La mascota debe tener una edad mínima de 15 semanas para ingresar."
+    },
+    "COREA DEL SUR": {
+      "nombre": "Corea del Sur",
+      "requisitos": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "nota": "Requisitos estrictos. La edad mínima de ingreso es de $\\ge **3$ meses y $21$ días**. Se requiere titulación de anticuerpos posterior a la vacuna."
+    },
+    "COSTA RICA": {
+      "nombre": "Costa Rica",
+      "requisitos": [
+        true,
+        true,
+        true,
+        true,
+        false,
+        true,
+        true
+      ],
+      "nota": "Se requiere Certificación Sanitaria de Exportación. No requiere refrendo notarial ni consular."
+    },
+    "CROACIA": {
+      "nombre": "Croacia",
+      "requisitos": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "nota": "Se rige por el Reglamento (UE) N° 576/2013 y 577/2013. Válido para perros, gatos y hurones."
+    },
+    "CUBA": {
+      "nombre": "Cuba",
+      "requisitos": [
+        true,
+        true,
+        true,
+        true,
+        false,
+        true,
+        true
+      ],
+      "nota": "No requiere autorización previa. Se necesita un Certificado Veterinario Oficial (CVI). La vigencia del certificado la define el país exportador (SENASA)."
+    },
+    "DINAMARCA": {
+      "nombre": "Dinamarca",
+      "requisitos": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "nota": "Se rige por el Reglamento (UE) N° 576/2013 y 577/2013. Válido para perros, gatos y hurones."
+    },
+    "ECUADOR": {
+      "nombre": "Ecuador",
+      "requisitos": [
+        true,
+        true,
+        true,
+        true,
+        false,
+        true,
+        true
+      ],
+      "nota": "Se requiere Certificado Zoosanitario en idioma español. Se recomienda que la mascota sea $\\ge **3$ meses de edad** al importar."
+    },
+    "EGIPTO": {
+      "nombre": "Egipto",
+      "requisitos": [
+        true,
+        true,
+        true,
+        true,
+        false,
+        true,
+        true
+      ],
+      "nota": "Requisitos muy generales enfocados en la salud clínica y parásitos."
+    },
+    "EL SALVADOR": {
+      "nombre": "El Salvador",
+      "requisitos": [
+        true,
+        true,
+        true,
+        true,
+        false,
+        true,
+        true
+      ],
+      "nota": "Requiere permiso de importación (previo o al arribo). El Certificado Sanitario no necesita refrendo notarial ni consular"
+    },
+    "ESLOVAQUIA": {
+      "nombre": "Eslovaquia",
+      "requisitos": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "nota": "Se rige por el Reglamento (UE) N° 576/2013 y 577/2013. Válido para perros, gatos y hurones."
+    },
+    "ESLOVENIA": {
+      "nombre": "Eslovenia",
+      "requisitos": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "nota": "Se rige por el Reglamento (UE) N° 576/2013 y 577/2013. Válido para perros, gatos y hurones."
+    },
+    "ESPANA": {
+      "nombre": "España",
+      "requisitos": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "nota": "Se rige por el Reglamento (UE) N° 576/2013 y 577/2013. Válido para perros, gatos y hurones."
+    },
+    "ESTADOS UNIDOS": {
+      "nombre": "Estados Unidos",
+      "requisitos": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "nota": "Aplican requisitos de alto riesgo de rabia (a partir de ago. 2024). Edad mínima: 6 meses. Reserva en Centro de Cuidado/Revacunación CDC"
+    },
+    "ESTONIA": {
+      "nombre": "Estonia",
+      "requisitos": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "nota": "Se rige por el Reglamento (UE) N° 576/2013 y 577/2013. Válido para perros, gatos y hurones."
+    },
+    "FINLANDIA": {
+      "nombre": "Finlandia",
+      "requisitos": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "nota": "Se rige por el Reglamento (UE) N° 576/2013 y 577/2013. Válido para perros, gatos y hurones. Tratamiento contra Echinococcus multilocularis"
+    },
+    "FRANCIA": {
+      "nombre": "Francia",
+      "requisitos": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "nota": "Se rige por el Reglamento (UE) N° 576/2013 y 577/2013. Válido para perros, gatos y hurones."
+    },
+    "GRECIA": {
+      "nombre": "Grecia",
+      "requisitos": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "nota": "Se rige por el Reglamento (UE) N° 576/2013 y 577/2013. Válido para perros, gatos y hurones."
+    },
+    "GUATEMALA": {
+      "nombre": "Guatemala",
+      "requisitos": [
+        true,
+        true,
+        true,
+        true,
+        false,
+        true,
+        true
+      ],
+      "nota": "Requisitos sencillos para perros. No se requiere vacuna antirrábica para perros menores de $\\mathbf{3}$ meses."
+    },
+    "HONDURAS": {
+      "nombre": "Honduras",
+      "requisitos": [
+        true,
+        true,
+        true,
+        true,
+        false,
+        true,
+        true
+      ],
+      "nota": "Requisitos básicos. El foco está en el certificado de vacunación y el certificado de salud privado."
+    },
+    "INDIA": {
+      "nombre": "India",
+      "requisitos": [
+        true,
+        true,
+        true,
+        true,
+        false,
+        true,
+        true
+      ],
+      "nota": "Se requiere certificación de que el animal está libre de una lista específica de enfermedades infecciosas y parasitarias."
+    },
+    "INDONESIA": {
+      "nombre": "Indonesia",
+      "requisitos": [
+        true,
+        true,
+        true,
+        true,
+        false,
+        true,
+        true
+      ],
+      "nota": "Requisitos estrictos de residencia (6 meses) y estado de rabia en el área de origen. Edad mínima $\\ge 3$ meses.. Historial de residencia del animal"
+    },
+    "IRLANDA": {
+      "nombre": "Irlanda",
+      "requisitos": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "nota": "Se rige por el Reglamento (UE) N° 576/2013 y 577/2013. Válido para perros, gatos y hurones. Tratamiento contra Echinococcus multilocularis"
+    },
+    "ISRAEL": {
+      "nombre": "Israel",
+      "requisitos": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "nota": "Requisitos estrictos de edad ($\\ge 4$ meses) y Titulación de Anticuerpos para la rabia."
+    },
+    "ITALIA": {
+      "nombre": "Italia",
+      "requisitos": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "nota": "Se rige por el Reglamento (UE) N° 576/2013 y 577/2013. Válido para perros, gatos y hurones."
+    },
+    "JAPON": {
+      "nombre": "Japon",
+      "requisitos": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "nota": "Requisitos estrictos. Se requiere un Certificado Veterinario Oficial en el modelo de Japón (C-1 y C-2). El microchip y la vacuna de Rabia deben correlacionarse"
+    },
+    "LETONIA": {
+      "nombre": "Letonia",
+      "requisitos": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "nota": "Se rige por el Reglamento (UE) N° 576/2013 y 577/2013. Válido para perros, gatos y hurones."
+    },
+    "LITUANIA": {
+      "nombre": "Lituania",
+      "requisitos": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "nota": "Se rige por el Reglamento (UE) N° 576/2013 y 577/2013. Válido para perros, gatos y hurones."
+    },
+    "LUXEMBURGO": {
+      "nombre": "Luxemburgo",
+      "requisitos": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "nota": "Se rige por el Reglamento (UE) N° 576/2013 y 577/2013. Válido para perros, gatos y hurones."
+    },
+    "MALTA": {
+      "nombre": "Malta",
+      "requisitos": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "nota": "Se rige por el Reglamento (UE) N° 576/2013 y 577/2013. Válido para perros, gatos y hurones. Tratamiento contra Echinococcus multilocularis"
+    },
+    "MEXICO": {
+      "nombre": "Mexico",
+      "requisitos": [
+        true,
+        true,
+        true,
+        true,
+        false,
+        true,
+        true
+      ],
+      "nota": "No se requiere CVI/CVS de SENASA. Se basa en certificados privados del veterinario colegiado."
+    },
+    "NICARAGUA": {
+      "nombre": "Nicaragua",
+      "requisitos": [
+        true,
+        true,
+        true,
+        true,
+        false,
+        true,
+        true
+      ],
+      "nota": "Las vacunas deben ser aplicadas entre $\\mathbf{30}$ y $\\mathbf{365}$ días antes del viaje. Prohíbe la aplicación de cualquier inmunógeno $\\mathbf{29}$ días previos al embarque."
+    },
+    "NORUEGA": {
+      "nombre": "Noruega",
+      "requisitos": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "nota": "Se rige por el Reglamento (UE) N° 576/2013 y 577/2013. Válido para perros, gatos y hurones. Tratamiento contra Echinococcus multilocularis"
+    },
+    "PAISES BAJOS HOLANDA": {
+      "nombre": "Paises Bajos (Holanda)",
+      "requisitos": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "nota": "Se rige por el Reglamento (UE) N° 576/2013 y 577/2013. Válido para perros, gatos y hurones."
+    },
+    "PANAMA": {
+      "nombre": "Panama",
+      "requisitos": [
+        true,
+        true,
+        true,
+        true,
+        false,
+        true,
+        true
+      ],
+      "nota": "Requiere Apostillado del Certificado Sanitario de Exportación. El trámite total (SENASA + Apostilla) debe realizarse con $\\mathbf{10}$ a $\\mathbf{15}$ días de anticipación."
+    },
+    "PORTUGAL": {
+      "nombre": "Portugal",
+      "requisitos": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "nota": "Se rige por el Reglamento (UE) N° 576/2013 y 577/2013. Válido para perros, gatos y hurones."
+    },
+    "QATAR": {
+      "nombre": "Qatar",
+      "requisitos": [
+        true,
+        true,
+        true,
+        true,
+        false,
+        true,
+        true
+      ],
+      "nota": "Edad mínima: $\\ge **4$ meses**. Certificado de salud emitido $\\le **2$ semanas** antes del viaje."
+    },
+    "REINO UNIDO": {
+      "nombre": "Reino Unido",
+      "requisitos": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "nota": "Sigue regulaciones tipo UE. IMPORTANTE: Requiere tratamiento obligatorio contra Echinococcus multilocularis para perros."
+    },
+    "REPUBLICA CHECA": {
+      "nombre": "Republica Checa",
+      "requisitos": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "nota": "Se rige por el Reglamento (UE) N° 576/2013 y 577/2013. Válido para perros, gatos y hurones."
+    },
+    "REPUBLICA DOMINICANA": {
+      "nombre": "Republica Dominicana",
+      "requisitos": [
+        true,
+        true,
+        true,
+        true,
+        false,
+        true,
+        true
+      ],
+      "nota": "Requiere examen clínico $\\le \\mathbf{72}$ horas antes de la partida. La vacuna antirrábica debe ser a base de virus inactivados."
+    },
+    "RUMANIA": {
+      "nombre": "Rumania",
+      "requisitos": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "nota": "Se rige por el Reglamento (UE) N° 576/2013 y 577/2013. Válido para perros, gatos y hurones."
+    },
+    "SUECIA": {
+      "nombre": "Suecia",
+      "requisitos": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "nota": "Se rige por el Reglamento (UE) N° 576/2013 y 577/2013. Válido para perros, gatos y hurones. Tratamiento contra Echinococcus multilocularis"
+    },
+    "TAIWAN": {
+      "nombre": "Taiwan",
+      "requisitos": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "nota": "Requisitos estrictos. Se requiere Permiso de Importación y Titulación de Anticuerpos con un plazo de $\\ge \\mathbf{180}$ días antes del envío."
+    },
+    "URUGUAY": {
+      "nombre": "Uruguay",
+      "requisitos": [
+        true,
+        true,
+        true,
+        true,
+        false,
+        true,
+        true
+      ],
+      "nota": "Prohíbe el ingreso de perros con diagnóstico previo de Leishmaniosis. El CVI es válido por 30 días para el retorno a Perú."
+    },
+    "VENEZUELA": {
+      "nombre": "Venezuela",
+      "requisitos": [
+        true,
+        true,
+        true,
+        true,
+        false,
+        true,
+        true
+      ],
+      "nota": "Requiere Vacunas Múltiples específicas: Séxtuple para perros y Triple para gatos. Todos los certificados deben presentarse en Original y Copia."
+    },
+    "VIETNAM": {
+      "nombre": "Vietnam",
+      "requisitos": [
+        true,
+        true,
+        true,
+        true,
+        false,
+        true,
+        true
+      ],
+      "nota": "Requisitos muy generales enfocados en el estado de salud clínica y certificación privada"
+    }
+  }
+}
