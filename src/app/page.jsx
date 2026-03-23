@@ -13,7 +13,8 @@ import { TestimonialOne } from "@/components/testimonial/TestimonialOne";
 import { WhyWeAreOne } from "@/components/why_we_are/WhyWeAreOne";
 import { Layout } from "@/layouts/Layout";
 
-const showBlogSection = false;
+const showBlogSection = true;
+const showTeamSection = false;
 const showInstagramSection = false;
 
 export default function Home() {
@@ -44,7 +45,7 @@ export default function Home() {
       <BrandOne />
 
       {/* team */}
-      <TeamOne />
+      {showTeamSection ? <TeamOne /> : null}
 
       {/* testimonial */}
       <TestimonialOne />

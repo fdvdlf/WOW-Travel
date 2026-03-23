@@ -10280,6 +10280,7 @@ textarea {
   width: 264px;
   margin: 0 auto;
   position: relative;
+  overflow: hidden;
 }
 
 .team__item-img .mask-img-wrap::before {
@@ -10304,6 +10305,38 @@ textarea {
   height: 100%;
   -o-object-fit: cover;
   object-fit: cover;
+}
+
+.team__item-img .mask-img-wrap.team__mask-fallback {
+  background: linear-gradient(145deg, #efe0f0 0%, #d9e0ff 100%);
+}
+
+.team__avatar-fallback {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(circle at 35% 25%, rgba(255, 255, 255, 0.7), transparent 35%),
+    linear-gradient(145deg, #f7e3f2 0%, #d8e0ff 52%, #f8f1fb 100%);
+  color: #0f2e72;
+  font-family: var(--tg-heading-font-family);
+  font-size: 58px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+@media (max-width: 1199.98px) {
+  .team__avatar-fallback {
+    font-size: 52px;
+  }
+}
+
+@media (max-width: 767.98px) {
+  .team__avatar-fallback {
+    font-size: 46px;
+  }
 }
 
 .team__item-img-shape .shape-one {
@@ -12976,6 +13009,27 @@ blockquote p {
   border-radius: 50%;
 }
 
+.blog-person-avatar {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(circle at 30% 25%, rgba(255, 255, 255, 0.78), transparent 34%),
+    linear-gradient(145deg, #f3e3f3 0%, #d8defb 52%, #f6f0ff 100%);
+  color: #0f2e72;
+  font-family: var(--tg-heading-font-family);
+  font-size: 36px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.blog-avatar-img .blog-person-avatar {
+  font-size: 38px;
+}
+
 .blog-avatar-info .designation {
   display: block;
   font-weight: 500;
@@ -13046,6 +13100,10 @@ blockquote p {
   -o-border-radius: 50%;
   -ms-border-radius: 50%;
   border-radius: 50%;
+}
+
+.comments-avatar .blog-person-avatar {
+  font-size: 32px;
 }
 
 .comments-text .avatar-name {

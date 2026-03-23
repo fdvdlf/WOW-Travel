@@ -6,6 +6,7 @@ import React from "react";
 
 export const HeaderNav = () => {
   const pathname = usePathname();
+  const isBlogDetailPage = pathname.startsWith("/blog/");
 
   const isActiveMenu = (paths) => {
     return paths.some((path) => pathname === path);
@@ -64,9 +65,9 @@ export const HeaderNav = () => {
             "/team",
             "/team/t-123",
             "/blog",
-            "/blog/b-123",
             "/error",
           ])
+          || isBlogDetailPage
             ? "active"
             : ""
         }`}
@@ -100,8 +101,8 @@ export const HeaderNav = () => {
           <li className={pathname === "/blog" ? "active" : ""}>
             <Link href="/blog">Our Blog</Link>
           </li>
-          <li className={pathname === "/blog/b-123" ? "active" : ""}>
-            <Link href="/blog/b-123">Blog Details</Link>
+          <li className={isBlogDetailPage ? "active" : ""}>
+            <Link href="/blog/mascota-viajar-en-avion-5-pasos">Blog Details</Link>
           </li>
           <li className={pathname === "/error" ? "active" : ""}>
             <Link href="/error">404 Error Page</Link>

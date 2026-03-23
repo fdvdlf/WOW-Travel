@@ -1,104 +1,104 @@
 import React from "react";
 import Link from "next/link";
+import { BlogPersonAvatar } from "./BlogPersonAvatar";
 
-const comment01 = "/blog/comment01.png";
-const comment02 = "/blog/comment02.png";
 const rightArrow = "/icon/right_arrow.svg";
 
-export const BlogComments = () => {
+function countComments(comments = []) {
+  return comments.reduce((total, comment) => {
+    return total + 1 + countComments(comment.children || []);
+  }, 0);
+}
+
+function CommentItem({ comment }) {
+  return (
+    <li>
+      <div className="comments-box">
+        <div className="comments-avatar">
+          <BlogPersonAvatar initials={comment.initials} label={comment.name} />
+        </div>
+        <div className="comments-text">
+          <div className="avatar-name">
+            <h6 className="name">{comment.name}</h6>
+            <span className="date">{comment.date}</span>
+          </div>
+          <p>{comment.content}</p>
+          <Link href="#" className="reply-btn">
+            Responder
+          </Link>
+        </div>
+      </div>
+
+      {comment.children?.length ? (
+        <ul className="children">
+          {comment.children.map((child) => (
+            <CommentItem key={`${comment.name}-${child.name}-${child.date}`} comment={child} />
+          ))}
+        </ul>
+      ) : null}
+    </li>
+  );
+}
+
+export function BlogComments({ post }) {
+  if (!post) {
+    return null;
+  }
+
+  const totalComments = countComments(post.comments);
+
   return (
     <>
-      <div className="comments-wrap">
-        <h3 className="comments-wrap-title">02 Comments</h3>
+      <div className="comments-wrap" id="comentarios">
+        <h3 className="comments-wrap-title">
+          {String(totalComments).padStart(2, "0")} Comentarios
+        </h3>
         <div className="latest-comments">
           <ul className="list-wrap">
-            <li>
-              <div className="comments-box">
-                <div className="comments-avatar">
-                  <img src={comment01} alt="img" />
-                </div>
-                <div className="comments-text">
-                  <div className="avatar-name">
-                    <h6 className="name">Jessica Rose</h6>
-                    <span className="date">December 27, 2023</span>
-                  </div>
-                  <p>
-                    Finanappreciate your trust greatly Our clients choose
-                    dentace ducts because know we are the best area Awaitingare
-                    really.
-                  </p>
-                  <Link href="#" className="reply-btn">
-                    Reply
-                  </Link>
-                </div>
-              </div>
-              <ul className="children">
-                <li>
-                  <div className="comments-box">
-                    <div className="comments-avatar">
-                      <img src={comment02} alt="img" />
-                    </div>
-                    <div className="comments-text">
-                      <div className="avatar-name">
-                        <h6 className="name">Parker Willy</h6>
-                        <span className="date">December 28, 2023</span>
-                      </div>
-                      <p>
-                        Finanappreciate your trust greatly Our clients choose
-                        dentace ducts because know we are the best area
-                        Awaitingare really.
-                      </p>
-                      <Link href="#" className="reply-btn">
-                        Reply
-                      </Link>
-                    </div>
-                  </div>
-                </li>
-              </ul>
-            </li>
+            {post.comments.map((comment) => (
+              <CommentItem key={`${comment.name}-${comment.date}`} comment={comment} />
+            ))}
           </ul>
         </div>
       </div>
       <div className="comment-respond">
-        <h3 className="comment-reply-title">Post a comment</h3>
+        <h3 className="comment-reply-title">Deja tu consulta</h3>
         <form action="#" className="comment-form">
           <p className="comment-notes">
-            Your email address will not be published. Required fields are marked
-            *
+            Si prefieres una respuesta directa para tu caso, tambien puedes escribirnos por WhatsApp.
           </p>
           <div className="form-grp">
-            <textarea name="comment" placeholder="Comment"></textarea>
+            <textarea name="comment" placeholder="Cuentanos tu ruta o tu duda"></textarea>
           </div>
           <div className="row gutter-20">
             <div className="col-md-4">
               <div className="form-grp">
-                <input type="text" placeholder="Name" />
+                <input type="text" placeholder="Nombre" />
               </div>
             </div>
             <div className="col-md-4">
               <div className="form-grp">
-                <input type="email" placeholder="Email" />
+                <input type="email" placeholder="Correo" />
               </div>
             </div>
             <div className="col-md-4">
               <div className="form-grp">
-                <input type="url" placeholder="Website" />
+                <input type="text" placeholder="Pais de destino" />
               </div>
             </div>
           </div>
           <div className="form-grp checkbox-grp">
             <input type="checkbox" id="checkbox" />
             <label htmlFor="checkbox">
-              Save my name, email, and website in this browser for the next time
-              I comment.
+              Quiero recibir una respuesta con una orientacion inicial para mi viaje.
             </label>
           </div>
           <button type="submit" className="btn">
-            Read More
+            Enviar comentario
             <img src={rightArrow} alt="" className="injectable" />
           </button>
         </form>
       </div>
     </>
   );
-};
+}

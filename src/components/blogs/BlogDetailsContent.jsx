@@ -1,161 +1,145 @@
 import React from "react";
 import Link from "next/link";
-import { VideoPlayer } from "../video/VideoPlayer";
+import { BlogPersonAvatar } from "./BlogPersonAvatar";
 
-const blogDetailsImg = "/blog/blog_details_img.jpg";
-const blogDetailsImg02 = "/blog/blog_details_img02.jpg";
-const avatar = "/blog/avatar.png";
+const rightArrow = "/icon/right_arrow.svg";
 
-export const BlogDetailsContent = () => {
+function countComments(comments = []) {
+  return comments.reduce((total, comment) => {
+    return total + 1 + countComments(comment.children || []);
+  }, 0);
+}
+
+export function BlogDetailsContent({ post }) {
+  if (!post) {
+    return null;
+  }
+
+  const totalComments = countComments(post.comments);
+
   return (
     <>
       <div className="blog__details-wrap">
         <div className="blog__details-thumb">
-          <img src={blogDetailsImg} alt="img" />
+          <img src={post.image} alt={post.imageAlt} />
         </div>
         <div className="blog__details-content">
-          <h2 className="title">
-            How Smashing Magazine Uses TinaCMS To Manage Appoint Editorial
-            Workflow
-          </h2>
+          <h2 className="title">{post.title}</h2>
           <div className="blog__post-meta">
             <ul className="list-wrap">
               <li>
-                <i className="flaticon-user"></i>by
-                <Link href="/blog/b-123">admin</Link>
+                <i className="flaticon-user"></i>por
+                <Link href={post.cta.href} target="_blank" rel="noreferrer">
+                  WOW Travel
+                </Link>
               </li>
               <li>
-                <i className="flaticon-calendar"></i>25th Aug, 2024
+                <i className="flaticon-calendar"></i>
+                {post.date}
               </li>
               <li>
                 <i className="fas fa-tags"></i>
-                <Link href="/blog">Pet,</Link>
-                <Link href="/blog">Medical</Link>
+                {post.tags.map((tag, index) => (
+                  <Link key={tag} href="/blog">
+                    {index === post.tags.length - 1 ? tag : `${tag},`}
+                  </Link>
+                ))}
               </li>
               <li>
                 <i className="far fa-comment-alt"></i>
-                <Link href="/blog/b-123">05 Comments</Link>
+                <Link href="#comentarios">
+                  {String(totalComments).padStart(2, "0")} Comentarios
+                </Link>
               </li>
             </ul>
           </div>
-          <p>
-            When an unknown printer took ar galley offer type year anddey
-            scrambled make type aewer specimen awebook bethas survived not only
-            five when annery unknown printer.eed a little help from our friends
-            from time to time.Although we offer the one-stop convenience.
-          </p>
-          <p>
-            Eed a little help from our friends from time to time. Although we
-            offer the one-stop convenience of annery integrated range of legal,
-            financial services under one roof.eed a little help from our friends
-            from time to time. Although we offer the one-stop convenience.
-          </p>
+
+          {post.body.intro.map((paragraph) => (
+            <p key={paragraph}>{paragraph}</p>
+          ))}
+
           <blockquote>
-            <p>
-              “ urabitur varius eros rutrum consequat Mauris aewa sollicitudin
-              enim condimentum luctus enim justo non molestie nisl ”
-            </p>
+            <p>"{post.body.quote}"</p>
           </blockquote>
-          <h4 className="title-two">Rediscovering The Joy Of Design</h4>
-          <p>
-            When an unknown printer took a galley of type and scrambled it to
-            make a type specimen bookhas a not awertolw only five centuries, but
-            also the leap into electronic typesetting, remaining essentially
-            unchan galley of type and scrambled it to make a type specimen book.
-          </p>
+
+          <h4 className="title-two">{post.body.sectionTitle}</h4>
+          {post.body.sectionParagraphs.map((paragraph) => (
+            <p key={paragraph}>{paragraph}</p>
+          ))}
+
           <div className="blog__details-inner-wrap">
             <div className="row align-items-center">
               <div className="col-54">
                 <div className="content">
-                  <h3 className="title-two">
-                    Revealing Images With CSS Mask Animations
-                  </h3>
-                  <p>
-                    When an unknown printer took a galley type remaining
-                    essentially unchan galley of type and scrambled it to make a
-                    type specimen book.
-                  </p>
+                  <h3 className="title-two">{post.body.innerTitle}</h3>
+                  <p>{post.body.innerParagraph}</p>
                   <ul className="list-wrap">
-                    <li>
-                      <i className="fas fa-arrow-right"></i>Medicare Advantage
-                      Plans
-                    </li>
-                    <li>
-                      <i className="fas fa-arrow-right"></i>Analysis & Research
-                    </li>
-                    <li>
-                      <i className="fas fa-arrow-right"></i>100% Secure Money
-                      Back
-                    </li>
+                    {post.body.bullets.map((item) => (
+                      <li key={item}>
+                        <i className="fas fa-arrow-right"></i>
+                        {item}
+                      </li>
+                    ))}
                   </ul>
                 </div>
               </div>
               <div className="col-46">
                 <div className="thumb">
-                  <img src={blogDetailsImg02} alt="" />
-
-                  <VideoPlayer
-                    trigger={
-                      <a href="#vid" className="play-btn popup-video">
-                        <i className="fas fa-play"></i>
-                      </a>
-                    }
-                  />
+                  <img src={post.image} alt={post.imageAlt} />
                 </div>
               </div>
             </div>
           </div>
-          <p>
-            When an unknown printer took a galley of type and scrambled it to
-            make a type specimen bookhas a not only five centuries, but also the
-            leap into electronic typesetting, remaining essentially unchan
-            galley of type and scrambled it to make a type specimen book.
-          </p>
+
+          {post.body.closing.map((paragraph) => (
+            <p key={paragraph}>{paragraph}</p>
+          ))}
+
+          <div className="comment-respond">
+            <h3 className="comment-reply-title">{post.cta.title}</h3>
+            <p className="comment-notes">{post.cta.body}</p>
+            <Link href={post.cta.href} className="btn" target="_blank" rel="noreferrer">
+              {post.cta.label}
+              <img src={rightArrow} alt="" className="injectable" />
+            </Link>
+          </div>
+
           <div className="blog__details-content-bottom">
             <div className="row align-items-center">
               <div className="col-md-7">
                 <div className="post-tags">
-                  <h5 className="title">Tags:</h5>
+                  <h5 className="title">Temas:</h5>
                   <ul className="list-wrap">
-                    <li>
-                      <Link href="#">Dogs</Link>
-                    </li>
-                    <li>
-                      <Link href="#">Pet Care</Link>
-                    </li>
-                    <li>
-                      <Link href="#">Cats</Link>
-                    </li>
+                    {post.tags.map((tag) => (
+                      <li key={tag}>
+                        <Link href="/blog">{tag}</Link>
+                      </li>
+                    ))}
                   </ul>
                 </div>
               </div>
               <div className="col-md-5">
                 <div className="blog-post-share">
-                  <h5 className="title">Share:</h5>
+                  <h5 className="title">Contacto:</h5>
                   <ul className="list-wrap">
                     <li>
-                      <Link href="https://www.facebook.com/" target="_blank">
-                        <i className="fab fa-facebook-f"></i>
-                      </Link>
-                    </li>
-                    <li>
-                      <Link href="https://twitter.com" target="_blank">
-                        <i className="fab fa-twitter"></i>
-                      </Link>
-                    </li>
-                    <li>
-                      <Link href="https://www.whatsapp.com/" target="_blank">
+                      <Link href={post.cta.href} target="_blank" rel="noreferrer">
                         <i className="fab fa-whatsapp"></i>
                       </Link>
                     </li>
                     <li>
-                      <Link href="https://www.instagram.com/" target="_blank">
-                        <i className="fab fa-instagram"></i>
+                      <Link href="mailto:contacto@wowtravel.pe">
+                        <i className="fas fa-envelope"></i>
                       </Link>
                     </li>
                     <li>
-                      <Link href="https://www.youtube.com/" target="_blank">
-                        <i className="fab fa-youtube"></i>
+                      <Link href="https://www.linkedin.com/company/wowtravel-pe/" target="_blank" rel="noreferrer">
+                        <i className="fab fa-linkedin-in"></i>
+                      </Link>
+                    </li>
+                    <li>
+                      <Link href="/blog">
+                        <i className="fas fa-book-open"></i>
                       </Link>
                     </li>
                   </ul>
@@ -168,21 +152,18 @@ export const BlogDetailsContent = () => {
 
       <div className="blog-avatar-wrap">
         <div className="blog-avatar-img">
-          <Link href="/team/t-123">
-            <img src={avatar} alt="img" />
-          </Link>
+          <BlogPersonAvatar initials={post.author.initials} label={post.author.name} />
         </div>
         <div className="blog-avatar-info">
-          <span className="designation">Author</span>
+          <span className="designation">{post.author.role}</span>
           <h4 className="name">
-            <a href="#">Parker Willy</a>
+            <Link href={post.cta.href} target="_blank" rel="noreferrer">
+              {post.author.name}
+            </Link>
           </h4>
-          <p>
-            Finanappreciate your trust greatly Our clients choose dentace ducr
-            emaining essential yearl ow we are the best area Awaitingare really.
-          </p>
+          <p>{post.author.bio}</p>
         </div>
       </div>
     </>
   );
-};
+}
