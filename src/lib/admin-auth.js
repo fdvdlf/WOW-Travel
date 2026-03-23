@@ -1,6 +1,7 @@
 const SESSION_COOKIE = "wow_admin_session";
 const DEFAULT_TTL_MS = (Number(process.env.ADMIN_SESSION_TTL_DAYS || 7) || 7) * 24 * 60 * 60 * 1000;
 const textEncoder = new TextEncoder();
+const isProduction = process.env.NODE_ENV === "production";
 
 function encodeBase64Url(value) {
   if (typeof Buffer !== "undefined") {
@@ -96,7 +97,7 @@ export async function setSessionCookie(username) {
   cookies().set(SESSION_COOKIE, token, {
     httpOnly: true,
     sameSite: "lax",
-    secure: true,
+    secure: isProduction,
     path: "/",
     maxAge: Math.floor(DEFAULT_TTL_MS / 1000),
   });

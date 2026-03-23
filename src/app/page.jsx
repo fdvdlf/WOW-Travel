@@ -13,6 +13,9 @@ import { TestimonialOne } from "@/components/testimonial/TestimonialOne";
 import { WhyWeAreOne } from "@/components/why_we_are/WhyWeAreOne";
 import { Layout } from "@/layouts/Layout";
 
+const showBlogSection = false;
+const showInstagramSection = false;
+
 export default function Home() {
   return (
     <Layout header={3} footer={1}>
@@ -50,10 +53,10 @@ export default function Home() {
       <RegistrationOne />
 
       {/* blog */}
-      <BlogOne />
+      {showBlogSection ? <BlogOne /> : null}
 
       {/* insta */}
-      <InstagramOne />
+      {showInstagramSection ? <InstagramOne /> : null}
     </Layout>
   );
 }
