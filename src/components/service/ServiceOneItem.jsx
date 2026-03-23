@@ -1,8 +1,12 @@
 import React from "react";
 import Link from "next/link";
+
 const servicesShape01 = "/images/services_shape01.svg";
 const servicesShape02 = "/images/services_shape02.svg";
 const servicesIconShape = "/images/services_icon_shape.svg";
+
+const getServiceWhatsappUrl = (title) =>
+  `https://wa.me/51941482291?text=${encodeURIComponent(`Hola WOW Travel, quiero informacion sobre ${title.toLowerCase()}.`)}`;
 
 export const ServiceOneItem = ({ icon, title }) => {
   return (
@@ -24,7 +28,9 @@ export const ServiceOneItem = ({ icon, title }) => {
         </div>
         <div className="services__content">
           <h4 className="title">
-            <Link href="/animal/a-123">{title}</Link>
+            <Link href={getServiceWhatsappUrl(title)} target="_blank" rel="noreferrer">
+              {title}
+            </Link>
           </h4>
         </div>
       </div>

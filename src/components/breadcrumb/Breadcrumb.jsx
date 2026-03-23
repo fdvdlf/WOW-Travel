@@ -14,13 +14,13 @@ export const Breadcrumb = ({ title, subtitle }) => {
             <div className="breadcrumb__content">
               <h3 className="title">{title}</h3>
               <nav className="breadcrumb">
-                <span property="itemListElement" typeof="ListItem">
+                <span>
                   <Link href="/">Home</Link>
                 </span>
                 <span className="breadcrumb-separator">
                   <i className="flaticon-right-arrow-angle"></i>
                 </span>
-                <span property="itemListElement" typeof="ListItem">
+                <span>
                   {subtitle || title}
                 </span>
               </nav>

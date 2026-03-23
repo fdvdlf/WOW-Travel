@@ -8,6 +8,8 @@ const counterShape01 = "/images/counter_shape01.png";
 const counterShape02 = "/images/counter_shape02.png";
 const petIcon02 = "/icon/pet_icon02.svg";
 const rightArrow = "/icon/right_arrow.svg";
+const counterWhatsappUrl =
+  "https://wa.me/51941482291?text=Hola%20WOW%20Travel%2C%20quiero%20saber%20mas%20sobre%20el%20viaje%20de%20mi%20mascota.";
 
 export const CounterOne = () => {
   return (
@@ -37,22 +39,24 @@ export const CounterOne = () => {
                     <img src={petIcon02} alt="" className="injectable" />
                   </strong>
                 </span>
-                <h2 className="title">
-                  Tu tranquilidad y la seguridad de tu mascota son lo primero
-                </h2>
+                <h2 className="title">Tu tranquilidad y la seguridad de tu mascota son lo primero</h2>
               </div>
               <p>
                 Nos encargamos de todos los trámites y documentos necesarios para el viaje para que vivas un proceso simple, claro y
                 sin estrés.
               </p>
-              <Link href="/about" className="btn border-btn white-btn">
+              <Link
+                href={counterWhatsappUrl}
+                className="btn border-btn white-btn"
+                target="_blank"
+                rel="noreferrer"
+              >
                 Saber más
                 <img src={rightArrow} alt="" className="injectable" />
               </Link>
             </div>
           </div>
 
-          {/* counters */}
           <div className="col-lg-3 col-md-5 order-3">
             <div className="counter__item-wrap">
               <div className="counter__item">

@@ -11,6 +11,7 @@ export default function Blog() {
 
   return (
     <Layout
+      footer={1}
       breadcrumbTitle="Noticias y articulos"
       breadcrumbSubtitle={"Blog"}
       mainClass="nothing"

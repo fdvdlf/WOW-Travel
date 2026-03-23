@@ -12,8 +12,9 @@ export function generateStaticParams() {
   }));
 }
 
-export function generateMetadata({ params }) {
-  const post = getBlogPostBySlug(params.id);
+export async function generateMetadata({ params }) {
+  const { id } = await params;
+  const post = getBlogPostBySlug(id);
 
   if (!post) {
     return {
@@ -27,8 +28,9 @@ export function generateMetadata({ params }) {
   };
 }
 
-export default function Blog({ params }) {
-  const post = getBlogPostBySlug(params.id);
+export default async function Blog({ params }) {
+  const { id } = await params;
+  const post = getBlogPostBySlug(id);
 
   if (!post) {
     notFound();
@@ -36,6 +38,7 @@ export default function Blog({ params }) {
 
   return (
     <Layout
+      footer={1}
       breadcrumbTitle="Noticias y articulos"
       breadcrumbSubtitle={"Detalle del articulo"}
       mainClass="nothing"
