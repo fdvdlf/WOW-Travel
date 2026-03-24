@@ -42,7 +42,7 @@ export default function RootLayout({ children }) {
       <head>
         <style dangerouslySetInnerHTML={{ __html: fontVariables }} />
       </head>
-      <body>
+      <body suppressHydrationWarning={true}>
         <ProviderComponent>
           {children}
           <WhatsAppButton />

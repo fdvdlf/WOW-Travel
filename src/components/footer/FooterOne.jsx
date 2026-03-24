@@ -6,11 +6,16 @@ import Link from "next/link";
 const wLogo = "/logo/w_logo.png";
 const footerShape01 = "/images/footer_shape01.png";
 const footerShape02 = "/images/footer_shape02.png";
+const footerProcessWhatsappUrl =
+  "https://wa.me/51941482291?text=Hola%20WOW%20Travel%2C%20quiero%20saber%20como%20funciona%20el%20proceso%20para%20viajar%20con%20mi%20mascota.";
+const footerContactWhatsappUrl =
+  "https://wa.me/51941482291?text=Hola%20WOW%20Travel%2C%20quiero%20informacion%20sobre%20el%20viaje%20de%20mi%20mascota.";
+const footerJobsWhatsappUrl =
+  "https://wa.me/51941482291?text=Hola%20WOW%20Travel%2C%20me%20interesa%20trabajar%20con%20ustedes%20y%20quiero%20mas%20informacion.";
 
 export const FooterOne = () => {
   const [isTermsOpen, setIsTermsOpen] = useState(false);
   const [isPrivacyOpen, setIsPrivacyOpen] = useState(false);
-  const [isJobsOpen, setIsJobsOpen] = useState(false);
   const [isFaqOpen, setIsFaqOpen] = useState(false);
   const [isAboutOpen, setIsAboutOpen] = useState(false);
 
@@ -18,8 +23,6 @@ export const FooterOne = () => {
   const closeTerms = () => setIsTermsOpen(false);
   const openPrivacy = () => setIsPrivacyOpen(true);
   const closePrivacy = () => setIsPrivacyOpen(false);
-  const openJobs = () => setIsJobsOpen(true);
-  const closeJobs = () => setIsJobsOpen(false);
   const openFaq = () => setIsFaqOpen(true);
   const closeFaq = () => setIsFaqOpen(false);
   const openAbout = () => setIsAboutOpen(true);
@@ -87,10 +90,14 @@ export const FooterOne = () => {
                           </button>
                         </li>
                         <li>
-                          <Link href="/proceso">Cómo funciona el proceso</Link>
+                          <Link href={footerProcessWhatsappUrl} target="_blank" rel="noreferrer">
+                            Cómo funciona el proceso
+                          </Link>
                         </li>
                         <li>
-                          <Link href="/contacto">Contacto</Link>
+                          <Link href={footerContactWhatsappUrl} target="_blank" rel="noreferrer">
+                            Contacto
+                          </Link>
                         </li>
                       </ul>
                     </div>
@@ -150,16 +157,21 @@ export const FooterOne = () => {
                         </button>
                       </li>
                       <li>
-                        <button type="button" className="footer__link-button" onClick={openJobs}>
+                        <Link
+                          href={footerJobsWhatsappUrl}
+                          className="footer__link-button"
+                          target="_blank"
+                          rel="noreferrer"
+                        >
                           Trabaja con nosotros
-                        </button>
+                        </Link>
                       </li>
                     </ul>
                   </div>
                 </div>
                 <div className="col-lg-5">
                   <div className="copyright-text text-end">
-                    <p>© 2025 WOW Travel - Todos los derechos reservados.</p>
+                    <p>&copy; 2026 WOW Travel - Todos los derechos reservados.</p>
                   </div>
                 </div>
               </div>
@@ -281,50 +293,6 @@ export const FooterOne = () => {
         </div>
       )}
 
-      {isJobsOpen && (
-        <div className="terms-modal__overlay" onClick={handleOverlayClick(closeJobs)}>
-          <div className="terms-modal">
-            <div className="terms-modal__header">
-              <h3 className="terms-modal__title">Trabaja con nosotros</h3>
-              <button type="button" className="terms-modal__close" onClick={closeJobs} aria-label="Cerrar">
-                ×
-              </button>
-            </div>
-            <div className="terms-modal__body">
-              <h4 className="terms-modal__subtitle">Estamos buscando un Asesor Comercial</h4>
-              <p>
-                En WOW Travel buscamos sumar a nuestro equipo a una persona comprometida, con actitud proactiva, excelente trato con
-                clientes y una verdadera pasión por los animales. Queremos a alguien que disfrute acompañar a las familias en el
-                proceso de viaje de sus mascotas, con sensibilidad, paciencia y vocación de servicio.
-              </p>
-              <p>Ofrecemos:</p>
-              <ul className="terms-modal__list">
-                <li>Período de prueba de 3 meses</li>
-                <li>Luego ingreso a planilla</li>
-                <li>Todos los beneficios de ley</li>
-                <li>Ambiente de trabajo estable</li>
-                <li>Oportunidad real de crecimiento dentro de la empresa</li>
-              </ul>
-              <p>
-                Si tienes experiencia en ventas, atención al cliente o asesoría comercial, y te encanta trabajar con animales y sus
-                familias, ¡queremos conocerte!
-              </p>
-              <p>
-                Envíanos tu CV a{" "}
-                <a href="mailto:contacto@wowtravel.pe" className="terms-modal__link">
-                  contacto@wowtravel.pe
-                </a>
-              </p>
-            </div>
-            <div className="terms-modal__footer">
-              <button type="button" className="btn" onClick={closeJobs}>
-                Cerrar
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-
       {isFaqOpen && (
         <div className="terms-modal__overlay" onClick={handleOverlayClick(closeFaq)}>
           <div className="terms-modal">
@@ -377,9 +345,7 @@ export const FooterOne = () => {
                 cuando la situación lo requiera. Este apoyo facilita que el proceso esté mejor sustentado y resulte más claro y
                 tranquilo para la familia.
               </p>
-              <p>
-                Si tienes más preguntas, puedes escribirnos a contacto@wowtravel.pe
-              </p>
+              <p>Si tienes más preguntas, puedes escribirnos a contacto@wowtravel.pe</p>
             </div>
             <div className="terms-modal__footer">
               <button type="button" className="btn" onClick={closeFaq}>

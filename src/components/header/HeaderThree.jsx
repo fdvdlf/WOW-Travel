@@ -2,16 +2,12 @@
 
 import React from "react";
 import Link from "next/link";
-import { useMobileMenu, useSearch } from "../../lib/hooks/useHeader";
-import { HeaderSearch } from "./HeaderSearch";
 import { HeaderMobileMenu } from "./HeaderMobileMenu";
 
 const wLogo = "/logo/logo.png";
+const showMobileMenu = false;
 
 export const HeaderThree = () => {
-  const { showSearch, toggleSearch } = useSearch();
-  useMobileMenu();
-
   return (
     <>
       <header>
@@ -32,20 +28,18 @@ export const HeaderThree = () => {
                     </Link>
                   </div>
 
-                  <div className="mobile-nav-toggler" aria-label="Abrir menú">
-                    <i className="flaticon-layout"></i>
-                  </div>
+                  {showMobileMenu ? (
+                    <div className="mobile-nav-toggler" aria-label="Abrir menú">
+                      <i className="flaticon-layout"></i>
+                    </div>
+                  ) : null}
                 </div>
 
-                {/* Menú móvil */}
-                <HeaderMobileMenu />
+                {showMobileMenu ? <HeaderMobileMenu /> : null}
               </div>
             </div>
           </div>
         </div>
-
-        {/* Buscador eliminado */}
-        {/* <HeaderSearch active={showSearch} toggleSearch={toggleSearch} /> */}
       </header>
     </>
   );

@@ -1,16 +1,21 @@
 import { useEffect } from "react";
 import { usePathname } from "next/navigation";
 
-export const useSvgInject = () => {
+export const useSvgInject = (enabled = true) => {
   const pathname = usePathname();
 
   useEffect(() => {
-    if (typeof window === "undefined" || typeof document === "undefined") {
+    if (
+      typeof window === "undefined" ||
+      typeof document === "undefined" ||
+      !enabled
+    ) {
       return undefined;
     }
 
     let observer;
     let frameId = 0;
+    let timeoutId = 0;
 
     const injectSvg = async () => {
       try {
@@ -42,27 +47,33 @@ export const useSvgInject = () => {
       });
     };
 
-    scheduleInjection();
+    timeoutId = window.setTimeout(() => {
+      scheduleInjection();
 
-    observer = new MutationObserver((mutations) => {
-      const hasNewNodes = mutations.some((mutation) => mutation.addedNodes.length > 0);
+      observer = new MutationObserver((mutations) => {
+        const hasNewNodes = mutations.some((mutation) => mutation.addedNodes.length > 0);
 
-      if (hasNewNodes) {
-        scheduleInjection();
-      }
-    });
+        if (hasNewNodes) {
+          scheduleInjection();
+        }
+      });
 
-    observer.observe(document.body, {
-      childList: true,
-      subtree: true,
-    });
+      observer.observe(document.body, {
+        childList: true,
+        subtree: true,
+      });
+    }, 120);
 
     return () => {
       observer?.disconnect();
+
+      if (timeoutId) {
+        window.clearTimeout(timeoutId);
+      }
 
       if (frameId) {
         window.cancelAnimationFrame(frameId);
       }
     };
-  }, [pathname]);
+  }, [enabled, pathname]);
 };

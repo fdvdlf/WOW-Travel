@@ -14512,6 +14512,17 @@ blockquote p {
   text-decoration: underline;
 }
 
+/* Temporary: hide Facebook and LinkedIn links sitewide without deleting them. */
+a[href*="facebook.com"],
+a[href*="linkedin.com"] {
+  display: none !important;
+}
+
+li:has(> a[href*="facebook.com"]),
+li:has(> a[href*="linkedin.com"]) {
+  display: none !important;
+}
+
 .terms-modal__overlay {
   position: fixed;
   inset: 0;
@@ -15073,6 +15084,28 @@ blockquote p {
   font-size: 15px;
   line-height: 1;
   white-space: nowrap;
+}
+
+@media (max-width: 767.98px) {
+  .whatsapp-float {
+    right: 15px;
+    bottom: calc(env(safe-area-inset-bottom, 0px) + 16px);
+    min-width: 52px;
+    height: 52px;
+    padding: 0 16px;
+  }
+
+  .whatsapp-float .fa-whatsapp {
+    font-size: 24px;
+  }
+
+  .whatsapp-label {
+    font-size: 14px;
+  }
+
+  .scroll__top.open {
+    bottom: calc(env(safe-area-inset-bottom, 0px) + 80px);
+  }
 }
 
 .lang-cloud__area {
